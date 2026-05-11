@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -75,7 +75,6 @@
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
 
-    /* EQUIPAMENTOS REPETÍVEIS */
     .equipamento-block { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 16px; position: relative; }
     .equipamento-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--border2); padding-bottom: 8px; }
     .equipamento-title { font-size: 14px; font-weight: bold; color: var(--accent2); }
@@ -111,6 +110,7 @@
     .btn-save { flex: 1; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-size: 14px; font-weight: 700; padding: 14px; cursor: pointer; }
     .btn-ghost { background: var(--bg3); color: var(--text2); border: 1px solid var(--border2); border-radius: var(--radius); font-size: 14px; font-weight: 600; padding: 14px 18px; cursor: pointer; }
 
+    /* DASHBOARD E KPIS AVANÇADOS */
     .painel-kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
     .kpi-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
     .kpi-destaque { grid-column: span 2; background: linear-gradient(135deg, #111827 0%, #1a2a4a 100%); border-color: rgba(96, 165, 250, 0.3); display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px; }
@@ -118,8 +118,15 @@
     .kpi-destaque .kpi-label { color: var(--accent2); font-size: 11px; }
     .kpi-num { font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
     .kpi-label { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .06em; }
-    .kpi-crit .kpi-num { color: var(--red); }
-    .kpi-atenc .kpi-num { color: var(--yellow); }
+    
+    .progress-bar-bg { width: 100%; height: 8px; background: var(--bg3); border-radius: 4px; overflow: hidden; margin-top: 5px; }
+    .progress-bar-fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+    .progress-bar-green { background: var(--green); }
+    .progress-bar-red { background: var(--red); }
+    .progress-bar-yellow { background: var(--yellow); }
+
+    .equip-stat-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .equip-stat-row:last-child { border-bottom: none; padding-bottom: 0; }
 
     .bottom-nav { display: flex; border-top: 1px solid var(--border); background: var(--bg); flex-shrink: 0; padding-bottom: var(--safe-bot); z-index: 20; position: relative;}
     .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0 8px; cursor: pointer; gap: 3px; background: none; border: none; color: var(--text3); }
@@ -226,16 +233,41 @@
         <div class="section-title">Filtro de Cliente</div>
         <select id="filtro-painel" class="filtro-select" onchange="sincronizarFiltros(this.value)"></select>
 
-        <div class="section-title" style="margin-bottom:14px">Painel Estratégico (ROI)</div>
+        <div class="section-title" style="margin-bottom:14px">Painel de Gestão (Fiabilidade)</div>
 
         <div class="painel-kpi" id="painel-kpis-container">
           <div class="kpi-card kpi-destaque">
             <div class="kpi-num" id="p-economia">R$ 0</div>
-            <div class="kpi-label">CUSTO EVITADO EST. (FALHAS PREVENIDAS)</div>
+            <div class="kpi-label">CUSTO EVITADO (FALHAS PREVENIDAS)</div>
           </div>
-          <div class="kpi-card kpi-crit"><div class="kpi-num" id="p-crit">0</div><div class="kpi-label">CRÍTICOS</div></div>
-          <div class="kpi-card kpi-atenc"><div class="kpi-num" id="p-atenc">0</div><div class="kpi-label">ATENÇÃO</div></div>
+          <div class="kpi-card" style="text-align:center;">
+            <div class="kpi-num" id="p-health" style="color:var(--accent2);">0%</div>
+            <div class="kpi-label">HEALTH SCORE (SAÚDE GERAL)</div>
+          </div>
+          <div class="kpi-card" style="text-align:center;">
+            <div class="kpi-num" id="p-total-eq" style="color:var(--text);">0</div>
+            <div class="kpi-label">EQUIPAMENTOS INSPECIONADOS</div>
+          </div>
         </div>
+
+        <div class="section-title">Distribuição de Status (Equipamentos)</div>
+        <div class="kpi-card" style="margin-bottom: 24px;">
+          <div style="margin-bottom:12px;">
+             <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px;"><span style="color:var(--green)">Conformes (<span id="st-conf-count">0</span>)</span><span id="st-conf-pct" style="font-family:var(--mono);">0%</span></div>
+             <div class="progress-bar-bg"><div class="progress-bar-fill progress-bar-green" id="bar-conf" style="width:0%"></div></div>
+          </div>
+          <div style="margin-bottom:12px;">
+             <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px;"><span style="color:var(--yellow)">Atenção / Ressalvas (<span id="st-atenc-count">0</span>)</span><span id="st-atenc-pct" style="font-family:var(--mono);">0%</span></div>
+             <div class="progress-bar-bg"><div class="progress-bar-fill progress-bar-yellow" id="bar-atenc" style="width:0%"></div></div>
+          </div>
+          <div>
+             <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px;"><span style="color:var(--red)">Críticos (<span id="st-crit-count">0</span>)</span><span id="st-crit-pct" style="font-family:var(--mono);">0%</span></div>
+             <div class="progress-bar-bg"><div class="progress-bar-fill progress-bar-red" id="bar-crit" style="width:0%"></div></div>
+          </div>
+        </div>
+
+        <div class="section-title">Inventário por Categoria</div>
+        <div class="kpi-card" id="painel-categorias" style="margin-bottom: 24px;"></div>
 
         <div class="section-title">Próximos Vencimentos (Top 5)</div>
         <div class="insp-list" id="painel-vencimentos" style="margin-bottom: 24px;"></div>
@@ -266,19 +298,17 @@ const ITENS_MAP = {
 };
 
 let inspecoes = JSON.parse(localStorage.getItem('inspecoes') || '[]');
-let equipamentosAtual = []; // Array temporário durante a edição do laudo
+let equipamentosAtual = [];
 let resultadoAtual = 'ressalva';
 let editandoId = null;
 
-// ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
-  migrarDadosAntigos(); // Garante que laudos antigos funcionem no novo formato de Array
+  migrarDadosAntigos();
   carregarOpcoesFiltro();
   renderLista();
   renderPainel();
 });
 
-// Retrocompatibilidade (transforma laudos antigos de 1 equipamento em lista)
 function migrarDadosAntigos() {
   let precisouMigrar = false;
   inspecoes.forEach(insp => {
@@ -293,7 +323,6 @@ function migrarDadosAntigos() {
         itens: insp.itens || {},
         fotos: insp.fotos || []
       }];
-      // Limpa raiz para economizar espaço
       delete insp.tipo; delete insp.tag; delete insp.fab; delete insp.ano; delete insp.pmta; delete insp.pop; delete insp.temp; delete insp.categoria; delete insp.itens; delete insp.fotos;
     }
   });
@@ -316,11 +345,11 @@ function gravarAudio(inputId, objCallbackParams = null) {
   const btnMic = document.getElementById(inputId.replace('obs-', 'btn-mic-').replace('nota-foto-', 'btn-mic-foto-'));
   
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) return showToast('Seu navegador não suporta ditado de voz.');
+  if (!SpeechRecognition) return showToast('O seu navegador não suporta ditado de voz.');
 
   const rec = new SpeechRecognition(); rec.lang = 'pt-BR';
   
-  rec.onstart = () => { if(btnMic) btnMic.classList.add('recording'); showToast('Ouvindo...'); };
+  rec.onstart = () => { if(btnMic) btnMic.classList.add('recording'); showToast('A escutar...'); };
   rec.onspeechend = () => { rec.stop(); if(btnMic) btnMic.classList.remove('recording'); };
   
   rec.onresult = (e) => {
@@ -328,7 +357,6 @@ function gravarAudio(inputId, objCallbackParams = null) {
     let txtAtual = inputField.value.trim();
     inputField.value = txtAtual ? `${txtAtual} ${transcricaoFormatada}` : transcricaoFormatada;
     
-    // Salva no estado correspondente (Item Checklist ou Foto)
     if(objCallbackParams) {
         const { equipId, itemId, tipo, fotoId } = objCallbackParams;
         const eq = equipamentosAtual.find(e => e.id === equipId);
@@ -340,15 +368,15 @@ function gravarAudio(inputId, objCallbackParams = null) {
             }
         }
     }
-    showToast('Áudio transcrito!');
+    showToast('Áudio transcrito com sucesso!');
   };
-  rec.onerror = () => { if(btnMic) btnMic.classList.remove('recording'); showToast('Erro no mic.'); };
+  rec.onerror = () => { if(btnMic) btnMic.classList.remove('recording'); showToast('Erro no microfone.'); };
   rec.start();
 }
 
-// ── GERENCIAMENTO DE EQUIPAMENTOS NA VISITA ──
+// ── GERENCIAMENTO DE EQUIPAMENTOS ──
 function abrirModalAdicionarEquip() {
-  const tipo = prompt("Digite o número do tipo:\n1: Caldeira\n2: Vaso de Pressão\n3: Tubulação\n4: Válvula de Segurança", "1");
+  const tipo = prompt("Digite o número do equipamento:\n1: Caldeira\n2: Vaso de Pressão\n3: Tubulação\n4: Válvula de Segurança", "1");
   const tiposStr = { '1': "Caldeira a Vapor", '2': "Vaso de Pressão", '3': "Tubulação", '4': "Válvula de Segurança" };
   const tipoSelecionado = tiposStr[tipo];
   if(tipoSelecionado) adicionarEquipamentoNaMemoria(tipoSelecionado);
@@ -361,13 +389,12 @@ function adicionarEquipamentoNaMemoria(tipo) {
     itens: {}, fotos: []
   };
   
-  // Preenche checklist padrão
   const lista = ITENS_MAP[tipo] || ITENS_MAP["Caldeira a Vapor"];
   lista.forEach(it => novoEquip.itens[it] = { status: 'conf', obs: '' });
   
   equipamentosAtual.push(novoEquip);
   renderEquipamentosFormUI();
-  showToast(`${tipo} adicionado à visita!`);
+  showToast(`${tipo} adicionado à visita.`);
 }
 
 function removerEquipamento(id) {
@@ -377,7 +404,6 @@ function removerEquipamento(id) {
   }
 }
 
-// Atualiza dados básicos do equipamento quando o usuário digita
 function updateEqData(equipId, campo, valor) {
   const eq = equipamentosAtual.find(e => e.id === equipId);
   if(eq) eq[campo] = valor;
@@ -393,7 +419,6 @@ function setEqItemStatus(equipId, nomeItem, status, btn) {
   const map = { conf: 's-conf', nconf: 's-nconf', atenc: 's-atenc' };
   btn.classList.add(map[status]);
   
-  // Auto calcula resultado da visita inteira
   let temNconf = false; let temAtenc = false;
   equipamentosAtual.forEach(e => {
       Object.values(e.itens).forEach(v => {
@@ -406,7 +431,7 @@ function setEqItemStatus(equipId, nomeItem, status, btn) {
   else setResultado('aprovado');
 }
 
-// ── FOTOS POR EQUIPAMENTO ──
+// ── FOTOS ──
 function triggerFotoUpload(equipId) {
   const input = document.createElement('input');
   input.type = 'file'; input.accept = 'image/*'; input.capture = 'environment';
@@ -420,7 +445,7 @@ function processarFotoEquip(event, equipId) {
   const eq = equipamentosAtual.find(e => e.id === equipId);
   if(!eq) return;
 
-  showToast('Comprimindo foto...');
+  showToast('A comprimir foto...');
   const reader = new FileReader();
   reader.onload = function(e) {
     const img = new Image();
@@ -446,18 +471,15 @@ function removerFotoEquip(equipId, fotoId) {
   if(eq) { eq.fotos = eq.fotos.filter(f => f.id !== fotoId); renderEquipamentosFormUI(); }
 }
 
-// ── RENDERIZAÇÃO DO FORMULÁRIO ──
+// ── RENDERIZAÇÃO FORMULÁRIO ──
 function renderEquipamentosFormUI() {
   const container = document.getElementById('container-equipamentos');
-  
   if(equipamentosAtual.length === 0) {
       container.innerHTML = `<div class="empty-state" style="padding: 20px;">Nenhum equipamento adicionado nesta visita.</div>`;
       return;
   }
 
   container.innerHTML = equipamentosAtual.map((eq, index) => {
-    
-    // Renderiza o checklist do equipamento
     let checklistHtml = Object.keys(eq.itens).map(nome => {
         const itemObj = eq.itens[nome];
         const slug = nome.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
@@ -480,7 +502,6 @@ function renderEquipamentosFormUI() {
         </div>`;
     }).join('');
 
-    // Renderiza as fotos
     let fotosHtml = eq.fotos.map(f => `
         <div class="foto-card">
           <img src="${f.base64}" class="foto-preview" />
@@ -495,10 +516,9 @@ function renderEquipamentosFormUI() {
     return `
     <div class="equipamento-block">
       <div class="equipamento-header">
-        <div class="equipamento-title">Equip ${index + 1}: ${eq.tipo}</div>
+        <div class="equipamento-title">Equipamento ${index + 1}: ${eq.tipo}</div>
         <button class="btn-remover-equip" onclick="removerEquipamento(${eq.id})">Remover</button>
       </div>
-      
       <div class="grid-2" style="margin-bottom:10px;">
         <div class="field"><label>TAG</label><input value="${eq.tag}" oninput="updateEqData(${eq.id}, 'tag', this.value)" placeholder="ex: CAL-01" /></div>
         <div class="field"><label>Fabricante</label><input value="${eq.fab}" oninput="updateEqData(${eq.id}, 'fab', this.value)" /></div>
@@ -508,10 +528,8 @@ function renderEquipamentosFormUI() {
         <div class="field"><label>PMTA</label><input value="${eq.pmta}" oninput="updateEqData(${eq.id}, 'pmta', this.value)" /></div>
         <div class="field"><label>P. Oper</label><input value="${eq.pop}" oninput="updateEqData(${eq.id}, 'pop', this.value)" /></div>
       </div>
-      
       <div class="form-section-title" style="margin-top:20px;">Checklist</div>
       ${checklistHtml}
-      
       <div class="form-section-title" style="margin-top:20px;">Fotos do Equipamento</div>
       <button class="btn-ghost" style="width:100%; margin-bottom:10px; font-size:12px; padding:10px;" onclick="triggerFotoUpload(${eq.id})">📷 Adicionar Foto</button>
       ${fotosHtml}
@@ -520,7 +538,7 @@ function renderEquipamentosFormUI() {
   }).join('');
 }
 
-// ── SALVAMENTO ──
+// ── SALVAR E DASHBOARD ──
 function setResultado(val) {
   resultadoAtual = val;
   document.getElementById('rb-conf').className    = 'resultado-btn' + (val==='aprovado' ? ' sel-conf' : '');
@@ -538,7 +556,7 @@ function setDataHoje() {
 
 function salvarInspecao() {
   const empresa = document.getElementById('f-empresa').value.trim();
-  if (!empresa) return showToast('Informe a razão social da empresa');
+  if (!empresa) return showToast('Informe a razão social da empresa.');
   if (equipamentosAtual.length === 0) return showToast('Adicione pelo menos 1 equipamento.');
 
   const insp = {
@@ -547,7 +565,7 @@ function salvarInspecao() {
     dtProx: document.getElementById('f-dtprox').value, numLaudo: document.getElementById('f-numlaudo').value,
     eng: document.getElementById('f-eng').value, crea: document.getElementById('f-crea').value,
     parecer: document.getElementById('f-parecer').value, resultado: resultadoAtual,
-    equipamentos: JSON.parse(JSON.stringify(equipamentosAtual)) // Salva o array de equipamentos
+    equipamentos: JSON.parse(JSON.stringify(equipamentosAtual))
   };
 
   if (editandoId) inspecoes = inspecoes.map(i => i.id === editandoId ? insp : i);
@@ -555,15 +573,14 @@ function salvarInspecao() {
   
   try {
     localStorage.setItem('inspecoes', JSON.stringify(inspecoes));
-    showToast('Visita salva com sucesso!');
+    showToast('Visita guardada com sucesso!');
     carregarOpcoesFiltro();
     editandoId = insp.id; 
     document.getElementById('btn-pdf').style.display = 'block';
     setTimeout(() => { goHome(); renderLista(); renderPainel(); }, 1000);
-  } catch(e) { showToast('⚠️ Limite de memória atingido. Apague fotos antigas.'); }
+  } catch(e) { showToast('⚠️ Memória cheia. Apague fotos antigas.'); }
 }
 
-// ── RENDERIZAÇÃO HOME E DASHBOARD ──
 function carregarOpcoesFiltro() {
   const clientes = [...new Set(inspecoes.map(i => i.empresa))].filter(e => e && e.trim() !== '').sort();
   const options = '<option value="Todos">Todos os Clientes</option>' + clientes.map(c => `<option value="${c.replace(/"/g, '&quot;')}">${c}</option>`).join('');
@@ -583,7 +600,7 @@ function renderLista() {
   const el = document.getElementById('insp-list');
   let filtrada = filtro === 'Todos' ? inspecoes : inspecoes.filter(i => i.empresa === filtro);
 
-  if (!filtrada.length) { el.innerHTML = '<div class="empty-state">Nenhuma visita registrada.</div>'; return; }
+  if (!filtrada.length) { el.innerHTML = '<div class="empty-state">Nenhuma visita registada.</div>'; return; }
 
   el.innerHTML = filtrada.map(i => {
     const c = i.resultado === 'aprovado' ? '#22c55e' : (i.resultado === 'reprovado' ? '#ef4444' : '#f59e0b');
@@ -603,33 +620,63 @@ function renderPainel() {
   const filtro = document.getElementById('filtro-painel').value;
   let filtrada = filtro === 'Todos' ? inspecoes : inspecoes.filter(i => i.empresa === filtro);
   
-  // Cálculo de Custo Evitado (Avalia CADA equipamento individualmente na visita)
-  let critTotal = 0; let atencTotal = 0;
+  let critTotal = 0; let atencTotal = 0; let confTotal = 0;
+  let totalEquips = 0; let tiposCount = {};
+  let totalItens = 0;  let itensConformes = 0;
+
   filtrada.forEach(insp => {
      (insp.equipamentos || []).forEach(eq => {
+         totalEquips++;
+         tiposCount[eq.tipo] = (tiposCount[eq.tipo] || 0) + 1;
+
          let reprov = false; let ressalva = false;
          Object.values(eq.itens).forEach(v => {
+            totalItens++;
+            if(v.status === 'conf') itensConformes++;
             if(v.status === 'nconf') reprov = true;
             else if(v.status === 'atenc') ressalva = true;
          });
+         
          if(reprov) critTotal++;
          else if(ressalva) atencTotal++;
+         else confTotal++;
      });
   });
   
-  // Ex: 55k por falha de equipamento crítico prevenida, 12.5k por ressalva prevenida antes de quebrar
+  // Health Score & ROI (Cálculo fiabilidade base)
+  const healthScore = totalItens > 0 ? Math.round((itensConformes / totalItens) * 100) : 0;
   const custoEvitado = (critTotal * 55000) + (atencTotal * 12500);
   
-  document.getElementById('p-crit').textContent  = critTotal;
-  document.getElementById('p-atenc').textContent = atencTotal;
+  document.getElementById('p-health').textContent = `${healthScore}%`;
+  document.getElementById('p-total-eq').textContent = totalEquips;
   document.getElementById('p-economia').textContent = custoEvitado.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL', maximumFractionDigits: 0});
   
+  // Progress Bars
+  const eqTotalCalc = critTotal + atencTotal + confTotal;
+  const pctConf = eqTotalCalc ? Math.round((confTotal / eqTotalCalc) * 100) : 0;
+  const pctAtenc = eqTotalCalc ? Math.round((atencTotal / eqTotalCalc) * 100) : 0;
+  const pctCrit = eqTotalCalc ? Math.round((critTotal / eqTotalCalc) * 100) : 0;
+
+  document.getElementById('st-conf-count').textContent = confTotal; document.getElementById('st-conf-pct').textContent = `${pctConf}%`; document.getElementById('bar-conf').style.width = `${pctConf}%`;
+  document.getElementById('st-atenc-count').textContent = atencTotal; document.getElementById('st-atenc-pct').textContent = `${pctAtenc}%`; document.getElementById('bar-atenc').style.width = `${pctAtenc}%`;
+  document.getElementById('st-crit-count').textContent = critTotal; document.getElementById('st-crit-pct').textContent = `${pctCrit}%`; document.getElementById('bar-crit').style.width = `${pctCrit}%`;
+
+  // Categorias
+  const catEl = document.getElementById('painel-categorias');
+  if(Object.keys(tiposCount).length === 0) {
+    catEl.innerHTML = '<div style="font-size:12px; color:var(--text3); text-align:center; padding: 10px;">Nenhum ativo registado.</div>';
+  } else {
+    catEl.innerHTML = Object.entries(tiposCount).map(([tipo, qtd]) => `
+      <div class="equip-stat-row">
+        <span>${tipo}</span>
+        <span style="font-family:var(--mono); font-weight:bold; color:var(--accent2);">${qtd}</span>
+      </div>
+    `).join('');
+  }
+
   // Próximas Visitas (Vencimentos)
   const hoje = new Date();
-  const proximas = [...filtrada]
-      .filter(i => i.dtProx)
-      .sort((a, b) => new Date(a.dtProx) - new Date(b.dtProx))
-      .slice(0, 5);
+  const proximas = [...filtrada].filter(i => i.dtProx).sort((a, b) => new Date(a.dtProx) - new Date(b.dtProx)).slice(0, 5);
       
   const elVenc = document.getElementById('painel-vencimentos');
   if(!proximas.length) {
@@ -644,7 +691,7 @@ function renderPainel() {
           
           return `<div class="insp-card" onclick="editarInspecao(${i.id})">
             <div class="insp-card-dot" style="background:${cor}"></div>
-            <div class="insp-card-body"><div class="insp-card-empresa">${i.empresa}</div><div class="insp-card-meta">Vence em: ${i.dtProx.split('-').reverse().join('/')}</div></div>
+            <div class="insp-card-body"><div class="insp-card-empresa">${i.empresa}</div><div class="insp-card-meta">Vence a: ${i.dtProx.split('-').reverse().join('/')}</div></div>
             <span class="insp-card-status status-neutro" style="color:${cor}; border:1px solid ${cor}">${statusTxt}</span>
           </div>`;
       }).join('');
@@ -663,46 +710,38 @@ function editarInspecao(id) {
         if(el) el.value = val;
     });
   
-  // Carrega os equipamentos
   equipamentosAtual = JSON.parse(JSON.stringify(insp.equipamentos || []));
   renderEquipamentosFormUI();
-  
   setResultado(insp.resultado);
   document.getElementById('form-title').textContent = 'Editar Visita';
   document.getElementById('btn-pdf').style.display = 'block'; 
   showPage('form');
 }
 
-// ── QR CODE GENERATOR (PROMISE) ──
 function generateQRCodeBase64(texto) {
     return new Promise((resolve) => {
         const div = document.getElementById('qr-code-generator');
-        div.innerHTML = ''; // Limpa anterior
+        div.innerHTML = ''; 
         new QRCode(div, { text: texto, width: 128, height: 128, correctLevel : QRCode.CorrectLevel.L });
-        // Aguarda renderizar o canvas
         setTimeout(() => {
             const canvas = div.querySelector('canvas');
             if(canvas) resolve(canvas.toDataURL('image/png'));
-            else resolve(''); // Fallback
+            else resolve('');
         }, 150);
     });
 }
 
-// ── PDF EXECUTIVO PROFISSIONAL (COM LOOP DE EQUIPAMENTOS) ──
 async function gerarPDF() {
-  if (!editandoId) return showToast('Salve antes de gerar o PDF');
+  if (!editandoId) return showToast('Guarde antes de gerar o PDF');
   const insp = inspecoes.find(i => i.id === editandoId);
-  showToast('Gerando Relatório Master...');
+  showToast('A gerar o Relatório Executivo...');
 
-  // Gera QR Code base64
   const qrTexto = `LAUDO: ${insp.numLaudo}\nEMPRESA: ${insp.empresa}\nDATA: ${insp.dtInsp}\nSTATUS: ${insp.resultado.toUpperCase()}`;
   const qrBase64 = await generateQRCodeBase64(qrTexto);
 
-  // Loop montando cada equipamento no PDF
   let equipamentosHtml = '';
   
   (insp.equipamentos || []).forEach((eq, index) => {
-      // Monta Checklist do equipamento
       let itensHtml = ''; let rowCount = 0;
       Object.entries(eq.itens).forEach(([n, v]) => {
           let st = v.status === 'conf' ? 'CONFORME' : (v.status === 'nconf' ? 'NÃO CONFORME' : 'ATENÇÃO');
@@ -712,10 +751,9 @@ async function gerarPDF() {
           rowCount++;
       });
 
-      // Monta Fotos do equipamento
       let fotosHtml = '';
       if(eq.fotos && eq.fotos.length > 0) {
-        fotosHtml = `<h4 style="margin-top:20px; font-size:14px; color:#1e3a8a;">Registro Fotográfico - ${eq.tag}</h4><div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px;">`;
+        fotosHtml = `<h4 style="margin-top:20px; font-size:14px; color:#1e3a8a;">Registo Fotográfico - ${eq.tag}</h4><div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px;">`;
         eq.fotos.forEach(f => {
           fotosHtml += `<div style="width: 48%; margin-bottom: 15px; page-break-inside: avoid; border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; background:#f9fafb;">
             <img src="${f.base64}" style="width: 100%; height: 200px; object-fit: cover; display:block;">
@@ -791,9 +829,9 @@ async function gerarPDF() {
 
       <div style="page-break-inside: avoid; margin-top: 40px;">
           <h3 style="border-bottom: 2px solid #1e3a8a; padding-bottom:5px; font-size:16px; color:#1e3a8a; margin-bottom:15px;">Parecer Técnico Conclusivo da Visita</h3>
-          <p style="font-size:14px; margin-bottom:10px;">Status de Liberação: <span style="text-transform:uppercase; font-weight:bold; color:${corStatus}; padding: 4px 8px; border-radius: 4px; border: 1px solid ${corStatus}; margin-left: 8px;">${insp.resultado}</span></p>
+          <p style="font-size:14px; margin-bottom:10px;">Status de Libertação: <span style="text-transform:uppercase; font-weight:bold; color:${corStatus}; padding: 4px 8px; border-radius: 4px; border: 1px solid ${corStatus}; margin-left: 8px;">${insp.resultado}</span></p>
           <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 15px; font-size: 13px; line-height: 1.6; color: #374151; min-height: 80px;">
-             ${insp.parecer || 'Equipamentos avaliados conforme normativas de segurança vigentes e liberados para operação.'}
+             ${insp.parecer || 'Equipamentos avaliados conforme normativas de segurança vigentes e libertados para operação.'}
           </div>
           
           <div style="margin-top: 60px; text-align: center; font-size: 13px; color: #111827;">
