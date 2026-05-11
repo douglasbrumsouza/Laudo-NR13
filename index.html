@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Laudo NR-13" />
+  <meta name="theme-color" content="#0a0f1e" />
+  <title>Laudo NR-13</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:       #0a0f1e;
+      --bg2:      #111827;
+      --bg3:      #1a2235;
+      --border:   rgba(255,255,255,0.07);
+      --border2:  rgba(255,255,255,0.12);
+      --text:     #f0f4ff;
+      --text2:    #8899bb;
+      --text3:    #4a5a7a;
+      --accent:   #3b82f6;
+      --accent2:  #60a5fa;
+      --green:    #22c55e;
+      --yellow:   #f59e0b;
+      --red:      #ef4444;
+      --mono:     'DM Mono', monospace;
+      --sans:     'Syne', sans-serif;
+      --radius:   14px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bot: env(safe-area-inset-bottom, 0px);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--sans); }
+
+    /* ── LAYOUT ── */
+    .app { display: flex; flex-direction: column; height: 100dvh; padding-top: var(--safe-top); padding-bottom: var(--safe-bot); }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px 10px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      flex-shrink: 0;
+    }
+    .topbar-logo { font-size: 15px; font-weight: 700; letter-spacing: -.02em; }
+    .topbar-logo span { color: var(--accent2); }
+    .topbar-badge {
+      font-family: var(--mono); font-size: 10px; color: var(--text3);
+      border: 1px solid var(--border2); border-radius: 20px; padding: 3px 10px;
+    }
+    .topbar-btn {
+      background: var(--accent); color: #fff; border: none; border-radius: 8px;
+      font-family: var(--sans); font-size: 12px; font-weight: 600;
+      padding: 7px 14px; cursor: pointer; letter-spacing: .02em;
+    }
+
+    /* ── PAGES ── */
+    .pages { flex: 1; overflow: hidden; position: relative; }
+    .page { position: absolute; inset: 0; overflow-y: auto; padding: 16px 20px 24px; display: none; }
+    .page.active { display: block; }
+    .page::-webkit-scrollbar { display: none; }
+
+    /* ── HOME ── */
+    .home-hero {
+      background: linear-gradient(135deg, #0f1f3d 0%, #1a2a4a 100%);
+      border: 1px solid var(--border2); border-radius: var(--radius);
+      padding: 20px; margin-bottom: 16px;
+    }
+    .home-hero-label { font-family: var(--mono); font-size: 10px; color: var(--accent2); letter-spacing: .1em; margin-bottom: 8px; }
+    .home-hero-title { font-size: 22px; font-weight: 800; line-height: 1.2; margin-bottom: 6px; }
+    .home-hero-sub { font-size: 13px; color: var(--text2); line-height: 1.55; }
+
+    .section-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+
+    .btn-new {
+      width: 100%; background: var(--accent); color: #fff; border: none;
+      border-radius: var(--radius); font-family: var(--sans); font-size: 15px;
+      font-weight: 700; padding: 16px; cursor: pointer; margin-bottom: 16px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      letter-spacing: -.01em;
+    }
+    .btn-new:active { opacity: .85; }
+
+    .insp-list { display: flex; flex-direction: column; gap: 8px; }
+    .insp-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 16px;
+      display: flex; align-items: center; gap: 12px; cursor: pointer;
+      transition: border-color .15s;
+    }
+    .insp-card:active { border-color: var(--border2); }
+    .insp-card-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .insp-card-body { flex: 1; min-width: 0; }
+    .insp-card-empresa { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .insp-card-meta { font-family: var(--mono); font-size: 11px; color: var(--text2); margin-top: 2px; }
+    .insp-card-status { font-family: var(--mono); font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 20px; flex-shrink: 0; }
+    .status-conf   { background: rgba(34,197,94,.12);  color: var(--green); }
+    .status-ressalva { background: rgba(245,158,11,.12); color: var(--yellow); }
+    .status-reprov { background: rgba(239,68,68,.12);  color: var(--red); }
+    .status-rascunho { background: rgba(99,102,241,.12); color: #a5b4fc; }
+    .empty-state { text-align: center; padding: 40px 20px; color: var(--text3); font-size: 13px; }
+    .empty-icon { font-size: 36px; margin-bottom: 10px; }
+
+    /* ── FORM ── */
+    .form-header { margin-bottom: 20px; }
+    .form-back {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--text2); cursor: pointer; margin-bottom: 14px;
+      background: none; border: none; font-family: var(--sans);
+    }
+    .form-back:active { opacity: .7; }
+    .form-title { font-size: 20px; font-weight: 800; }
+    .form-subtitle { font-size: 13px; color: var(--text2); margin-top: 4px; }
+
+    .form-section { margin-bottom: 20px; }
+    .form-section-title {
+      font-family: var(--mono); font-size: 10px; color: var(--text3);
+      letter-spacing: .1em; text-transform: uppercase;
+      margin-bottom: 10px; padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .field { margin-bottom: 12px; }
+    .field label { display: block; font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 5px; letter-spacing: .03em; }
+    .field input, .field select, .field textarea {
+      width: 100%; background: var(--bg3); border: 1px solid var(--border2);
+      border-radius: 10px; color: var(--text); font-family: var(--sans);
+      font-size: 14px; padding: 11px 14px; outline: none;
+      -webkit-appearance: none; appearance: none;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: var(--accent);
+    }
+    .field textarea { min-height: 72px; resize: none; line-height: 1.5; }
+    .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238899bb' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+    /* ── RESULTADO GERAL ── */
+    .resultado-row { display: flex; gap: 8px; }
+    .resultado-btn {
+      flex: 1; padding: 10px 6px; font-family: var(--sans); font-size: 12px;
+      font-weight: 600; border-radius: 10px; border: 1.5px solid var(--border2);
+      background: var(--bg3); color: var(--text2); cursor: pointer;
+      transition: all .15s; text-align: center;
+    }
+    .resultado-btn.sel-conf    { background: rgba(34,197,94,.15);  border-color: var(--green);  color: var(--green); }
+    .resultado-btn.sel-ressalva{ background: rgba(245,158,11,.15); border-color: var(--yellow); color: var(--yellow); }
+    .resultado-btn.sel-reprov  { background: rgba(239,68,68,.15);  border-color: var(--red);    color: var(--red); }
+
+    /* ── ITENS NR-13 ── */
+    .item-insp {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 14px; margin-bottom: 8px;
+    }
+    .item-insp-name { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+    .item-status-row { display: flex; gap: 6px; }
+    .item-status-btn {
+      flex: 1; padding: 6px 4px; font-size: 11px; font-weight: 600;
+      border-radius: 8px; border: 1px solid var(--border2);
+      background: var(--bg2); color: var(--text3); cursor: pointer;
+      font-family: var(--sans); transition: all .12s;
+    }
+    .item-status-btn.s-conf    { background: rgba(34,197,94,.15);  border-color: var(--green);  color: var(--green); }
+    .item-status-btn.s-nconf   { background: rgba(239,68,68,.15);  border-color: var(--red);    color: var(--red); }
+    .item-status-btn.s-atenc   { background: rgba(245,158,11,.15); border-color: var(--yellow); color: var(--yellow); }
+    .item-obs { margin-top: 8px; }
+    .item-obs input {
+      width: 100%; background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text2); font-family: var(--sans);
+      font-size: 12px; padding: 8px 12px; outline: none;
+    }
+    .item-obs input:focus { border-color: var(--accent); }
+
+    /* ── BOTTOM ACTIONS ── */
+    .form-actions {
+      position: sticky; bottom: 0; left: 0; right: 0;
+      padding: 12px 0 0;
+      background: linear-gradient(to top, var(--bg) 80%, transparent);
+      display: flex; gap: 10px; flex-shrink: 0;
+      padding-bottom: calc(var(--safe-bot) + 4px);
+    }
+    .btn-save {
+      flex: 1; background: var(--accent); color: #fff; border: none;
+      border-radius: var(--radius); font-family: var(--sans); font-size: 14px;
+      font-weight: 700; padding: 14px; cursor: pointer;
+    }
+    .btn-save:active { opacity: .85; }
+    .btn-ghost {
+      background: var(--bg3); color: var(--text2); border: 1px solid var(--border2);
+      border-radius: var(--radius); font-family: var(--sans); font-size: 14px;
+      font-weight: 600; padding: 14px 18px; cursor: pointer;
+    }
+
+    /* ── PAINEL ── */
+    .painel-kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .kpi-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px;
+    }
+    .kpi-num { font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+    .kpi-label { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .06em; }
+    .kpi-crit  .kpi-num { color: var(--red); }
+    .kpi-atenc .kpi-num { color: var(--yellow); }
+    .kpi-ok    .kpi-num { color: var(--green); }
+    .kpi-total .kpi-num { color: var(--accent2); }
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      display: flex; border-top: 1px solid var(--border);
+      background: var(--bg); flex-shrink: 0;
+      padding-bottom: var(--safe-bot);
+    }
+    .nav-item {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      padding: 10px 0 8px; cursor: pointer; gap: 3px;
+      background: none; border: none; color: var(--text3);
+      font-family: var(--sans);
+    }
+    .nav-item.active { color: var(--accent2); }
+    .nav-icon { font-size: 20px; line-height: 1; }
+    .nav-label { font-size: 10px; font-weight: 600; letter-spacing: .04em; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: calc(var(--safe-bot) + 80px); left: 50%; transform: translateX(-50%);
+      background: var(--bg3); border: 1px solid var(--border2); color: var(--text);
+      font-size: 13px; padding: 10px 20px; border-radius: 30px;
+      white-space: nowrap; opacity: 0; transition: opacity .2s; pointer-events: none;
+      z-index: 999;
+    }
+    .toast.show { opacity: 1; }
+
+    /* ── SCROLL ── */
+    .scroll-content { padding-bottom: 80px; }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOP BAR -->
+  <div class="topbar" id="topbar">
+    <div class="topbar-logo">Laudo<span>NR13</span></div>
+    <div class="topbar-badge" id="topbar-badge">v1.0</div>
+    <button class="topbar-btn" id="topbar-action" onclick="novaInspecao()">+ Nova inspeção</button>
+  </div>
+
+  <!-- PAGES -->
+  <div class="pages">
+
+    <!-- HOME -->
+    <div class="page active" id="page-home">
+      <div class="scroll-content">
+        <div class="home-hero">
+          <div class="home-hero-label">INSPEÇÕES NR-13</div>
+          <div class="home-hero-title">Laudo inteligente<br/>em campo</div>
+          <div class="home-hero-sub">Registre fotos, notas e áudio. Gere laudos profissionais em PDF com painel de gestão integrado.</div>
+        </div>
+
+        <!-- KPIs rápidos -->
+        <div class="painel-kpi" id="home-kpis" style="display:none">
+          <div class="kpi-card kpi-crit"><div class="kpi-num" id="kpi-crit">0</div><div class="kpi-label">CRÍTICOS</div></div>
+          <div class="kpi-card kpi-atenc"><div class="kpi-num" id="kpi-atenc">0</div><div class="kpi-label">ATENÇÃO</div></div>
+          <div class="kpi-card kpi-ok"><div class="kpi-num" id="kpi-ok">0</div><div class="kpi-label">CONFORMES</div></div>
+          <div class="kpi-card kpi-total"><div class="kpi-num" id="kpi-total">0</div><div class="kpi-label">INSPEÇÕES</div></div>
+        </div>
+
+        <button class="btn-new" onclick="novaInspecao()">
+          <span style="font-size:18px">＋</span> Nova Inspeção
+        </button>
+
+        <div class="section-title">Inspeções salvas</div>
+        <div class="insp-list" id="insp-list">
+          <div class="empty-state" id="empty-state">
+            <div class="empty-icon">📋</div>
+            Nenhuma inspeção ainda.<br>Toque em "Nova Inspeção" para começar.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORMULÁRIO -->
+    <div class="page" id="page-form">
+      <div class="scroll-content">
+        <div class="form-header">
+          <button class="form-back" onclick="goHome()">← Voltar</button>
+          <div class="form-title" id="form-title">Nova inspeção</div>
+          <div class="form-subtitle" id="form-subtitle">Preencha os dados do equipamento</div>
+        </div>
+
+        <!-- EMPRESA -->
+        <div class="form-section">
+          <div class="form-section-title">Empresa</div>
+          <div class="field"><label>Razão social</label><input id="f-empresa" placeholder="Nome da empresa" /></div>
+          <div class="grid-2">
+            <div class="field"><label>CNPJ</label><input id="f-cnpj" placeholder="00.000.000/0001-00" /></div>
+            <div class="field"><label>Responsável</label><input id="f-resp" placeholder="Nome do contato" /></div>
+          </div>
+        </div>
+
+        <!-- EQUIPAMENTO -->
+        <div class="form-section">
+          <div class="form-section-title">Equipamento</div>
+          <div class="grid-2">
+            <div class="field">
+              <label>Tipo</label>
+              <select id="f-tipo">
+                <option>Caldeira a Vapor</option>
+                <option>Vaso de Pressão</option>
+                <option>Tubulação</option>
+                <option>Válvula de Segurança</option>
+              </select>
+            </div>
+            <div class="field"><label>TAG</label><input id="f-tag" placeholder="ex: CAL-01" /></div>
+          </div>
+          <div class="grid-2">
+            <div class="field"><label>Fabricante</label><input id="f-fab" placeholder="Fabricante" /></div>
+            <div class="field"><label>Ano fabricação</label><input id="f-ano" placeholder="ex: 2015" type="number" /></div>
+          </div>
+          <div class="grid-3">
+            <div class="field"><label>PMTA (kgf/cm²)</label><input id="f-pmta" placeholder="10,5" /></div>
+            <div class="field"><label>P. operação</label><input id="f-pop" placeholder="9,2" /></div>
+            <div class="field"><label>Temperatura</label><input id="f-temp" placeholder="185°C" /></div>
+          </div>
+          <div class="field">
+            <label>Categoria NR-13</label>
+            <select id="f-cat">
+              <option>Categoria A — Grupo I</option>
+              <option selected>Categoria B — Grupo I</option>
+              <option>Categoria B — Grupo II</option>
+              <option>Categoria C</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- DATAS -->
+        <div class="form-section">
+          <div class="form-section-title">Datas e identificação</div>
+          <div class="grid-2">
+            <div class="field"><label>Data da inspeção</label><input id="f-dt" type="date" /></div>
+            <div class="field"><label>Próxima inspeção</label><input id="f-dtprox" type="date" /></div>
+          </div>
+          <div class="field"><label>Nº do laudo</label><input id="f-numlaudo" placeholder="LAU-NR13-2026-001" /></div>
+        </div>
+
+        <!-- ITENS INSPECIONADOS -->
+        <div class="form-section">
+          <div class="form-section-title">Itens inspecionados</div>
+          <div id="itens-list"></div>
+        </div>
+
+        <!-- RESULTADO GERAL -->
+        <div class="form-section">
+          <div class="form-section-title">Resultado geral</div>
+          <div class="resultado-row">
+            <button class="resultado-btn" id="rb-conf"     onclick="setResultado('aprovado')">✓ Aprovado</button>
+            <button class="resultado-btn sel-ressalva" id="rb-ressalva" onclick="setResultado('ressalva')">⚠ Ressalvas</button>
+            <button class="resultado-btn" id="rb-reprov"   onclick="setResultado('reprovado')">✗ Reprovado</button>
+          </div>
+        </div>
+
+        <!-- PARECER -->
+        <div class="form-section">
+          <div class="form-section-title">Parecer técnico</div>
+          <div class="field">
+            <textarea id="f-parecer" rows="5" placeholder="Descreva o parecer técnico geral da inspeção..."></textarea>
+          </div>
+        </div>
+
+        <!-- RESPONSÁVEL TÉCNICO -->
+        <div class="form-section">
+          <div class="form-section-title">Responsável técnico</div>
+          <div class="grid-2">
+            <div class="field"><label>Nome do engenheiro</label><input id="f-eng" placeholder="Eng. Carlos Mendes" /></div>
+            <div class="field"><label>CREA</label><input id="f-crea" placeholder="RS-123456-D" /></div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-ghost" onclick="goHome()">Cancelar</button>
+          <button class="btn-save" onclick="salvarInspecao()">Salvar inspeção</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAINEL -->
+    <div class="page" id="page-painel">
+      <div class="scroll-content">
+        <div class="section-title" style="margin-bottom:14px">Painel de gestão</div>
+
+        <div class="painel-kpi">
+          <div class="kpi-card kpi-crit"><div class="kpi-num" id="p-crit">0</div><div class="kpi-label">CRÍTICOS</div></div>
+          <div class="kpi-card kpi-atenc"><div class="kpi-num" id="p-atenc">0</div><div class="kpi-label">ATENÇÃO</div></div>
+          <div class="kpi-card kpi-ok"><div class="kpi-num" id="p-ok">0</div><div class="kpi-label">CONFORMES</div></div>
+          <div class="kpi-card kpi-total"><div class="kpi-num" id="p-total">0</div><div class="kpi-label">INSPEÇÕES</div></div>
+        </div>
+
+        <div class="section-title">Todas as inspeções</div>
+        <div class="insp-list" id="painel-list">
+          <div class="empty-state">Nenhuma inspeção registrada ainda.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /pages -->
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" id="nav-home" onclick="navTo('home')">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Início</span>
+    </button>
+    <button class="nav-item" id="nav-painel" onclick="navTo('painel')">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">Painel</span>
+    </button>
+    <button class="nav-item" id="nav-config" onclick="navTo('config')">
+      <span class="nav-icon">⚙️</span>
+      <span class="nav-label">Config</span>
+    </button>
+  </nav>
+
+</div><!-- /app -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── ITENS NR-13 ──────────────────────────────────────────────────────────
+const ITENS_NR13_CALDEIRA = [
+  "Corpo e costados",
+  "Bocais e flanges",
+  "Válvula de segurança",
+  "Válvula de alívio",
+  "Manômetro MA-01",
+  "Manômetro MA-02",
+  "Nível de água — visor",
+  "Purga de fundo",
+  "Isolamento térmico",
+  "Sistema de alimentação de água",
+  "Prontuário NR-13",
+  "Placa de identificação",
+];
+const ITENS_NR13_VASO = [
+  "Corpo do vaso",
+  "Bocais e flanges",
+  "Válvula de segurança",
+  "Manômetro",
+  "Drenos e ventilações",
+  "Isolamento / revestimento",
+  "Suportes e fixações",
+  "Prontuário NR-13",
+  "Placa de identificação",
+];
+const ITENS_NR13_TUB = [
+  "Tubos e conexões",
+  "Flanges e juntas",
+  "Válvulas de bloqueio",
+  "Válvulas de alívio",
+  "Suportes e ancoragens",
+  "Isolamento térmico",
+  "Identificação das linhas",
+  "Documentação (isométrico)",
+];
+const ITENS_NR13_VALV = [
+  "Corpo da válvula",
+  "Sede e obturador",
+  "Mola e regulagem",
+  "Pressão de abertura",
+  "Pressão de fechamento",
+  "Certificado de calibração",
+  "Placa de identificação",
+];
+
+const ITENS_MAP = {
+  "Caldeira a Vapor": ITENS_NR13_CALDEIRA,
+  "Vaso de Pressão":  ITENS_NR13_VASO,
+  "Tubulação":        ITENS_NR13_TUB,
+  "Válvula de Segurança": ITENS_NR13_VALV,
+};
+
+let itensStatus = {};
+let resultadoAtual = 'ressalva';
+let inspecoes = JSON.parse(localStorage.getItem('inspecoes') || '[]');
+let editandoId = null;
+
+// ── RENDER ITENS ─────────────────────────────────────────────────────────
+function renderItens(tipo) {
+  const lista = ITENS_MAP[tipo] || ITENS_NR13_CALDEIRA;
+  itensStatus = {};
+  lista.forEach(it => itensStatus[it] = { status: 'conf', obs: '' });
+
+  const el = document.getElementById('itens-list');
+  el.innerHTML = lista.map(nome => `
+    <div class="item-insp" id="item-${slugify(nome)}">
+      <div class="item-insp-name">${nome}</div>
+      <div class="item-status-row">
+        <button class="item-status-btn s-conf" onclick="setItemStatus('${nome}','conf',this)">✓ Conf.</button>
+        <button class="item-status-btn"        onclick="setItemStatus('${nome}','nconf',this)">✗ N.Conf.</button>
+        <button class="item-status-btn"        onclick="setItemStatus('${nome}','atenc',this)">⚠ Aten.</button>
+      </div>
+      <div class="item-obs">
+        <input placeholder="Observação (opcional)..." oninput="setItemObs('${nome}',this.value)" />
+      </div>
+    </div>
+  `).join('');
+}
+
+function setItemStatus(nome, status, btn) {
+  itensStatus[nome].status = status;
+  const row = btn.closest('.item-status-row');
+  row.querySelectorAll('.item-status-btn').forEach(b => b.className = 'item-status-btn');
+  const map = { conf: 's-conf', nconf: 's-nconf', atenc: 's-atenc' };
+  btn.classList.add(map[status]);
+  calcAutoResultado();
+}
+
+function setItemObs(nome, val) { itensStatus[nome].obs = val; }
+
+function calcAutoResultado() {
+  const vals = Object.values(itensStatus).map(v => v.status);
+  if (vals.includes('nconf')) setResultado('reprovado');
+  else if (vals.includes('atenc')) setResultado('ressalva');
+  else setResultado('aprovado');
+}
+
+function slugify(s) { return s.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,''); }
+
+// ── RESULTADO ────────────────────────────────────────────────────────────
+function setResultado(val) {
+  resultadoAtual = val;
+  document.getElementById('rb-conf').className    = 'resultado-btn' + (val==='aprovado' ? ' sel-conf' : '');
+  document.getElementById('rb-ressalva').className = 'resultado-btn' + (val==='ressalva' ? ' sel-ressalva' : '');
+  document.getElementById('rb-reprov').className  = 'resultado-btn' + (val==='reprovado' ? ' sel-reprov' : '');
+}
+
+// ── TIPO → recarga itens ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const sel = document.getElementById('f-tipo');
+  sel.addEventListener('change', () => renderItens(sel.value));
+  renderItens(sel.value);
+  setDataHoje();
+  renderLista();
+  renderPainel();
+});
+
+function setDataHoje() {
+  const hoje = new Date().toISOString().split('T')[0];
+  document.getElementById('f-dt').value = hoje;
+  const prox = new Date();
+  prox.setFullYear(prox.getFullYear() + 2);
+  document.getElementById('f-dtprox').value = prox.toISOString().split('T')[0];
+  const n = Math.floor(Math.random()*900)+100;
+  document.getElementById('f-numlaudo').value = `LAU-NR13-2026-${String(n).padStart(3,'0')}`;
+}
+
+// ── SALVAR ────────────────────────────────────────────────────────────────
+function salvarInspecao() {
+  const empresa = document.getElementById('f-empresa').value.trim();
+  if (!empresa) { showToast('Informe a razão social da empresa'); return; }
+  const tag = document.getElementById('f-tag').value.trim() || '—';
+
+  const insp = {
+    id: editandoId || Date.now(),
+    empresa,
+    cnpj:      document.getElementById('f-cnpj').value,
+    resp:      document.getElementById('f-resp').value,
+    tipo:      document.getElementById('f-tipo').value,
+    tag,
+    fab:       document.getElementById('f-fab').value,
+    ano:       document.getElementById('f-ano').value,
+    pmta:      document.getElementById('f-pmta').value,
+    pop:       document.getElementById('f-pop').value,
+    temp:      document.getElementById('f-temp').value,
+    categoria: document.getElementById('f-cat').value,
+    dtInsp:    document.getElementById('f-dt').value,
+    dtProx:    document.getElementById('f-dtprox').value,
+    numLaudo:  document.getElementById('f-numlaudo').value,
+    eng:       document.getElementById('f-eng').value,
+    crea:      document.getElementById('f-crea').value,
+    parecer:   document.getElementById('f-parecer').value,
+    resultado: resultadoAtual,
+    itens:     JSON.parse(JSON.stringify(itensStatus)),
+    criadoEm:  new Date().toISOString(),
+  };
+
+  if (editandoId) {
+    inspecoes = inspecoes.map(i => i.id === editandoId ? insp : i);
+  } else {
+    inspecoes.unshift(insp);
+  }
+  localStorage.setItem('inspecoes', JSON.stringify(inspecoes));
+  showToast('Inspeção salva com sucesso!');
+  editandoId = null;
+  setTimeout(() => { goHome(); renderLista(); renderPainel(); }, 600);
+}
+
+// ── RENDER LISTA ──────────────────────────────────────────────────────────
+function renderLista() {
+  const el = document.getElementById('insp-list');
+  const empty = document.getElementById('empty-state');
+  const kpiSection = document.getElementById('home-kpis');
+
+  if (!inspecoes.length) {
+    el.innerHTML = '';
+    el.appendChild(empty);
+    kpiSection.style.display = 'none';
+    return;
+  }
+  kpiSection.style.display = 'grid';
+  empty.remove && el.querySelector('.empty-state') && el.querySelector('.empty-state').remove();
+
+  const crit = inspecoes.filter(i => i.resultado === 'reprovado').length;
+  const atenc = inspecoes.filter(i => i.resultado === 'ressalva').length;
+  const ok = inspecoes.filter(i => i.resultado === 'aprovado').length;
+  document.getElementById('kpi-crit').textContent  = crit;
+  document.getElementById('kpi-atenc').textContent = atenc;
+  document.getElementById('kpi-ok').textContent    = ok;
+  document.getElementById('kpi-total').textContent = inspecoes.length;
+
+  el.innerHTML = inspecoes.map(i => {
+    const { cor, label, cls } = statusInfo(i.resultado);
+    const dt = i.dtInsp ? fmtDate(i.dtInsp) : '—';
+    return `<div class="insp-card" onclick="editarInspecao(${i.id})">
+      <div class="insp-card-dot" style="background:${cor}"></div>
+      <div class="insp-card-body">
+        <div class="insp-card-empresa">${i.empresa}</div>
+        <div class="insp-card-meta">${i.tipo} · ${i.tag} · ${dt}</div>
+      </div>
+      <span class="insp-card-status ${cls}">${label}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderPainel() {
+  const crit  = inspecoes.filter(i => i.resultado === 'reprovado').length;
+  const atenc = inspecoes.filter(i => i.resultado === 'ressalva').length;
+  const ok    = inspecoes.filter(i => i.resultado === 'aprovado').length;
+  document.getElementById('p-crit').textContent  = crit;
+  document.getElementById('p-atenc').textContent = atenc;
+  document.getElementById('p-ok').textContent    = ok;
+  document.getElementById('p-total').textContent = inspecoes.length;
+
+  const el = document.getElementById('painel-list');
+  if (!inspecoes.length) { el.innerHTML = '<div class="empty-state">Nenhuma inspeção registrada ainda.</div>'; return; }
+  el.innerHTML = inspecoes.map(i => {
+    const { cor, label, cls } = statusInfo(i.resultado);
+    const dt = i.dtInsp ? fmtDate(i.dtInsp) : '—';
+    const prox = i.dtProx ? fmtDate(i.dtProx) : '—';
+    return `<div class="insp-card" onclick="editarInspecao(${i.id})">
+      <div class="insp-card-dot" style="background:${cor}"></div>
+      <div class="insp-card-body">
+        <div class="insp-card-empresa">${i.empresa} — ${i.tag}</div>
+        <div class="insp-card-meta">Insp: ${dt} · Próx: ${prox}</div>
+      </div>
+      <span class="insp-card-status ${cls}">${label}</span>
+    </div>`;
+  }).join('');
+}
+
+function statusInfo(r) {
+  if (r === 'aprovado')  return { cor: '#22c55e', label: 'Aprovado',   cls: 'status-conf' };
+  if (r === 'reprovado') return { cor: '#ef4444', label: 'Reprovado',  cls: 'status-reprov' };
+  return                        { cor: '#f59e0b', label: 'Ressalvas',  cls: 'status-ressalva' };
+}
+
+function fmtDate(s) {
+  const [y,m,d] = s.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+// ── EDITAR ────────────────────────────────────────────────────────────────
+function editarInspecao(id) {
+  const insp = inspecoes.find(i => i.id === id);
+  if (!insp) return;
+  editandoId = id;
+
+  document.getElementById('f-empresa').value  = insp.empresa || '';
+  document.getElementById('f-cnpj').value     = insp.cnpj || '';
+  document.getElementById('f-resp').value     = insp.resp || '';
+  document.getElementById('f-tipo').value     = insp.tipo || 'Caldeira a Vapor';
+  document.getElementById('f-tag').value      = insp.tag || '';
+  document.getElementById('f-fab').value      = insp.fab || '';
+  document.getElementById('f-ano').value      = insp.ano || '';
+  document.getElementById('f-pmta').value     = insp.pmta || '';
+  document.getElementById('f-pop').value      = insp.pop || '';
+  document.getElementById('f-temp').value     = insp.temp || '';
+  document.getElementById('f-cat').value      = insp.categoria || '';
+  document.getElementById('f-dt').value       = insp.dtInsp || '';
+  document.getElementById('f-dtprox').value   = insp.dtProx || '';
+  document.getElementById('f-numlaudo').value = insp.numLaudo || '';
+  document.getElementById('f-eng').value      = insp.eng || '';
+  document.getElementById('f-crea').value     = insp.crea || '';
+  document.getElementById('f-parecer').value  = insp.parecer || '';
+
+  renderItens(insp.tipo || 'Caldeira a Vapor');
+
+  if (insp.itens) {
+    Object.entries(insp.itens).forEach(([nome, val]) => {
+      itensStatus[nome] = val;
+      const slug = slugify(nome);
+      const itemEl = document.getElementById(`item-${slug}`);
+      if (itemEl) {
+        const btns = itemEl.querySelectorAll('.item-status-btn');
+        btns.forEach(b => b.className = 'item-status-btn');
+        const map = { conf: 0, nconf: 1, atenc: 2 };
+        const idx = map[val.status] ?? 0;
+        const cls = { conf: 's-conf', nconf: 's-nconf', atenc: 's-atenc' };
+        btns[idx].classList.add(cls[val.status]);
+        if (val.obs) itemEl.querySelector('input').value = val.obs;
+      }
+    });
+  }
+
+  setResultado(insp.resultado || 'ressalva');
+  document.getElementById('form-title').textContent = 'Editar inspeção';
+  showPage('form');
+}
+
+// ── NAV ───────────────────────────────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const isForm = name === 'form';
+  document.getElementById('topbar-action').style.display = isForm ? 'none' : '';
+  document.getElementById('topbar-badge').style.display  = isForm ? 'none' : '';
+}
+
+function navTo(name) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('nav-' + name)?.classList.add('active');
+  showPage(name);
+  if (name === 'painel') renderPainel();
+}
+
+function goHome() {
+  editandoId = null;
+  navTo('home');
+  renderLista();
+}
+
+function novaInspecao() {
+  editandoId = null;
+  document.getElementById('form-title').textContent = 'Nova inspeção';
+  document.getElementById('f-empresa').value = '';
+  document.getElementById('f-cnpj').value = '';
+  document.getElementById('f-resp').value = '';
+  document.getElementById('f-tipo').value = 'Caldeira a Vapor';
+  document.getElementById('f-tag').value = '';
+  document.getElementById('f-fab').value = '';
+  document.getElementById('f-ano').value = '';
+  document.getElementById('f-pmta').value = '';
+  document.getElementById('f-pop').value = '';
+  document.getElementById('f-temp').value = '';
+  document.getElementById('f-parecer').value = '';
+  document.getElementById('f-eng').value = '';
+  document.getElementById('f-crea').value = '';
+  renderItens('Caldeira a Vapor');
+  setResultado('ressalva');
+  setDataHoje();
+  showPage('form');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+</script>
+</body>
+</html>
