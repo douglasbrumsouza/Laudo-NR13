@@ -8,7 +8,9 @@
   <meta name="apple-mobile-web-app-title" content="Laudo NR-13" />
   <meta name="theme-color" content="#0a0f1e" />
   <title>Laudo NR-13</title>
-  <link rel="manifest" href="manifest.json" />
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
@@ -85,6 +87,12 @@
     }
     .btn-new:active { opacity: .85; }
 
+    .filtro-select {
+      width: 100%; background: var(--bg3); border: 1px solid var(--border2);
+      border-radius: 10px; color: var(--text); font-family: var(--sans);
+      font-size: 14px; padding: 11px 14px; margin-bottom: 16px; outline: none;
+    }
+
     .insp-list { display: flex; flex-direction: column; gap: 8px; }
     .insp-card {
       background: var(--bg2); border: 1px solid var(--border);
@@ -101,12 +109,12 @@
     .status-conf   { background: rgba(34,197,94,.12);  color: var(--green); }
     .status-ressalva { background: rgba(245,158,11,.12); color: var(--yellow); }
     .status-reprov { background: rgba(239,68,68,.12);  color: var(--red); }
-    .status-rascunho { background: rgba(99,102,241,.12); color: #a5b4fc; }
+    
     .empty-state { text-align: center; padding: 40px 20px; color: var(--text3); font-size: 13px; }
     .empty-icon { font-size: 36px; margin-bottom: 10px; }
 
     /* ── FORM ── */
-    .form-header { margin-bottom: 20px; }
+    .form-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
     .form-back {
       display: flex; align-items: center; gap: 6px;
       font-size: 13px; color: var(--text2); cursor: pointer; margin-bottom: 14px;
@@ -115,6 +123,11 @@
     .form-back:active { opacity: .7; }
     .form-title { font-size: 20px; font-weight: 800; }
     .form-subtitle { font-size: 13px; color: var(--text2); margin-top: 4px; }
+    .btn-pdf {
+      background: var(--bg2); color: var(--accent2); border: 1px solid var(--border2);
+      border-radius: 8px; padding: 8px 12px; font-size: 12px; font-weight: 600;
+      cursor: pointer; display: none; font-family: var(--sans); margin-top: 25px;
+    }
 
     .form-section { margin-bottom: 20px; }
     .form-section-title {
@@ -131,9 +144,7 @@
       font-size: 14px; padding: 11px 14px; outline: none;
       -webkit-appearance: none; appearance: none;
     }
-    .field input:focus, .field select:focus, .field textarea:focus {
-      border-color: var(--accent);
-    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); }
     .field textarea { min-height: 72px; resize: none; line-height: 1.5; }
     .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238899bb' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -167,28 +178,33 @@
     .item-status-btn.s-conf    { background: rgba(34,197,94,.15);  border-color: var(--green);  color: var(--green); }
     .item-status-btn.s-nconf   { background: rgba(239,68,68,.15);  border-color: var(--red);    color: var(--red); }
     .item-status-btn.s-atenc   { background: rgba(245,158,11,.15); border-color: var(--yellow); color: var(--yellow); }
-    .item-obs { margin-top: 8px; }
+    
+    .item-obs { display: flex; gap: 6px; margin-top: 8px; }
     .item-obs input {
-      width: 100%; background: var(--bg2); border: 1px solid var(--border);
+      flex: 1; background: var(--bg2); border: 1px solid var(--border);
       border-radius: 8px; color: var(--text2); font-family: var(--sans);
       font-size: 12px; padding: 8px 12px; outline: none;
     }
     .item-obs input:focus { border-color: var(--accent); }
+    .btn-mic {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
+      padding: 0 12px; cursor: pointer; color: var(--text); font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .btn-mic.recording { background: rgba(239,68,68,.2); border-color: var(--red); animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
 
     /* ── BOTTOM ACTIONS ── */
     .form-actions {
-      position: sticky; bottom: 0; left: 0; right: 0;
-      padding: 12px 0 0;
+      position: sticky; bottom: 0; left: 0; right: 0; padding: 12px 0 0;
       background: linear-gradient(to top, var(--bg) 80%, transparent);
-      display: flex; gap: 10px; flex-shrink: 0;
-      padding-bottom: calc(var(--safe-bot) + 4px);
+      display: flex; gap: 10px; flex-shrink: 0; padding-bottom: calc(var(--safe-bot) + 4px);
     }
     .btn-save {
       flex: 1; background: var(--accent); color: #fff; border: none;
       border-radius: var(--radius); font-family: var(--sans); font-size: 14px;
       font-weight: 700; padding: 14px; cursor: pointer;
     }
-    .btn-save:active { opacity: .85; }
     .btn-ghost {
       background: var(--bg3); color: var(--text2); border: 1px solid var(--border2);
       border-radius: var(--radius); font-family: var(--sans); font-size: 14px;
@@ -197,10 +213,7 @@
 
     /* ── PAINEL ── */
     .painel-kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-    .kpi-card {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 14px;
-    }
+    .kpi-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
     .kpi-num { font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
     .kpi-label { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .06em; }
     .kpi-crit  .kpi-num { color: var(--red); }
@@ -211,14 +224,12 @@
     /* ── BOTTOM NAV ── */
     .bottom-nav {
       display: flex; border-top: 1px solid var(--border);
-      background: var(--bg); flex-shrink: 0;
-      padding-bottom: var(--safe-bot);
+      background: var(--bg); flex-shrink: 0; padding-bottom: var(--safe-bot);
     }
     .nav-item {
       flex: 1; display: flex; flex-direction: column; align-items: center;
       padding: 10px 0 8px; cursor: pointer; gap: 3px;
-      background: none; border: none; color: var(--text3);
-      font-family: var(--sans);
+      background: none; border: none; color: var(--text3); font-family: var(--sans);
     }
     .nav-item.active { color: var(--accent2); }
     .nav-icon { font-size: 20px; line-height: 1; }
@@ -229,48 +240,46 @@
       position: fixed; bottom: calc(var(--safe-bot) + 80px); left: 50%; transform: translateX(-50%);
       background: var(--bg3); border: 1px solid var(--border2); color: var(--text);
       font-size: 13px; padding: 10px 20px; border-radius: 30px;
-      white-space: nowrap; opacity: 0; transition: opacity .2s; pointer-events: none;
-      z-index: 999;
+      white-space: nowrap; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 999;
     }
     .toast.show { opacity: 1; }
-
-    /* ── SCROLL ── */
     .scroll-content { padding-bottom: 80px; }
   </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- TOP BAR -->
   <div class="topbar" id="topbar">
     <div class="topbar-logo">Laudo<span>NR13</span></div>
-    <div class="topbar-badge" id="topbar-badge">v1.0</div>
+    <div class="topbar-badge" id="topbar-badge">v2.0</div>
     <button class="topbar-btn" id="topbar-action" onclick="novaInspecao()">+ Nova inspeção</button>
   </div>
 
-  <!-- PAGES -->
   <div class="pages">
 
-    <!-- HOME -->
     <div class="page active" id="page-home">
       <div class="scroll-content">
         <div class="home-hero">
           <div class="home-hero-label">INSPEÇÕES NR-13</div>
           <div class="home-hero-title">Laudo inteligente<br/>em campo</div>
-          <div class="home-hero-sub">Registre fotos, notas e áudio. Gere laudos profissionais em PDF com painel de gestão integrado.</div>
+          <div class="home-hero-sub">Registre notas por áudio. Gere laudos profissionais em PDF com filtro por cliente.</div>
         </div>
 
-        <!-- KPIs rápidos -->
+        <button class="btn-new" onclick="novaInspecao()">
+          <span style="font-size:18px">＋</span> Nova Inspeção
+        </button>
+
+        <div class="section-title">Filtro de Cliente</div>
+        <select id="filtro-home" class="filtro-select" onchange="renderLista()">
+          <option value="Todos">Todos os Clientes</option>
+        </select>
+
         <div class="painel-kpi" id="home-kpis" style="display:none">
           <div class="kpi-card kpi-crit"><div class="kpi-num" id="kpi-crit">0</div><div class="kpi-label">CRÍTICOS</div></div>
           <div class="kpi-card kpi-atenc"><div class="kpi-num" id="kpi-atenc">0</div><div class="kpi-label">ATENÇÃO</div></div>
           <div class="kpi-card kpi-ok"><div class="kpi-num" id="kpi-ok">0</div><div class="kpi-label">CONFORMES</div></div>
           <div class="kpi-card kpi-total"><div class="kpi-num" id="kpi-total">0</div><div class="kpi-label">INSPEÇÕES</div></div>
         </div>
-
-        <button class="btn-new" onclick="novaInspecao()">
-          <span style="font-size:18px">＋</span> Nova Inspeção
-        </button>
 
         <div class="section-title">Inspeções salvas</div>
         <div class="insp-list" id="insp-list">
@@ -282,16 +291,17 @@
       </div>
     </div>
 
-    <!-- FORMULÁRIO -->
     <div class="page" id="page-form">
       <div class="scroll-content">
         <div class="form-header">
-          <button class="form-back" onclick="goHome()">← Voltar</button>
-          <div class="form-title" id="form-title">Nova inspeção</div>
-          <div class="form-subtitle" id="form-subtitle">Preencha os dados do equipamento</div>
+          <div>
+            <button class="form-back" onclick="goHome()">← Voltar</button>
+            <div class="form-title" id="form-title">Nova inspeção</div>
+            <div class="form-subtitle" id="form-subtitle">Preencha os dados do equipamento</div>
+          </div>
+          <button class="btn-pdf" id="btn-pdf" onclick="gerarPDF()">📄 Exportar PDF</button>
         </div>
 
-        <!-- EMPRESA -->
         <div class="form-section">
           <div class="form-section-title">Empresa</div>
           <div class="field"><label>Razão social</label><input id="f-empresa" placeholder="Nome da empresa" /></div>
@@ -301,7 +311,6 @@
           </div>
         </div>
 
-        <!-- EQUIPAMENTO -->
         <div class="form-section">
           <div class="form-section-title">Equipamento</div>
           <div class="grid-2">
@@ -336,7 +345,6 @@
           </div>
         </div>
 
-        <!-- DATAS -->
         <div class="form-section">
           <div class="form-section-title">Datas e identificação</div>
           <div class="grid-2">
@@ -346,13 +354,11 @@
           <div class="field"><label>Nº do laudo</label><input id="f-numlaudo" placeholder="LAU-NR13-2026-001" /></div>
         </div>
 
-        <!-- ITENS INSPECIONADOS -->
         <div class="form-section">
           <div class="form-section-title">Itens inspecionados</div>
           <div id="itens-list"></div>
         </div>
 
-        <!-- RESULTADO GERAL -->
         <div class="form-section">
           <div class="form-section-title">Resultado geral</div>
           <div class="resultado-row">
@@ -362,7 +368,6 @@
           </div>
         </div>
 
-        <!-- PARECER -->
         <div class="form-section">
           <div class="form-section-title">Parecer técnico</div>
           <div class="field">
@@ -370,7 +375,6 @@
           </div>
         </div>
 
-        <!-- RESPONSÁVEL TÉCNICO -->
         <div class="form-section">
           <div class="form-section-title">Responsável técnico</div>
           <div class="grid-2">
@@ -386,9 +390,13 @@
       </div>
     </div>
 
-    <!-- PAINEL -->
     <div class="page" id="page-painel">
       <div class="scroll-content">
+        <div class="section-title">Filtro de Cliente</div>
+        <select id="filtro-painel" class="filtro-select" onchange="renderPainel()">
+          <option value="Todos">Todos os Clientes</option>
+        </select>
+
         <div class="section-title" style="margin-bottom:14px">Painel de gestão</div>
 
         <div class="painel-kpi">
@@ -398,17 +406,14 @@
           <div class="kpi-card kpi-total"><div class="kpi-num" id="p-total">0</div><div class="kpi-label">INSPEÇÕES</div></div>
         </div>
 
-        <div class="section-title">Todas as inspeções</div>
+        <div class="section-title">Todas as inspeções (Filtradas)</div>
         <div class="insp-list" id="painel-list">
           <div class="empty-state">Nenhuma inspeção registrada ainda.</div>
         </div>
       </div>
     </div>
 
-  </div><!-- /pages -->
-
-  <!-- BOTTOM NAV -->
-  <nav class="bottom-nav">
+  </div><nav class="bottom-nav">
     <button class="nav-item active" id="nav-home" onclick="navTo('home')">
       <span class="nav-icon">🏠</span>
       <span class="nav-label">Início</span>
@@ -423,55 +428,27 @@
     </button>
   </nav>
 
-</div><!-- /app -->
-
-<div class="toast" id="toast"></div>
+</div><div class="toast" id="toast"></div>
 
 <script>
 // ── ITENS NR-13 ──────────────────────────────────────────────────────────
 const ITENS_NR13_CALDEIRA = [
-  "Corpo e costados",
-  "Bocais e flanges",
-  "Válvula de segurança",
-  "Válvula de alívio",
-  "Manômetro MA-01",
-  "Manômetro MA-02",
-  "Nível de água — visor",
-  "Purga de fundo",
-  "Isolamento térmico",
-  "Sistema de alimentação de água",
-  "Prontuário NR-13",
-  "Placa de identificação",
+  "Corpo e costados", "Bocais e flanges", "Válvula de segurança", "Válvula de alívio", 
+  "Manômetro MA-01", "Manômetro MA-02", "Nível de água — visor", "Purga de fundo", 
+  "Isolamento térmico", "Sistema de alimentação de água", "Prontuário NR-13", "Placa de identificação"
 ];
 const ITENS_NR13_VASO = [
-  "Corpo do vaso",
-  "Bocais e flanges",
-  "Válvula de segurança",
-  "Manômetro",
-  "Drenos e ventilações",
-  "Isolamento / revestimento",
-  "Suportes e fixações",
-  "Prontuário NR-13",
-  "Placa de identificação",
+  "Corpo do vaso", "Bocais e flanges", "Válvula de segurança", "Manômetro", 
+  "Drenos e ventilações", "Isolamento / revestimento", "Suportes e fixações", 
+  "Prontuário NR-13", "Placa de identificação"
 ];
 const ITENS_NR13_TUB = [
-  "Tubos e conexões",
-  "Flanges e juntas",
-  "Válvulas de bloqueio",
-  "Válvulas de alívio",
-  "Suportes e ancoragens",
-  "Isolamento térmico",
-  "Identificação das linhas",
-  "Documentação (isométrico)",
+  "Tubos e conexões", "Flanges e juntas", "Válvulas de bloqueio", "Válvulas de alívio", 
+  "Suportes e ancoragens", "Isolamento térmico", "Identificação das linhas", "Documentação (isométrico)"
 ];
 const ITENS_NR13_VALV = [
-  "Corpo da válvula",
-  "Sede e obturador",
-  "Mola e regulagem",
-  "Pressão de abertura",
-  "Pressão de fechamento",
-  "Certificado de calibração",
-  "Placa de identificação",
+  "Corpo da válvula", "Sede e obturador", "Mola e regulagem", "Pressão de abertura", 
+  "Pressão de fechamento", "Certificado de calibração", "Placa de identificação"
 ];
 
 const ITENS_MAP = {
@@ -486,6 +463,34 @@ let resultadoAtual = 'ressalva';
 let inspecoes = JSON.parse(localStorage.getItem('inspecoes') || '[]');
 let editandoId = null;
 
+// ── INIT ─────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const sel = document.getElementById('f-tipo');
+  sel.addEventListener('change', () => renderItens(sel.value));
+  renderItens(sel.value);
+  setDataHoje();
+  atualizarFiltros();
+  renderLista();
+  renderPainel();
+});
+
+// ── FILTROS DE CLIENTES ──────────────────────────────────────────────────
+function atualizarFiltros() {
+  const clientes = [...new Set(inspecoes.map(i => i.empresa))].filter(Boolean).sort();
+  const options = '<option value="Todos">Todos os Clientes</option>' + 
+                  clientes.map(c => `<option value="${c}">${c}</option>`).join('');
+  
+  const homeVal = document.getElementById('filtro-home').value;
+  const painelVal = document.getElementById('filtro-painel').value;
+  
+  document.getElementById('filtro-home').innerHTML = options;
+  document.getElementById('filtro-painel').innerHTML = options;
+  
+  // Mantém a seleção anterior se ainda existir
+  if (clientes.includes(homeVal)) document.getElementById('filtro-home').value = homeVal;
+  if (clientes.includes(painelVal)) document.getElementById('filtro-painel').value = painelVal;
+}
+
 // ── RENDER ITENS ─────────────────────────────────────────────────────────
 function renderItens(tipo) {
   const lista = ITENS_MAP[tipo] || ITENS_NR13_CALDEIRA;
@@ -493,8 +498,10 @@ function renderItens(tipo) {
   lista.forEach(it => itensStatus[it] = { status: 'conf', obs: '' });
 
   const el = document.getElementById('itens-list');
-  el.innerHTML = lista.map(nome => `
-    <div class="item-insp" id="item-${slugify(nome)}">
+  el.innerHTML = lista.map(nome => {
+    const slug = slugify(nome);
+    return `
+    <div class="item-insp" id="item-${slug}">
       <div class="item-insp-name">${nome}</div>
       <div class="item-status-row">
         <button class="item-status-btn s-conf" onclick="setItemStatus('${nome}','conf',this)">✓ Conf.</button>
@@ -502,10 +509,11 @@ function renderItens(tipo) {
         <button class="item-status-btn"        onclick="setItemStatus('${nome}','atenc',this)">⚠ Aten.</button>
       </div>
       <div class="item-obs">
-        <input placeholder="Observação (opcional)..." oninput="setItemObs('${nome}',this.value)" />
+        <input id="obs-${slug}" placeholder="Observação..." oninput="setItemObs('${nome}',this.value)" />
+        <button id="btn-mic-${slug}" class="btn-mic" onclick="gravarAudio('${nome}', '${slug}')" title="Gravar Áudio">🎤</button>
       </div>
     </div>
-  `).join('');
+  `}).join('');
 }
 
 function setItemStatus(nome, status, btn) {
@@ -528,6 +536,50 @@ function calcAutoResultado() {
 
 function slugify(s) { return s.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,''); }
 
+// ── SPEECH TO TEXT (ÁUDIO) ───────────────────────────────────────────────
+function gravarAudio(nomeItem, slug) {
+  const btnMic = document.getElementById(`btn-mic-${slug}`);
+  const inputField = document.getElementById(`obs-${slug}`);
+  
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    showToast('Navegador não suporta gravação de voz (use o Chrome).');
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = 'pt-BR';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  recognition.onstart = function() {
+    btnMic.classList.add('recording');
+    showToast(`Ouvindo: ${nomeItem}...`);
+  };
+
+  recognition.onspeechend = function() {
+    recognition.stop();
+    btnMic.classList.remove('recording');
+  };
+
+  recognition.onresult = function(event) {
+    const transcript = event.results[0][0].transcript;
+    const txtAtual = inputField.value;
+    const novoTxt = txtAtual ? `${txtAtual} ${transcript}` : transcript;
+    
+    inputField.value = novoTxt;
+    setItemObs(nomeItem, novoTxt);
+    showToast('Áudio transcrito!');
+  };
+
+  recognition.onerror = function(event) {
+    btnMic.classList.remove('recording');
+    showToast('Erro no áudio: ' + event.error);
+  };
+
+  recognition.start();
+}
+
 // ── RESULTADO ────────────────────────────────────────────────────────────
 function setResultado(val) {
   resultadoAtual = val;
@@ -536,16 +588,6 @@ function setResultado(val) {
   document.getElementById('rb-reprov').className  = 'resultado-btn' + (val==='reprovado' ? ' sel-reprov' : '');
 }
 
-// ── TIPO → recarga itens ─────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  const sel = document.getElementById('f-tipo');
-  sel.addEventListener('change', () => renderItens(sel.value));
-  renderItens(sel.value);
-  setDataHoje();
-  renderLista();
-  renderPainel();
-});
-
 function setDataHoje() {
   const hoje = new Date().toISOString().split('T')[0];
   document.getElementById('f-dt').value = hoje;
@@ -553,7 +595,7 @@ function setDataHoje() {
   prox.setFullYear(prox.getFullYear() + 2);
   document.getElementById('f-dtprox').value = prox.toISOString().split('T')[0];
   const n = Math.floor(Math.random()*900)+100;
-  document.getElementById('f-numlaudo').value = `LAU-NR13-2026-${String(n).padStart(3,'0')}`;
+  document.getElementById('f-numlaudo').value = `LAU-NR13-${String(n).padStart(3,'0')}`;
 }
 
 // ── SALVAR ────────────────────────────────────────────────────────────────
@@ -591,10 +633,121 @@ function salvarInspecao() {
   } else {
     inspecoes.unshift(insp);
   }
+  
   localStorage.setItem('inspecoes', JSON.stringify(inspecoes));
   showToast('Inspeção salva com sucesso!');
-  editandoId = null;
-  setTimeout(() => { goHome(); renderLista(); renderPainel(); }, 600);
+  
+  atualizarFiltros();
+  
+  // Exibir botão de gerar PDF após salvar
+  editandoId = insp.id; 
+  document.getElementById('btn-pdf').style.display = 'block';
+  
+  setTimeout(() => { goHome(); renderLista(); renderPainel(); }, 1000);
+}
+
+// ── GERAÇÃO DE PDF FORMATADO ──────────────────────────────────────────────
+function gerarPDF() {
+  if (!editandoId) { showToast('Salve a inspeção antes de gerar o PDF'); return; }
+  const insp = inspecoes.find(i => i.id === editandoId);
+  if (!insp) return;
+
+  showToast('Gerando relatório PDF...');
+
+  // Cria um contêiner invisível para desenhar o PDF estilo documento oficial
+  const pdfContainer = document.createElement('div');
+  pdfContainer.style.padding = '30px';
+  pdfContainer.style.background = '#fff';
+  pdfContainer.style.color = '#000';
+  pdfContainer.style.fontFamily = 'Arial, sans-serif';
+  pdfContainer.style.width = '210mm'; 
+  pdfContainer.style.position = 'absolute';
+  pdfContainer.style.left = '-9999px';
+  document.body.appendChild(pdfContainer);
+
+  let itensHtml = '';
+  Object.entries(insp.itens).forEach(([nome, val]) => {
+      let st = val.status === 'conf' ? 'CONFORME' : (val.status === 'nconf' ? 'NÃO CONFORME' : 'ATENÇÃO');
+      let color = val.status === 'conf' ? 'green' : (val.status === 'nconf' ? 'red' : 'orange');
+      itensHtml += `<tr>
+        <td style="border:1px solid #ccc; padding:8px; font-size:12px;">${nome}</td>
+        <td style="border:1px solid #ccc; padding:8px; font-size:12px; font-weight:bold; color:${color};">${st}</td>
+        <td style="border:1px solid #ccc; padding:8px; font-size:12px;">${val.obs || '-'}</td>
+      </tr>`;
+  });
+
+  pdfContainer.innerHTML = `
+    <h2 style="text-align:center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom:20px;">LAUDO TÉCNICO DE INSPEÇÃO NR-13</h2>
+    
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px;">
+      <tr>
+        <td style="border:1px solid #000; padding:6px; background:#f0f0f0;"><strong>Número do Laudo:</strong></td>
+        <td style="border:1px solid #000; padding:6px;">${insp.numLaudo}</td>
+        <td style="border:1px solid #000; padding:6px; background:#f0f0f0;"><strong>Data da Inspeção:</strong></td>
+        <td style="border:1px solid #000; padding:6px;">${fmtDate(insp.dtInsp)}</td>
+      </tr>
+      <tr>
+        <td style="border:1px solid #000; padding:6px; background:#f0f0f0;"><strong>Empresa:</strong></td>
+        <td style="border:1px solid #000; padding:6px;">${insp.empresa}</td>
+        <td style="border:1px solid #000; padding:6px; background:#f0f0f0;"><strong>CNPJ:</strong></td>
+        <td style="border:1px solid #000; padding:6px;">${insp.cnpj || '-'}</td>
+      </tr>
+    </table>
+
+    <h3 style="border-bottom: 1px solid #000; font-size:16px; margin-top:15px; margin-bottom:10px;">Dados do Equipamento</h3>
+    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+      <tr>
+        <td style="border:1px solid #ccc; padding:6px;"><strong>Equipamento:</strong> ${insp.tipo}</td>
+        <td style="border:1px solid #ccc; padding:6px;"><strong>TAG:</strong> ${insp.tag}</td>
+        <td style="border:1px solid #ccc; padding:6px;"><strong>Categoria:</strong> ${insp.categoria}</td>
+      </tr>
+      <tr>
+        <td style="border:1px solid #ccc; padding:6px;"><strong>Fabricante:</strong> ${insp.fab || '-'}</td>
+        <td style="border:1px solid #ccc; padding:6px;"><strong>Ano:</strong> ${insp.ano || '-'}</td>
+        <td style="border:1px solid #ccc; padding:6px;"><strong>PMTA:</strong> ${insp.pmta || '-'} kgf/cm²</td>
+      </tr>
+      <tr>
+        <td colspan="3" style="border:1px solid #ccc; padding:6px;"><strong>Pressão Oper.:</strong> ${insp.pop || '-'} kgf/cm² | <strong>Temperatura:</strong> ${insp.temp || '-'}</td>
+      </tr>
+    </table>
+
+    <h3 style="border-bottom: 1px solid #000; font-size:16px; margin-top:25px; margin-bottom:10px;">Checklist de Inspeção Física</h3>
+    <table style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr style="background-color: #f3f4f6;">
+            <th style="border:1px solid #ccc; padding:8px; text-align:left; width: 35%;">Item Verificado</th>
+            <th style="border:1px solid #ccc; padding:8px; text-align:left; width: 15%;">Status</th>
+            <th style="border:1px solid #ccc; padding:8px; text-align:left; width: 50%;">Observação de Campo</th>
+        </tr>
+      </thead>
+      <tbody>${itensHtml}</tbody>
+    </table>
+
+    <h3 style="border-bottom: 1px solid #000; font-size:16px; margin-top:25px; margin-bottom:10px;">Parecer Técnico Conclusivo</h3>
+    <p style="font-size:14px;"><strong>Situação Final:</strong> <span style="text-transform:uppercase; font-weight:bold;">${insp.resultado}</span></p>
+    <div style="border: 1px solid #ccc; padding: 10px; min-height: 80px; font-size: 13px; white-space: pre-wrap; margin-top:10px;">${insp.parecer || 'Nenhuma ressalva técnica inserida.'}</div>
+    
+    <p style="font-size:13px; margin-top:10px;"><strong>Próxima inspeção recomendada:</strong> ${fmtDate(insp.dtProx)}</p>
+
+    <div style="margin-top: 60px; text-align: center; font-size: 14px;">
+        <p>___________________________________________________</p>
+        <p style="margin-top:5px;"><strong>${insp.eng || 'Engenheiro Responsável'}</strong></p>
+        <p>CREA: ${insp.crea || 'Não informado'}</p>
+    </div>
+  `;
+
+  const opt = {
+    margin:       [15, 10, 15, 10], // Margens: Top, Left, Bottom, Right
+    filename:     `Laudo_${insp.tag}_${insp.empresa}.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, logging: false },
+    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(pdfContainer).save().then(() => {
+    showToast('PDF baixado com sucesso!');
+    document.body.removeChild(pdfContainer); // Limpa o DOM
+  });
 }
 
 // ── RENDER LISTA ──────────────────────────────────────────────────────────
@@ -602,25 +755,29 @@ function renderLista() {
   const el = document.getElementById('insp-list');
   const empty = document.getElementById('empty-state');
   const kpiSection = document.getElementById('home-kpis');
+  const filtro = document.getElementById('filtro-home').value;
 
-  if (!inspecoes.length) {
+  let listaFiltrada = filtro === 'Todos' ? inspecoes : inspecoes.filter(i => i.empresa === filtro);
+
+  if (!listaFiltrada.length) {
     el.innerHTML = '';
     el.appendChild(empty);
     kpiSection.style.display = 'none';
     return;
   }
+  
   kpiSection.style.display = 'grid';
   empty.remove && el.querySelector('.empty-state') && el.querySelector('.empty-state').remove();
 
-  const crit = inspecoes.filter(i => i.resultado === 'reprovado').length;
-  const atenc = inspecoes.filter(i => i.resultado === 'ressalva').length;
-  const ok = inspecoes.filter(i => i.resultado === 'aprovado').length;
+  const crit = listaFiltrada.filter(i => i.resultado === 'reprovado').length;
+  const atenc = listaFiltrada.filter(i => i.resultado === 'ressalva').length;
+  const ok = listaFiltrada.filter(i => i.resultado === 'aprovado').length;
   document.getElementById('kpi-crit').textContent  = crit;
   document.getElementById('kpi-atenc').textContent = atenc;
   document.getElementById('kpi-ok').textContent    = ok;
-  document.getElementById('kpi-total').textContent = inspecoes.length;
+  document.getElementById('kpi-total').textContent = listaFiltrada.length;
 
-  el.innerHTML = inspecoes.map(i => {
+  el.innerHTML = listaFiltrada.map(i => {
     const { cor, label, cls } = statusInfo(i.resultado);
     const dt = i.dtInsp ? fmtDate(i.dtInsp) : '—';
     return `<div class="insp-card" onclick="editarInspecao(${i.id})">
@@ -635,17 +792,21 @@ function renderLista() {
 }
 
 function renderPainel() {
-  const crit  = inspecoes.filter(i => i.resultado === 'reprovado').length;
-  const atenc = inspecoes.filter(i => i.resultado === 'ressalva').length;
-  const ok    = inspecoes.filter(i => i.resultado === 'aprovado').length;
+  const filtro = document.getElementById('filtro-painel').value;
+  let listaFiltrada = filtro === 'Todos' ? inspecoes : inspecoes.filter(i => i.empresa === filtro);
+
+  const crit  = listaFiltrada.filter(i => i.resultado === 'reprovado').length;
+  const atenc = listaFiltrada.filter(i => i.resultado === 'ressalva').length;
+  const ok    = listaFiltrada.filter(i => i.resultado === 'aprovado').length;
   document.getElementById('p-crit').textContent  = crit;
   document.getElementById('p-atenc').textContent = atenc;
   document.getElementById('p-ok').textContent    = ok;
-  document.getElementById('p-total').textContent = inspecoes.length;
+  document.getElementById('p-total').textContent = listaFiltrada.length;
 
   const el = document.getElementById('painel-list');
-  if (!inspecoes.length) { el.innerHTML = '<div class="empty-state">Nenhuma inspeção registrada ainda.</div>'; return; }
-  el.innerHTML = inspecoes.map(i => {
+  if (!listaFiltrada.length) { el.innerHTML = '<div class="empty-state">Nenhuma inspeção registrada ainda.</div>'; return; }
+  
+  el.innerHTML = listaFiltrada.map(i => {
     const { cor, label, cls } = statusInfo(i.resultado);
     const dt = i.dtInsp ? fmtDate(i.dtInsp) : '—';
     const prox = i.dtProx ? fmtDate(i.dtProx) : '—';
@@ -667,6 +828,7 @@ function statusInfo(r) {
 }
 
 function fmtDate(s) {
+  if(!s) return '—';
   const [y,m,d] = s.split('-');
   return `${d}/${m}/${y}`;
 }
@@ -716,6 +878,7 @@ function editarInspecao(id) {
 
   setResultado(insp.resultado || 'ressalva');
   document.getElementById('form-title').textContent = 'Editar inspeção';
+  document.getElementById('btn-pdf').style.display = 'block'; // Mostra botão de PDF
   showPage('form');
 }
 
@@ -732,18 +895,25 @@ function navTo(name) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('nav-' + name)?.classList.add('active');
   showPage(name);
-  if (name === 'painel') renderPainel();
+  if (name === 'painel') {
+    atualizarFiltros();
+    renderPainel();
+  }
 }
 
 function goHome() {
   editandoId = null;
+  document.getElementById('btn-pdf').style.display = 'none';
   navTo('home');
+  atualizarFiltros();
   renderLista();
 }
 
 function novaInspecao() {
   editandoId = null;
   document.getElementById('form-title').textContent = 'Nova inspeção';
+  document.getElementById('btn-pdf').style.display = 'none'; // Esconde na nova
+  
   document.getElementById('f-empresa').value = '';
   document.getElementById('f-cnpj').value = '';
   document.getElementById('f-resp').value = '';
