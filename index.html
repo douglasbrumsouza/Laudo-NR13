@@ -43,7 +43,7 @@
     .home-hero-title { font-size: 22px; font-weight: 800; line-height: 1.2; margin-bottom: 6px; }
     .home-hero-sub { font-size: 13px; color: var(--text2); line-height: 1.55; }
 
-    .section-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+    .section-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-end;}
     .btn-new { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-family: var(--sans); font-size: 15px; font-weight: 700; padding: 16px; cursor: pointer; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .filtro-select { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; color: var(--text); font-family: var(--sans); font-size: 14px; padding: 11px 14px; margin-bottom: 16px; outline: none; }
 
@@ -57,6 +57,7 @@
     .status-conf { background: rgba(34,197,94,.12); color: var(--green); }
     .status-ressalva { background: rgba(245,158,11,.12); color: var(--yellow); }
     .status-reprov { background: rgba(239,68,68,.12); color: var(--red); }
+    .status-neutro { background: rgba(255,255,255,.05); color: var(--text2); }
     .empty-state { text-align: center; padding: 40px 20px; color: var(--text3); font-size: 13px; }
 
     .form-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
@@ -95,7 +96,6 @@
     .btn-mic.recording { background: rgba(239,68,68,.2); border-color: var(--red); animation: pulse 1.5s infinite; }
     @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
 
-    /* FOTOS UI */
     .foto-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 10px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; }
     .foto-preview { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; background: var(--bg); }
     .btn-remover-foto { background: rgba(239,68,68,.15); color: var(--red); border: 1px solid var(--red); border-radius: 8px; padding: 8px; font-size: 12px; cursor: pointer; font-weight: bold; text-align: center; }
@@ -104,14 +104,17 @@
     .btn-save { flex: 1; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-size: 14px; font-weight: 700; padding: 14px; cursor: pointer; }
     .btn-ghost { background: var(--bg3); color: var(--text2); border: 1px solid var(--border2); border-radius: var(--radius); font-size: 14px; font-weight: 600; padding: 14px 18px; cursor: pointer; }
 
-    .painel-kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    /* NOVO DESIGN DO PAINEL KPI */
+    .painel-kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
     .kpi-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+    .kpi-destaque { grid-column: span 2; background: linear-gradient(135deg, #111827 0%, #1a2a4a 100%); border-color: rgba(96, 165, 250, 0.3); display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px; }
+    .kpi-destaque .kpi-num { color: #22c55e; font-size: 36px; margin-bottom: 8px; }
+    .kpi-destaque .kpi-label { color: var(--accent2); font-size: 11px; }
+    
     .kpi-num { font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
     .kpi-label { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .06em; }
     .kpi-crit .kpi-num { color: var(--red); }
     .kpi-atenc .kpi-num { color: var(--yellow); }
-    .kpi-ok .kpi-num { color: var(--green); }
-    .kpi-total .kpi-num { color: var(--accent2); }
 
     .bottom-nav { display: flex; border-top: 1px solid var(--border); background: var(--bg); flex-shrink: 0; padding-bottom: var(--safe-bot); }
     .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0 8px; cursor: pointer; gap: 3px; background: none; border: none; color: var(--text3); }
@@ -138,8 +141,8 @@
       <div class="scroll-content">
         <div class="home-hero">
           <div class="home-hero-label">SISTEMA NR-13</div>
-          <div class="home-hero-title">Laudo inteligente</div>
-          <div class="home-hero-sub">Fotos, áudio transcrito formatado com IA, filtro de clientes e PDF nativo.</div>
+          <div class="home-hero-title">Gestão de Ativos</div>
+          <div class="home-hero-sub">Inspeções com laudo executivo e projeção de custo evitado.</div>
         </div>
 
         <button class="btn-new" onclick="novaInspecao()">＋ Nova Inspeção</button>
@@ -147,14 +150,7 @@
         <div class="section-title">Filtro de Cliente</div>
         <select id="filtro-home" class="filtro-select" onchange="sincronizarFiltros(this.value)"></select>
 
-        <div class="painel-kpi" id="home-kpis" style="display:none">
-          <div class="kpi-card kpi-crit"><div class="kpi-num" id="kpi-crit">0</div><div class="kpi-label">CRÍTICOS</div></div>
-          <div class="kpi-card kpi-atenc"><div class="kpi-num" id="kpi-atenc">0</div><div class="kpi-label">ATENÇÃO</div></div>
-          <div class="kpi-card kpi-ok"><div class="kpi-num" id="kpi-ok">0</div><div class="kpi-label">CONFORMES</div></div>
-          <div class="kpi-card kpi-total"><div class="kpi-num" id="kpi-total">0</div><div class="kpi-label">INSPEÇÕES</div></div>
-        </div>
-
-        <div class="section-title">Inspeções salvas</div>
+        <div class="section-title">Últimas inspeções salvas</div>
         <div class="insp-list" id="insp-list">
           <div class="empty-state" id="empty-state">Nenhuma inspeção ainda.</div>
         </div>
@@ -268,14 +264,19 @@
         <div class="section-title">Filtro de Cliente</div>
         <select id="filtro-painel" class="filtro-select" onchange="sincronizarFiltros(this.value)"></select>
 
-        <div class="section-title" style="margin-bottom:14px">Painel de gestão</div>
+        <div class="section-title" style="margin-bottom:14px">Painel Estratégico</div>
 
-        <div class="painel-kpi">
+        <div class="painel-kpi" id="painel-kpis-container">
+          <div class="kpi-card kpi-destaque">
+            <div class="kpi-num" id="p-economia">R$ 0</div>
+            <div class="kpi-label">CUSTO EVITADO EST. (FALHAS CRÔNICAS)</div>
+          </div>
           <div class="kpi-card kpi-crit"><div class="kpi-num" id="p-crit">0</div><div class="kpi-label">CRÍTICOS</div></div>
           <div class="kpi-card kpi-atenc"><div class="kpi-num" id="p-atenc">0</div><div class="kpi-label">ATENÇÃO</div></div>
-          <div class="kpi-card kpi-ok"><div class="kpi-num" id="p-ok">0</div><div class="kpi-label">CONFORMES</div></div>
-          <div class="kpi-card kpi-total"><div class="kpi-num" id="p-total">0</div><div class="kpi-label">INSPEÇÕES</div></div>
         </div>
+
+        <div class="section-title">Próximos Vencimentos (Top 5)</div>
+        <div class="insp-list" id="painel-vencimentos" style="margin-bottom: 24px;"></div>
 
         <div class="section-title">Todas as inspeções (Filtradas)</div>
         <div class="insp-list" id="painel-list"></div>
@@ -316,15 +317,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ── FORMATAÇÃO "IA NATIVA" DE TEXTO ──
-// Esta função simula uma IA básica que corrige o texto que vem bagunçado do áudio.
 function formatarTextoIA(texto) {
   if (!texto) return '';
   let txt = texto.trim();
-  // Transforma primeira letra em maiúscula
   txt = txt.charAt(0).toUpperCase() + txt.slice(1);
-  // Garante ponto final se não houver
   if (!/[.!?]$/.test(txt)) txt += '.';
-  // Corrige espaços duplos
   txt = txt.replace(/\s{2,}/g, ' ');
   return txt;
 }
@@ -340,26 +337,15 @@ function gravarAudio(inputId, callbackId = null) {
   const rec = new SpeechRecognition();
   rec.lang = 'pt-BR';
   
-  rec.onstart = () => { 
-    if(btnMic) btnMic.classList.add('recording'); 
-    showToast('Escutando... Fale a observação.'); 
-  };
-  
-  rec.onspeechend = () => { 
-    rec.stop(); 
-    if(btnMic) btnMic.classList.remove('recording'); 
-  };
+  rec.onstart = () => { if(btnMic) btnMic.classList.add('recording'); showToast('Escutando... Fale a observação.'); };
+  rec.onspeechend = () => { rec.stop(); if(btnMic) btnMic.classList.remove('recording'); };
   
   rec.onresult = (e) => {
     let transcricaoRaw = e.results[0][0].transcript;
-    
-    // Passa o texto pela nossa "IA Nativa" de formatação
     let transcricaoFormatada = formatarTextoIA(transcricaoRaw);
-    
     let txtAtual = inputField.value.trim();
     inputField.value = txtAtual ? `${txtAtual} ${transcricaoFormatada}` : transcricaoFormatada;
     
-    // Dispara a função extra caso precise salvar no estado das fotos ou itens
     if(callbackId) {
        if(callbackId.includes('foto')) {
            const id = parseInt(callbackId.split('-')[1]);
@@ -371,21 +357,14 @@ function gravarAudio(inputId, callbackId = null) {
     }
     showToast('Áudio transcrito e formatado!');
   };
-  
-  rec.onerror = () => { 
-    if(btnMic) btnMic.classList.remove('recording'); 
-    showToast('Erro ao usar o microfone.'); 
-  };
-  
+  rec.onerror = () => { if(btnMic) btnMic.classList.remove('recording'); showToast('Erro ao usar o microfone.'); };
   rec.start();
 }
 
-// ── FILTRO GLOBAL MELHORADO ──
+// ── FILTRO GLOBAL ──
 function carregarOpcoesFiltro() {
   const clientes = [...new Set(inspecoes.map(i => i.empresa))].filter(e => e && e.trim() !== '').sort();
-  const options = '<option value="Todos">Todos os Clientes</option>' + 
-                  clientes.map(c => `<option value="${c.replace(/"/g, '&quot;')}">${c}</option>`).join('');
-  
+  const options = '<option value="Todos">Todos os Clientes</option>' + clientes.map(c => `<option value="${c.replace(/"/g, '&quot;')}">${c}</option>`).join('');
   document.getElementById('filtro-home').innerHTML = options;
   document.getElementById('filtro-painel').innerHTML = options;
 }
@@ -397,7 +376,7 @@ function sincronizarFiltros(valorSelecionado) {
   renderPainel();
 }
 
-// ── FOTOS COM COMPRESSÃO E NOTAS ──
+// ── FOTOS COM COMPRESSÃO ──
 function processarFoto(event) {
   const file = event.target.files[0];
   if(!file) return;
@@ -408,12 +387,11 @@ function processarFoto(event) {
     const img = new Image();
     img.onload = function() {
       const canvas = document.createElement('canvas');
-      const MAX_WIDTH = 600; // Forte compressão para não estourar o limite web
+      const MAX_WIDTH = 600; 
       let width = img.width;
       let height = img.height;
       if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-      canvas.width = width;
-      canvas.height = height;
+      canvas.width = width; canvas.height = height;
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, width, height);
       
@@ -431,7 +409,7 @@ function renderFotosForm() {
     <div class="foto-card">
       <img src="${f.base64}" class="foto-preview" />
       <div class="item-obs">
-        <input id="nota-foto-${f.id}" value="${f.nota}" placeholder="Legenda ou observação da foto..." oninput="setFotoNota(${f.id}, this.value)" />
+        <input id="nota-foto-${f.id}" value="${f.nota}" placeholder="Legenda da foto..." oninput="setFotoNota(${f.id}, this.value)" />
         <button id="btn-mic-foto-${f.id}" class="btn-mic" onclick="gravarAudio('nota-foto-${f.id}', 'foto-${f.id}')">🎤</button>
       </div>
       <button class="btn-remover-foto" onclick="removerFoto(${f.id})">🗑️ Remover Foto</button>
@@ -522,26 +500,16 @@ function salvarInspecao() {
     editandoId = insp.id; 
     document.getElementById('btn-pdf').style.display = 'block';
     setTimeout(() => { goHome(); renderLista(); renderPainel(); }, 1000);
-  } catch(e) {
-    showToast('⚠️ Limite de memória atingido. Apague fotos antigas.');
-  }
+  } catch(e) { showToast('⚠️ Limite de memória atingido. Apague fotos antigas.'); }
 }
 
 // ── RENDERIZAÇÃO DAS LISTAS E KPIS ──
 function renderLista() {
   const filtro = document.getElementById('filtro-home').value;
   const el = document.getElementById('insp-list');
-  const kpis = document.getElementById('home-kpis');
-  
   let filtrada = filtro === 'Todos' ? inspecoes : inspecoes.filter(i => i.empresa === filtro);
 
-  if (!filtrada.length) { el.innerHTML = '<div class="empty-state">Nenhuma inspeção.</div>'; kpis.style.display = 'none'; return; }
-  kpis.style.display = 'grid';
-
-  document.getElementById('kpi-crit').textContent  = filtrada.filter(i => i.resultado === 'reprovado').length;
-  document.getElementById('kpi-atenc').textContent = filtrada.filter(i => i.resultado === 'ressalva').length;
-  document.getElementById('kpi-ok').textContent    = filtrada.filter(i => i.resultado === 'aprovado').length;
-  document.getElementById('kpi-total').textContent = filtrada.length;
+  if (!filtrada.length) { el.innerHTML = '<div class="empty-state">Nenhuma inspeção.</div>'; return; }
 
   el.innerHTML = filtrada.map(i => {
     const c = i.resultado === 'aprovado' ? '#22c55e' : (i.resultado === 'reprovado' ? '#ef4444' : '#f59e0b');
@@ -560,11 +528,44 @@ function renderPainel() {
   const filtro = document.getElementById('filtro-painel').value;
   let filtrada = filtro === 'Todos' ? inspecoes : inspecoes.filter(i => i.empresa === filtro);
   
-  document.getElementById('p-crit').textContent  = filtrada.filter(i => i.resultado === 'reprovado').length;
-  document.getElementById('p-atenc').textContent = filtrada.filter(i => i.resultado === 'ressalva').length;
-  document.getElementById('p-ok').textContent    = filtrada.filter(i => i.resultado === 'aprovado').length;
-  document.getElementById('p-total').textContent = filtrada.length;
+  // Lógica Black Belt: Cálculo de Custo Evitado
+  const crit = filtrada.filter(i => i.resultado === 'reprovado').length;
+  const atenc = filtrada.filter(i => i.resultado === 'ressalva').length;
   
+  // Estimativa de falha catastrófica evitada (Ex: R$ 55k crítico, R$ 12.5k ressalva)
+  const custoEvitado = (crit * 55000) + (atenc * 12500);
+  
+  document.getElementById('p-crit').textContent  = crit;
+  document.getElementById('p-atenc').textContent = atenc;
+  document.getElementById('p-economia').textContent = custoEvitado.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL', maximumFractionDigits: 0});
+  
+  // Próximas Inspeções (Vencimentos)
+  const hoje = new Date();
+  const proximas = [...filtrada]
+      .filter(i => i.dtProx)
+      .sort((a, b) => new Date(a.dtProx) - new Date(b.dtProx))
+      .slice(0, 5);
+      
+  const elVenc = document.getElementById('painel-vencimentos');
+  if(!proximas.length) {
+      elVenc.innerHTML = '<div class="empty-state">Sem vencimentos programados.</div>';
+  } else {
+      elVenc.innerHTML = proximas.map(i => {
+          const dProx = new Date(i.dtProx);
+          const diffTempo = dProx.getTime() - hoje.getTime();
+          const diasFaltando = Math.ceil(diffTempo / (1000 * 3600 * 24));
+          let cor = diasFaltando < 30 ? '#ef4444' : (diasFaltando < 90 ? '#f59e0b' : '#22c55e');
+          const statusTxt = diasFaltando < 0 ? 'Vencido' : `Faltam ${diasFaltando} dias`;
+          
+          return `<div class="insp-card" onclick="editarInspecao(${i.id})">
+            <div class="insp-card-dot" style="background:${cor}"></div>
+            <div class="insp-card-body"><div class="insp-card-empresa">${i.tag} - ${i.empresa}</div><div class="insp-card-meta">Vence em: ${i.dtProx.split('-').reverse().join('/')}</div></div>
+            <span class="insp-card-status status-neutro" style="color:${cor}; border:1px solid ${cor}">${statusTxt}</span>
+          </div>`;
+      }).join('');
+  }
+
+  // Lista Geral Filtrada
   const el = document.getElementById('painel-list');
   if(!filtrada.length) { el.innerHTML = '<div class="empty-state">Vazio.</div>'; return; }
   
@@ -605,57 +606,117 @@ function editarInspecao(id) {
   showPage('form');
 }
 
-// ── EXPORTAÇÃO APROVA DE FALHAS (PDF NA MEMÓRIA) ──
+// ── NOVO DESIGN DE PDF EXECUTIVO ──
 function gerarPDF() {
   if (!editandoId) return showToast('Salve antes de gerar o PDF');
   const insp = inspecoes.find(i => i.id === editandoId);
-  showToast('Montando PDF Oficial...');
+  showToast('Montando Relatório Oficial...');
 
   let itensHtml = '';
+  let rowCount = 0;
   Object.entries(insp.itens).forEach(([n, v]) => {
       let st = v.status === 'conf' ? 'CONFORME' : (v.status === 'nconf' ? 'NÃO CONFORME' : 'ATENÇÃO');
-      let color = v.status === 'conf' ? 'green' : (v.status === 'nconf' ? 'red' : 'orange');
-      itensHtml += `<tr><td style="border:1px solid #000; padding:4px;">${n}</td><td style="border:1px solid #000; padding:4px; color:${color}"><b>${st}</b></td><td style="border:1px solid #000; padding:4px;">${v.obs||'-'}</td></tr>`;
+      let color = v.status === 'conf' ? '#166534' : (v.status === 'nconf' ? '#991b1b' : '#9a3412');
+      let bgCor = rowCount % 2 === 0 ? '#f9fafb' : '#ffffff';
+      itensHtml += `<tr style="background-color: ${bgCor};"><td style="border:1px solid #e5e7eb; padding:8px 12px; color:#374151;">${n}</td><td style="border:1px solid #e5e7eb; padding:8px 12px; color:${color}; font-weight:bold; font-size:11px;">${st}</td><td style="border:1px solid #e5e7eb; padding:8px 12px; color:#4b5563;">${v.obs||'-'}</td></tr>`;
+      rowCount++;
   });
 
   let fotosHtml = '';
   if(insp.fotos && insp.fotos.length > 0) {
-    fotosHtml = `<h3 style="margin-top:20px; border-bottom:1px solid #000;">Registro Fotográfico</h3>`;
+    fotosHtml = `<h3 style="margin-top:30px; border-bottom:2px solid #1e3a8a; padding-bottom:5px; color:#1e3a8a; font-size:16px;">Registro Fotográfico</h3><div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px;">`;
     insp.fotos.forEach(f => {
-      fotosHtml += `<div style="margin-bottom: 15px; page-break-inside: avoid;">
-        <img src="${f.base64}" style="max-height: 250px; border:1px solid #ccc; display:block; margin-bottom:5px;">
-        <p style="font-size: 12px; margin:0;"><b>Nota:</b> ${f.nota || '-'}</p>
+      fotosHtml += `<div style="width: 48%; margin-bottom: 15px; page-break-inside: avoid; border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; background:#f9fafb;">
+        <img src="${f.base64}" style="width: 100%; height: 200px; object-fit: cover; display:block;">
+        <div style="padding: 10px;"><p style="font-size: 11px; margin:0; color: #374151;"><b>Observação:</b> ${f.nota || '-'}</p></div>
       </div>`;
     });
+    fotosHtml += `</div>`;
   }
 
-  // PDF montado como String (Impede o bug de folha em branco dos navegadores móveis)
+  const corStatus = insp.resultado === 'aprovado' ? '#22c55e' : (insp.resultado === 'reprovado' ? '#ef4444' : '#f59e0b');
+
   const htmlParaPdf = `
-    <div style="padding: 20px; background: #fff; color: #000; font-family: Arial, sans-serif; width: 100%;">
-      <h2 style="text-align:center; border-bottom: 2px solid #000; padding-bottom: 10px;">LAUDO DE INSPEÇÃO NR-13</h2>
-      <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 15px;">
-        <tr><td style="border:1px solid #000; padding:4px; background:#eee;"><b>Nº Laudo:</b></td><td style="border:1px solid #000; padding:4px;">${insp.numLaudo}</td><td style="border:1px solid #000; padding:4px; background:#eee;"><b>Data:</b></td><td style="border:1px solid #000; padding:4px;">${insp.dtInsp?insp.dtInsp.split('-').reverse().join('/'):''}</td></tr>
-        <tr><td style="border:1px solid #000; padding:4px; background:#eee;"><b>Empresa:</b></td><td style="border:1px solid #000; padding:4px;">${insp.empresa}</td><td style="border:1px solid #000; padding:4px; background:#eee;"><b>CNPJ:</b></td><td style="border:1px solid #000; padding:4px;">${insp.cnpj||'-'}</td></tr>
-      </table>
-      <h3 style="border-bottom: 1px solid #000; font-size:14px; margin-bottom:5px;">Equipamento: ${insp.tipo} - ${insp.tag}</h3>
-      <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 15px;">
-        <tr><td style="border:1px solid #000; padding:4px;"><b>Fab:</b> ${insp.fab||'-'}</td><td style="border:1px solid #000; padding:4px;"><b>Ano:</b> ${insp.ano||'-'}</td><td style="border:1px solid #000; padding:4px;"><b>Cat:</b> ${insp.categoria}</td></tr>
-        <tr><td style="border:1px solid #000; padding:4px;"><b>PMTA:</b> ${insp.pmta||'-'}</td><td style="border:1px solid #000; padding:4px;"><b>Op:</b> ${insp.pop||'-'}</td><td style="border:1px solid #000; padding:4px;"><b>Temp:</b> ${insp.temp||'-'}</td></tr>
-      </table>
-      <h3 style="border-bottom: 1px solid #000; font-size:14px; margin-bottom:5px;">Checklist</h3>
-      <table style="width: 100%; border-collapse: collapse; font-size: 11px;">${itensHtml}</table>
-      ${fotosHtml}
-      <h3 style="border-bottom: 1px solid #000; font-size:14px; margin-top:20px;">Parecer Final: <span style="text-transform:uppercase;">${insp.resultado}</span></h3>
-      <p style="font-size:12px; border: 1px solid #ccc; padding: 10px;">${insp.parecer || 'Sem ressalvas extras.'}</p>
-      <div style="margin-top: 40px; text-align: center; font-size: 12px;">
-        <p>_____________________________________</p>
-        <p><b>${insp.eng || 'Engenheiro Responsável'}</b></p>
-        <p>CREA: ${insp.crea || '-'}</p>
+    <div style="padding: 40px; background: #fff; color: #111827; font-family: 'Segoe UI', Helvetica, Arial, sans-serif; width: 100%; box-sizing: border-box;">
+      
+      <div style="border-bottom: 3px solid #1e3a8a; padding-bottom: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end;">
+         <div>
+            <h1 style="margin: 0; color: #1e3a8a; font-size: 24px; text-transform: uppercase; letter-spacing: 1px;">Laudo NR-13</h1>
+            <p style="margin: 4px 0 0 0; color: #4b5563; font-size: 13px; font-weight: bold;">Gestão Estratégica de Ativos</p>
+         </div>
+         <div style="text-align: right;">
+            <p style="margin: 0; font-weight: bold; font-size: 16px; color: #111827;">Nº ${insp.numLaudo}</p>
+            <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 13px;">Data: ${insp.dtInsp?insp.dtInsp.split('-').reverse().join('/'):''}</p>
+         </div>
       </div>
+
+      <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 25px; border: 1px solid #e5e7eb;">
+        <tr>
+          <td style="padding:10px 12px; background:#f3f4f6; width: 15%; color:#374151;"><b>Empresa:</b></td>
+          <td style="padding:10px 12px; border-right: 1px solid #e5e7eb; width: 45%;">${insp.empresa}</td>
+          <td style="padding:10px 12px; background:#f3f4f6; width: 15%; color:#374151;"><b>CNPJ:</b></td>
+          <td style="padding:10px 12px; width: 25%;">${insp.cnpj||'-'}</td>
+        </tr>
+      </table>
+
+      <h3 style="border-bottom: 2px solid #1e3a8a; padding-bottom:5px; font-size:16px; color:#1e3a8a; margin-bottom:15px;">Dados do Equipamento</h3>
+      <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 30px; border: 1px solid #e5e7eb;">
+        <tr>
+          <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>Tipo:</b> ${insp.tipo}</td>
+          <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>TAG:</b> ${insp.tag}</td>
+          <td style="padding:8px 12px; border:1px solid #e5e7eb; background:#f9fafb;"><b>Categoria:</b> ${insp.categoria}</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>Fabricante:</b> ${insp.fab||'-'}</td>
+          <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>Ano Fab.:</b> ${insp.ano||'-'}</td>
+          <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>Próx. Insp.:</b> ${insp.dtProx?insp.dtProx.split('-').reverse().join('/'):'-'}</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>PMTA:</b> ${insp.pmta||'-'} kgf/cm²</td>
+          <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>Pressão Oper.:</b> ${insp.pop||'-'} kgf/cm²</td>
+          <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>Temperatura:</b> ${insp.temp||'-'}</td>
+        </tr>
+      </table>
+
+      <h3 style="border-bottom: 2px solid #1e3a8a; padding-bottom:5px; font-size:16px; color:#1e3a8a; margin-bottom:15px;">Checklist de Inspeção Física</h3>
+      <table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 30px;">
+        <thead>
+          <tr style="background-color: #1e3a8a; color: white;">
+            <th style="padding:10px 12px; text-align:left; width: 35%;">Item Verificado</th>
+            <th style="padding:10px 12px; text-align:left; width: 15%;">Status</th>
+            <th style="padding:10px 12px; text-align:left; width: 50%;">Observações</th>
+          </tr>
+        </thead>
+        <tbody>${itensHtml}</tbody>
+      </table>
+
+      ${fotosHtml}
+
+      <div style="page-break-inside: avoid;">
+          <h3 style="border-bottom: 2px solid #1e3a8a; padding-bottom:5px; font-size:16px; color:#1e3a8a; margin-top:30px; margin-bottom:15px;">Parecer Técnico Conclusivo</h3>
+          <p style="font-size:14px; margin-bottom:10px;">Situação Final do Equipamento: <span style="text-transform:uppercase; font-weight:bold; color:${corStatus}; padding: 4px 8px; border-radius: 4px; border: 1px solid ${corStatus}; margin-left: 8px;">${insp.resultado}</span></p>
+          <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 15px; font-size: 13px; line-height: 1.6; color: #374151; min-height: 80px;">
+             ${insp.parecer || 'O equipamento foi inspecionado de acordo com as normas vigentes e não apresenta ressalvas adicionais que comprometam sua operação segura no momento.'}
+          </div>
+          
+          <div style="margin-top: 60px; text-align: center; font-size: 13px; color: #111827;">
+            <div style="width: 300px; border-top: 1px solid #111827; margin: 0 auto; padding-top: 10px;">
+               <p style="margin: 0; font-weight: bold;">${insp.eng || 'Engenheiro Responsável'}</p>
+               <p style="margin: 4px 0 0 0; color: #4b5563;">CREA: ${insp.crea || 'Não informado'}</p>
+            </div>
+          </div>
+      </div>
+
     </div>
   `;
 
-  const opt = { margin: [10, 10, 10, 10], filename: `Laudo_${insp.tag}_${insp.empresa}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+  const opt = { 
+    margin: 0, // Tiramos a margem nativa para usar a do HTML e ficar perfeito
+    filename: `Laudo_${insp.tag}_${insp.empresa.replace(/\s+/g,'_')}.pdf`, 
+    image: { type: 'jpeg', quality: 1 }, 
+    html2canvas: { scale: 2, useCORS: true }, 
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } 
+  };
   html2pdf().set(opt).from(htmlParaPdf).save().then(() => showToast('PDF exportado com sucesso!'));
 }
 
