@@ -10,6 +10,7 @@
   <title>Laudo NR-13</title>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -63,7 +64,6 @@
     .form-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
     .form-back { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text2); cursor: pointer; margin-bottom: 14px; background: none; border: none; font-family: var(--sans); }
     .form-title { font-size: 20px; font-weight: 800; }
-    .form-subtitle { font-size: 13px; color: var(--text2); margin-top: 4px; }
     .btn-pdf { background: var(--bg2); color: var(--accent2); border: 1px solid var(--border2); border-radius: 8px; padding: 8px 12px; font-size: 12px; font-weight: 600; cursor: pointer; display: none; margin-top: 25px; }
 
     .form-section { margin-bottom: 20px; }
@@ -75,6 +75,13 @@
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
 
+    /* EQUIPAMENTOS REPETÍVEIS */
+    .equipamento-block { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 16px; position: relative; }
+    .equipamento-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--border2); padding-bottom: 8px; }
+    .equipamento-title { font-size: 14px; font-weight: bold; color: var(--accent2); }
+    .btn-remover-equip { background: transparent; color: var(--red); border: none; font-size: 12px; font-weight: bold; cursor: pointer; }
+    .btn-add-equip { width: 100%; background: transparent; border: 1px dashed var(--accent2); color: var(--accent2); border-radius: 10px; padding: 12px; font-size: 13px; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
+
     .resultado-row { display: flex; gap: 8px; }
     .resultado-btn { flex: 1; padding: 10px 6px; font-family: var(--sans); font-size: 12px; font-weight: 600; border-radius: 10px; border: 1.5px solid var(--border2); background: var(--bg3); color: var(--text2); cursor: pointer; text-align: center; }
     .resultado-btn.sel-conf { background: rgba(34,197,94,.15); border-color: var(--green); color: var(--green); }
@@ -84,39 +91,37 @@
     .item-insp { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
     .item-insp-name { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
     .item-status-row { display: flex; gap: 6px; }
-    .item-status-btn { flex: 1; padding: 6px 4px; font-size: 11px; font-weight: 600; border-radius: 8px; border: 1px solid var(--border2); background: var(--bg2); color: var(--text3); cursor: pointer; }
+    .item-status-btn { flex: 1; padding: 6px 4px; font-size: 11px; font-weight: 600; border-radius: 8px; border: 1px solid var(--border2); background: var(--bg); color: var(--text3); cursor: pointer; }
     .item-status-btn.s-conf { background: rgba(34,197,94,.15); border-color: var(--green); color: var(--green); }
     .item-status-btn.s-nconf { background: rgba(239,68,68,.15); border-color: var(--red); color: var(--red); }
     .item-status-btn.s-atenc { background: rgba(245,158,11,.15); border-color: var(--yellow); color: var(--yellow); }
     
     .item-obs { display: flex; gap: 6px; margin-top: 8px; }
-    .item-obs input { flex: 1; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; color: var(--text2); font-size: 12px; padding: 8px 12px; outline: none; }
+    .item-obs input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text2); font-size: 12px; padding: 8px 12px; outline: none; }
     
-    .btn-mic { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 0 12px; cursor: pointer; color: var(--text); font-size: 14px; display: flex; align-items: center; justify-content: center; }
+    .btn-mic { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 0 12px; cursor: pointer; color: var(--text); font-size: 14px; display: flex; align-items: center; justify-content: center; }
     .btn-mic.recording { background: rgba(239,68,68,.2); border-color: var(--red); animation: pulse 1.5s infinite; }
     @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
 
-    .foto-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 10px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; }
+    .foto-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 10px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; }
     .foto-preview { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; background: var(--bg); }
     .btn-remover-foto { background: rgba(239,68,68,.15); color: var(--red); border: 1px solid var(--red); border-radius: 8px; padding: 8px; font-size: 12px; cursor: pointer; font-weight: bold; text-align: center; }
 
-    .form-actions { position: sticky; bottom: 0; left: 0; right: 0; padding: 12px 0 0; background: linear-gradient(to top, var(--bg) 80%, transparent); display: flex; gap: 10px; flex-shrink: 0; padding-bottom: calc(var(--safe-bot) + 4px); }
+    .form-actions { position: sticky; bottom: 0; left: 0; right: 0; padding: 12px 0 0; background: linear-gradient(to top, var(--bg) 80%, transparent); display: flex; gap: 10px; flex-shrink: 0; padding-bottom: calc(var(--safe-bot) + 4px); z-index: 10;}
     .btn-save { flex: 1; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-size: 14px; font-weight: 700; padding: 14px; cursor: pointer; }
     .btn-ghost { background: var(--bg3); color: var(--text2); border: 1px solid var(--border2); border-radius: var(--radius); font-size: 14px; font-weight: 600; padding: 14px 18px; cursor: pointer; }
 
-    /* NOVO DESIGN DO PAINEL KPI */
     .painel-kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
     .kpi-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
     .kpi-destaque { grid-column: span 2; background: linear-gradient(135deg, #111827 0%, #1a2a4a 100%); border-color: rgba(96, 165, 250, 0.3); display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px; }
     .kpi-destaque .kpi-num { color: #22c55e; font-size: 36px; margin-bottom: 8px; }
     .kpi-destaque .kpi-label { color: var(--accent2); font-size: 11px; }
-    
     .kpi-num { font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
     .kpi-label { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .06em; }
     .kpi-crit .kpi-num { color: var(--red); }
     .kpi-atenc .kpi-num { color: var(--yellow); }
 
-    .bottom-nav { display: flex; border-top: 1px solid var(--border); background: var(--bg); flex-shrink: 0; padding-bottom: var(--safe-bot); }
+    .bottom-nav { display: flex; border-top: 1px solid var(--border); background: var(--bg); flex-shrink: 0; padding-bottom: var(--safe-bot); z-index: 20; position: relative;}
     .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0 8px; cursor: pointer; gap: 3px; background: none; border: none; color: var(--text3); }
     .nav-item.active { color: var(--accent2); }
     .nav-icon { font-size: 20px; line-height: 1; }
@@ -142,15 +147,15 @@
         <div class="home-hero">
           <div class="home-hero-label">SISTEMA NR-13</div>
           <div class="home-hero-title">Gestão de Ativos</div>
-          <div class="home-hero-sub">Inspeções com laudo executivo e projeção de custo evitado.</div>
+          <div class="home-hero-sub">Inspeções multi-equipamentos, ROI gerado e PDF corporativo com QR Code.</div>
         </div>
 
-        <button class="btn-new" onclick="novaInspecao()">＋ Nova Inspeção</button>
+        <button class="btn-new" onclick="novaInspecao()">＋ Nova Visita / Laudo</button>
 
         <div class="section-title">Filtro de Cliente</div>
         <select id="filtro-home" class="filtro-select" onchange="sincronizarFiltros(this.value)"></select>
 
-        <div class="section-title">Últimas inspeções salvas</div>
+        <div class="section-title">Últimas visitas salvas</div>
         <div class="insp-list" id="insp-list">
           <div class="empty-state" id="empty-state">Nenhuma inspeção ainda.</div>
         </div>
@@ -162,77 +167,34 @@
         <div class="form-header">
           <div>
             <button class="form-back" onclick="goHome()">← Voltar</button>
-            <div class="form-title" id="form-title">Nova inspeção</div>
+            <div class="form-title" id="form-title">Nova Visita</div>
           </div>
           <button class="btn-pdf" id="btn-pdf" onclick="gerarPDF()">📄 Gerar PDF</button>
         </div>
 
         <div class="form-section">
-          <div class="form-section-title">Empresa</div>
-          <div class="field"><label>Razão social</label><input id="f-empresa" placeholder="Nome da empresa" /></div>
+          <div class="form-section-title">Dados Gerais e Identificação</div>
+          <div class="field"><label>Nº do Laudo</label><input id="f-numlaudo" placeholder="LAU-NR13-..." /></div>
+          <div class="field"><label>Razão social da Empresa</label><input id="f-empresa" placeholder="Nome da empresa" /></div>
           <div class="grid-2">
             <div class="field"><label>CNPJ</label><input id="f-cnpj" placeholder="00.000.000/0001-00" /></div>
             <div class="field"><label>Responsável</label><input id="f-resp" placeholder="Nome do contato" /></div>
           </div>
-        </div>
-
-        <div class="form-section">
-          <div class="form-section-title">Equipamento</div>
           <div class="grid-2">
-            <div class="field">
-              <label>Tipo</label>
-              <select id="f-tipo">
-                <option>Caldeira a Vapor</option>
-                <option>Vaso de Pressão</option>
-                <option>Tubulação</option>
-                <option>Válvula de Segurança</option>
-              </select>
-            </div>
-            <div class="field"><label>TAG</label><input id="f-tag" placeholder="ex: CAL-01" /></div>
-          </div>
-          <div class="grid-2">
-            <div class="field"><label>Fabricante</label><input id="f-fab" placeholder="Fabricante" /></div>
-            <div class="field"><label>Ano fabricação</label><input id="f-ano" type="number" /></div>
-          </div>
-          <div class="grid-3">
-            <div class="field"><label>PMTA (kgf)</label><input id="f-pmta" /></div>
-            <div class="field"><label>P. op.</label><input id="f-pop" /></div>
-            <div class="field"><label>Temp.</label><input id="f-temp" /></div>
-          </div>
-          <div class="field">
-            <label>Categoria NR-13</label>
-            <select id="f-cat">
-              <option>Categoria A — Grupo I</option>
-              <option selected>Categoria B — Grupo I</option>
-              <option>Categoria B — Grupo II</option>
-              <option>Categoria C</option>
-            </select>
+            <div class="field"><label>Data da Inspeção</label><input id="f-dt" type="date" /></div>
+            <div class="field"><label>Próxima (Recomendada)</label><input id="f-dtprox" type="date" /></div>
           </div>
         </div>
 
         <div class="form-section">
-          <div class="form-section-title">Datas e identificação</div>
-          <div class="grid-2">
-            <div class="field"><label>Data da inspeção</label><input id="f-dt" type="date" /></div>
-            <div class="field"><label>Próxima inspeção</label><input id="f-dtprox" type="date" /></div>
-          </div>
-          <div class="field"><label>Nº do laudo</label><input id="f-numlaudo" /></div>
+          <div class="form-section-title">Equipamentos Inspecionados</div>
+          <div id="container-equipamentos"></div>
+          
+          <button class="btn-add-equip" onclick="abrirModalAdicionarEquip()">+ ADICIONAR EQUIPAMENTO NESTA VISITA</button>
         </div>
 
         <div class="form-section">
-          <div class="form-section-title">Itens inspecionados</div>
-          <div id="itens-list"></div>
-        </div>
-
-        <div class="form-section">
-          <div class="form-section-title">Fotos e Evidências</div>
-          <input type="file" id="f-foto" accept="image/*" capture="environment" style="display:none" onchange="processarFoto(event)">
-          <button class="btn-ghost" style="width:100%; margin-bottom:10px;" onclick="document.getElementById('f-foto').click()">📷 Adicionar Foto da Câmera</button>
-          <div id="fotos-list"></div>
-        </div>
-
-        <div class="form-section">
-          <div class="form-section-title">Resultado geral</div>
+          <div class="form-section-title">Status Geral da Visita</div>
           <div class="resultado-row">
             <button class="resultado-btn" id="rb-conf"     onclick="setResultado('aprovado')">✓ Aprovado</button>
             <button class="resultado-btn sel-ressalva" id="rb-ressalva" onclick="setResultado('ressalva')">⚠ Ressalvas</button>
@@ -241,9 +203,9 @@
         </div>
 
         <div class="form-section">
-          <div class="form-section-title">Parecer técnico e Responsável</div>
+          <div class="form-section-title">Parecer Técnico e Engenharia</div>
           <div class="item-obs" style="margin-bottom: 12px; display: flex; align-items: stretch;">
-            <textarea id="f-parecer" style="flex:1; margin-bottom:0;" rows="5" placeholder="Parecer conclusivo..."></textarea>
+            <textarea id="f-parecer" style="flex:1; margin-bottom:0;" rows="5" placeholder="Parecer conclusivo geral da visita..."></textarea>
             <button id="btn-mic-parecer" class="btn-mic" style="margin-left: 8px;" onclick="gravarAudio('f-parecer')">🎤<br><span style="font-size:10px">Falar</span></button>
           </div>
           <div class="grid-2">
@@ -254,7 +216,7 @@
 
         <div class="form-actions">
           <button class="btn-ghost" onclick="goHome()">Cancelar</button>
-          <button class="btn-save" onclick="salvarInspecao()">Salvar inspeção</button>
+          <button class="btn-save" onclick="salvarInspecao()">Salvar Visita</button>
         </div>
       </div>
     </div>
@@ -264,12 +226,12 @@
         <div class="section-title">Filtro de Cliente</div>
         <select id="filtro-painel" class="filtro-select" onchange="sincronizarFiltros(this.value)"></select>
 
-        <div class="section-title" style="margin-bottom:14px">Painel Estratégico</div>
+        <div class="section-title" style="margin-bottom:14px">Painel Estratégico (ROI)</div>
 
         <div class="painel-kpi" id="painel-kpis-container">
           <div class="kpi-card kpi-destaque">
             <div class="kpi-num" id="p-economia">R$ 0</div>
-            <div class="kpi-label">CUSTO EVITADO EST. (FALHAS CRÔNICAS)</div>
+            <div class="kpi-label">CUSTO EVITADO EST. (FALHAS PREVENIDAS)</div>
           </div>
           <div class="kpi-card kpi-crit"><div class="kpi-num" id="p-crit">0</div><div class="kpi-label">CRÍTICOS</div></div>
           <div class="kpi-card kpi-atenc"><div class="kpi-num" id="p-atenc">0</div><div class="kpi-label">ATENÇÃO</div></div>
@@ -278,8 +240,6 @@
         <div class="section-title">Próximos Vencimentos (Top 5)</div>
         <div class="insp-list" id="painel-vencimentos" style="margin-bottom: 24px;"></div>
 
-        <div class="section-title">Todas as inspeções (Filtradas)</div>
-        <div class="insp-list" id="painel-list"></div>
       </div>
     </div>
 
@@ -291,15 +251,13 @@
   </nav>
 
 </div>
+
 <div class="toast" id="toast"></div>
 
-<script>
-let inspecoes = JSON.parse(localStorage.getItem('inspecoes') || '[]');
-let itensStatus = {};
-let fotosInspecao = [];
-let resultadoAtual = 'ressalva';
-let editandoId = null;
+<div id="qr-code-generator" style="display: none;"></div>
 
+<script>
+// ── ESTRUTURAS DE DADOS ──
 const ITENS_MAP = {
   "Caldeira a Vapor": ["Corpo e costados", "Bocais e flanges", "Válvula de segurança", "Válvula de alívio", "Manômetro MA-01", "Nível de água — visor", "Purga de fundo", "Prontuário NR-13", "Placa de identificação"],
   "Vaso de Pressão":  ["Corpo do vaso", "Bocais e flanges", "Válvula de segurança", "Manômetro", "Drenos e ventilações", "Isolamento / revestimento", "Prontuário NR-13", "Placa de identificação"],
@@ -307,16 +265,42 @@ const ITENS_MAP = {
   "Válvula de Segurança": ["Corpo da válvula", "Sede e obturador", "Mola e regulagem", "Pressão de abertura", "Pressão de fechamento", "Certificado de calibração", "Placa de identificação"],
 };
 
+let inspecoes = JSON.parse(localStorage.getItem('inspecoes') || '[]');
+let equipamentosAtual = []; // Array temporário durante a edição do laudo
+let resultadoAtual = 'ressalva';
+let editandoId = null;
+
+// ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('f-tipo').addEventListener('change', (e) => renderItens(e.target.value));
-  renderItens('Caldeira a Vapor');
-  setDataHoje();
+  migrarDadosAntigos(); // Garante que laudos antigos funcionem no novo formato de Array
   carregarOpcoesFiltro();
   renderLista();
   renderPainel();
 });
 
-// ── FORMATAÇÃO "IA NATIVA" DE TEXTO ──
+// Retrocompatibilidade (transforma laudos antigos de 1 equipamento em lista)
+function migrarDadosAntigos() {
+  let precisouMigrar = false;
+  inspecoes.forEach(insp => {
+    if (!insp.equipamentos) {
+      precisouMigrar = true;
+      insp.equipamentos = [{
+        id: Date.now() + Math.random(),
+        tipo: insp.tipo || 'Caldeira a Vapor',
+        tag: insp.tag || '', fab: insp.fab || '', ano: insp.ano || '',
+        pmta: insp.pmta || '', pop: insp.pop || '', temp: insp.temp || '',
+        categoria: insp.categoria || 'Categoria B — Grupo I',
+        itens: insp.itens || {},
+        fotos: insp.fotos || []
+      }];
+      // Limpa raiz para economizar espaço
+      delete insp.tipo; delete insp.tag; delete insp.fab; delete insp.ano; delete insp.pmta; delete insp.pop; delete insp.temp; delete insp.categoria; delete insp.itens; delete insp.fotos;
+    }
+  });
+  if(precisouMigrar) localStorage.setItem('inspecoes', JSON.stringify(inspecoes));
+}
+
+// ── IA DE TEXTO ──
 function formatarTextoIA(texto) {
   if (!texto) return '';
   let txt = texto.trim();
@@ -327,41 +311,259 @@ function formatarTextoIA(texto) {
 }
 
 // ── ÁUDIO E TRANSCRIÇÃO ──
-function gravarAudio(inputId, callbackId = null) {
+function gravarAudio(inputId, objCallbackParams = null) {
   const inputField = document.getElementById(inputId);
   const btnMic = document.getElementById(inputId.replace('obs-', 'btn-mic-').replace('nota-foto-', 'btn-mic-foto-'));
   
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) return showToast('Seu navegador não suporta ditado de voz.');
 
-  const rec = new SpeechRecognition();
-  rec.lang = 'pt-BR';
+  const rec = new SpeechRecognition(); rec.lang = 'pt-BR';
   
-  rec.onstart = () => { if(btnMic) btnMic.classList.add('recording'); showToast('Escutando... Fale a observação.'); };
+  rec.onstart = () => { if(btnMic) btnMic.classList.add('recording'); showToast('Ouvindo...'); };
   rec.onspeechend = () => { rec.stop(); if(btnMic) btnMic.classList.remove('recording'); };
   
   rec.onresult = (e) => {
-    let transcricaoRaw = e.results[0][0].transcript;
-    let transcricaoFormatada = formatarTextoIA(transcricaoRaw);
+    let transcricaoFormatada = formatarTextoIA(e.results[0][0].transcript);
     let txtAtual = inputField.value.trim();
     inputField.value = txtAtual ? `${txtAtual} ${transcricaoFormatada}` : transcricaoFormatada;
     
-    if(callbackId) {
-       if(callbackId.includes('foto')) {
-           const id = parseInt(callbackId.split('-')[1]);
-           const foto = fotosInspecao.find(x => x.id === id);
-           if(foto) foto.nota = inputField.value;
-       } else {
-           itensStatus[callbackId].obs = inputField.value;
-       }
+    // Salva no estado correspondente (Item Checklist ou Foto)
+    if(objCallbackParams) {
+        const { equipId, itemId, tipo, fotoId } = objCallbackParams;
+        const eq = equipamentosAtual.find(e => e.id === equipId);
+        if(eq) {
+            if(tipo === 'item') eq.itens[itemId].obs = inputField.value;
+            if(tipo === 'foto') {
+                const foto = eq.fotos.find(f => f.id === fotoId);
+                if(foto) foto.nota = inputField.value;
+            }
+        }
     }
-    showToast('Áudio transcrito e formatado!');
+    showToast('Áudio transcrito!');
   };
-  rec.onerror = () => { if(btnMic) btnMic.classList.remove('recording'); showToast('Erro ao usar o microfone.'); };
+  rec.onerror = () => { if(btnMic) btnMic.classList.remove('recording'); showToast('Erro no mic.'); };
   rec.start();
 }
 
-// ── FILTRO GLOBAL ──
+// ── GERENCIAMENTO DE EQUIPAMENTOS NA VISITA ──
+function abrirModalAdicionarEquip() {
+  const tipo = prompt("Digite o número do tipo:\n1: Caldeira\n2: Vaso de Pressão\n3: Tubulação\n4: Válvula de Segurança", "1");
+  const tiposStr = { '1': "Caldeira a Vapor", '2': "Vaso de Pressão", '3': "Tubulação", '4': "Válvula de Segurança" };
+  const tipoSelecionado = tiposStr[tipo];
+  if(tipoSelecionado) adicionarEquipamentoNaMemoria(tipoSelecionado);
+}
+
+function adicionarEquipamentoNaMemoria(tipo) {
+  const novoEquip = {
+    id: Date.now() + Math.random(),
+    tipo: tipo, tag: '', fab: '', ano: '', pmta: '', pop: '', temp: '', categoria: 'Categoria B — Grupo I',
+    itens: {}, fotos: []
+  };
+  
+  // Preenche checklist padrão
+  const lista = ITENS_MAP[tipo] || ITENS_MAP["Caldeira a Vapor"];
+  lista.forEach(it => novoEquip.itens[it] = { status: 'conf', obs: '' });
+  
+  equipamentosAtual.push(novoEquip);
+  renderEquipamentosFormUI();
+  showToast(`${tipo} adicionado à visita!`);
+}
+
+function removerEquipamento(id) {
+  if(confirm("Remover este equipamento da visita?")) {
+    equipamentosAtual = equipamentosAtual.filter(e => e.id !== id);
+    renderEquipamentosFormUI();
+  }
+}
+
+// Atualiza dados básicos do equipamento quando o usuário digita
+function updateEqData(equipId, campo, valor) {
+  const eq = equipamentosAtual.find(e => e.id === equipId);
+  if(eq) eq[campo] = valor;
+}
+
+function setEqItemStatus(equipId, nomeItem, status, btn) {
+  const eq = equipamentosAtual.find(e => e.id === equipId);
+  if(!eq) return;
+  eq.itens[nomeItem].status = status;
+  
+  const row = btn.closest('.item-status-row');
+  row.querySelectorAll('.item-status-btn').forEach(b => b.className = 'item-status-btn');
+  const map = { conf: 's-conf', nconf: 's-nconf', atenc: 's-atenc' };
+  btn.classList.add(map[status]);
+  
+  // Auto calcula resultado da visita inteira
+  let temNconf = false; let temAtenc = false;
+  equipamentosAtual.forEach(e => {
+      Object.values(e.itens).forEach(v => {
+          if(v.status === 'nconf') temNconf = true;
+          if(v.status === 'atenc') temAtenc = true;
+      });
+  });
+  if(temNconf) setResultado('reprovado');
+  else if(temAtenc) setResultado('ressalva');
+  else setResultado('aprovado');
+}
+
+// ── FOTOS POR EQUIPAMENTO ──
+function triggerFotoUpload(equipId) {
+  const input = document.createElement('input');
+  input.type = 'file'; input.accept = 'image/*'; input.capture = 'environment';
+  input.onchange = (e) => processarFotoEquip(e, equipId);
+  input.click();
+}
+
+function processarFotoEquip(event, equipId) {
+  const file = event.target.files[0];
+  if(!file) return;
+  const eq = equipamentosAtual.find(e => e.id === equipId);
+  if(!eq) return;
+
+  showToast('Comprimindo foto...');
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const MAX_WIDTH = 600; 
+      let width = img.width; let height = img.height;
+      if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+      canvas.width = width; canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      eq.fotos.push({ id: Date.now() + Math.random(), base64: canvas.toDataURL('image/jpeg', 0.5), nota: '' });
+      renderEquipamentosFormUI();
+    }
+    img.src = e.target.result;
+  }
+  reader.readAsDataURL(file);
+}
+
+function removerFotoEquip(equipId, fotoId) {
+  const eq = equipamentosAtual.find(e => e.id === equipId);
+  if(eq) { eq.fotos = eq.fotos.filter(f => f.id !== fotoId); renderEquipamentosFormUI(); }
+}
+
+// ── RENDERIZAÇÃO DO FORMULÁRIO ──
+function renderEquipamentosFormUI() {
+  const container = document.getElementById('container-equipamentos');
+  
+  if(equipamentosAtual.length === 0) {
+      container.innerHTML = `<div class="empty-state" style="padding: 20px;">Nenhum equipamento adicionado nesta visita.</div>`;
+      return;
+  }
+
+  container.innerHTML = equipamentosAtual.map((eq, index) => {
+    
+    // Renderiza o checklist do equipamento
+    let checklistHtml = Object.keys(eq.itens).map(nome => {
+        const itemObj = eq.itens[nome];
+        const slug = nome.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
+        const uid = `${eq.id}-${slug}`;
+        const mapClasses = { conf: 0, nconf: 1, atenc: 2 };
+        const activeIdx = mapClasses[itemObj.status] ?? 0;
+        
+        return `
+        <div class="item-insp">
+          <div class="item-insp-name">${nome}</div>
+          <div class="item-status-row">
+            <button class="item-status-btn ${activeIdx===0?'s-conf':''}" onclick="setEqItemStatus(${eq.id},'${nome}','conf',this)">✓ Conf.</button>
+            <button class="item-status-btn ${activeIdx===1?'s-nconf':''}" onclick="setEqItemStatus(${eq.id},'${nome}','nconf',this)">✗ N.Conf.</button>
+            <button class="item-status-btn ${activeIdx===2?'s-atenc':''}" onclick="setEqItemStatus(${eq.id},'${nome}','atenc',this)">⚠ Aten.</button>
+          </div>
+          <div class="item-obs">
+            <input id="obs-${uid}" value="${itemObj.obs}" placeholder="Observação..." oninput="equipamentosAtual.find(e=>e.id===${eq.id}).itens['${nome}'].obs=this.value" />
+            <button id="btn-mic-${uid}" class="btn-mic" onclick="gravarAudio('obs-${uid}', {equipId: ${eq.id}, itemId: '${nome}', tipo: 'item'})">🎤</button>
+          </div>
+        </div>`;
+    }).join('');
+
+    // Renderiza as fotos
+    let fotosHtml = eq.fotos.map(f => `
+        <div class="foto-card">
+          <img src="${f.base64}" class="foto-preview" />
+          <div class="item-obs">
+            <input id="nota-foto-${f.id}" value="${f.nota}" placeholder="Legenda..." oninput="equipamentosAtual.find(e=>e.id===${eq.id}).fotos.find(x=>x.id===${f.id}).nota=this.value" />
+            <button id="btn-mic-foto-${f.id}" class="btn-mic" onclick="gravarAudio('nota-foto-${f.id}', {equipId: ${eq.id}, fotoId: ${f.id}, tipo: 'foto'})">🎤</button>
+          </div>
+          <button class="btn-remover-foto" onclick="removerFotoEquip(${eq.id}, ${f.id})">🗑️ Remover Foto</button>
+        </div>
+    `).join('');
+
+    return `
+    <div class="equipamento-block">
+      <div class="equipamento-header">
+        <div class="equipamento-title">Equip ${index + 1}: ${eq.tipo}</div>
+        <button class="btn-remover-equip" onclick="removerEquipamento(${eq.id})">Remover</button>
+      </div>
+      
+      <div class="grid-2" style="margin-bottom:10px;">
+        <div class="field"><label>TAG</label><input value="${eq.tag}" oninput="updateEqData(${eq.id}, 'tag', this.value)" placeholder="ex: CAL-01" /></div>
+        <div class="field"><label>Fabricante</label><input value="${eq.fab}" oninput="updateEqData(${eq.id}, 'fab', this.value)" /></div>
+      </div>
+      <div class="grid-3" style="margin-bottom:10px;">
+        <div class="field"><label>Ano</label><input type="number" value="${eq.ano}" oninput="updateEqData(${eq.id}, 'ano', this.value)" /></div>
+        <div class="field"><label>PMTA</label><input value="${eq.pmta}" oninput="updateEqData(${eq.id}, 'pmta', this.value)" /></div>
+        <div class="field"><label>P. Oper</label><input value="${eq.pop}" oninput="updateEqData(${eq.id}, 'pop', this.value)" /></div>
+      </div>
+      
+      <div class="form-section-title" style="margin-top:20px;">Checklist</div>
+      ${checklistHtml}
+      
+      <div class="form-section-title" style="margin-top:20px;">Fotos do Equipamento</div>
+      <button class="btn-ghost" style="width:100%; margin-bottom:10px; font-size:12px; padding:10px;" onclick="triggerFotoUpload(${eq.id})">📷 Adicionar Foto</button>
+      ${fotosHtml}
+    </div>
+    `;
+  }).join('');
+}
+
+// ── SALVAMENTO ──
+function setResultado(val) {
+  resultadoAtual = val;
+  document.getElementById('rb-conf').className    = 'resultado-btn' + (val==='aprovado' ? ' sel-conf' : '');
+  document.getElementById('rb-ressalva').className = 'resultado-btn' + (val==='ressalva' ? ' sel-ressalva' : '');
+  document.getElementById('rb-reprov').className  = 'resultado-btn' + (val==='reprovado' ? ' sel-reprov' : '');
+}
+
+function setDataHoje() {
+  const h = new Date().toISOString().split('T')[0];
+  document.getElementById('f-dt').value = h;
+  const p = new Date(); p.setFullYear(p.getFullYear() + 1);
+  document.getElementById('f-dtprox').value = p.toISOString().split('T')[0];
+  document.getElementById('f-numlaudo').value = `LAU-${String(Math.floor(Math.random()*9000)+1000)}`;
+}
+
+function salvarInspecao() {
+  const empresa = document.getElementById('f-empresa').value.trim();
+  if (!empresa) return showToast('Informe a razão social da empresa');
+  if (equipamentosAtual.length === 0) return showToast('Adicione pelo menos 1 equipamento.');
+
+  const insp = {
+    id: editandoId || Date.now(), empresa, cnpj: document.getElementById('f-cnpj').value,
+    resp: document.getElementById('f-resp').value, dtInsp: document.getElementById('f-dt').value,
+    dtProx: document.getElementById('f-dtprox').value, numLaudo: document.getElementById('f-numlaudo').value,
+    eng: document.getElementById('f-eng').value, crea: document.getElementById('f-crea').value,
+    parecer: document.getElementById('f-parecer').value, resultado: resultadoAtual,
+    equipamentos: JSON.parse(JSON.stringify(equipamentosAtual)) // Salva o array de equipamentos
+  };
+
+  if (editandoId) inspecoes = inspecoes.map(i => i.id === editandoId ? insp : i);
+  else inspecoes.unshift(insp);
+  
+  try {
+    localStorage.setItem('inspecoes', JSON.stringify(inspecoes));
+    showToast('Visita salva com sucesso!');
+    carregarOpcoesFiltro();
+    editandoId = insp.id; 
+    document.getElementById('btn-pdf').style.display = 'block';
+    setTimeout(() => { goHome(); renderLista(); renderPainel(); }, 1000);
+  } catch(e) { showToast('⚠️ Limite de memória atingido. Apague fotos antigas.'); }
+}
+
+// ── RENDERIZAÇÃO HOME E DASHBOARD ──
 function carregarOpcoesFiltro() {
   const clientes = [...new Set(inspecoes.map(i => i.empresa))].filter(e => e && e.trim() !== '').sort();
   const options = '<option value="Todos">Todos os Clientes</option>' + clientes.map(c => `<option value="${c.replace(/"/g, '&quot;')}">${c}</option>`).join('');
@@ -376,149 +578,22 @@ function sincronizarFiltros(valorSelecionado) {
   renderPainel();
 }
 
-// ── FOTOS COM COMPRESSÃO ──
-function processarFoto(event) {
-  const file = event.target.files[0];
-  if(!file) return;
-  
-  showToast('Processando e comprimindo foto...');
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const img = new Image();
-    img.onload = function() {
-      const canvas = document.createElement('canvas');
-      const MAX_WIDTH = 600; 
-      let width = img.width;
-      let height = img.height;
-      if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-      canvas.width = width; canvas.height = height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, width, height);
-      
-      const dataUrl = canvas.toDataURL('image/jpeg', 0.5); 
-      fotosInspecao.push({ id: Date.now(), base64: dataUrl, nota: '' });
-      renderFotosForm();
-    }
-    img.src = e.target.result;
-  }
-  reader.readAsDataURL(file);
-}
-
-function renderFotosForm() {
-  document.getElementById('fotos-list').innerHTML = fotosInspecao.map(f => `
-    <div class="foto-card">
-      <img src="${f.base64}" class="foto-preview" />
-      <div class="item-obs">
-        <input id="nota-foto-${f.id}" value="${f.nota}" placeholder="Legenda da foto..." oninput="setFotoNota(${f.id}, this.value)" />
-        <button id="btn-mic-foto-${f.id}" class="btn-mic" onclick="gravarAudio('nota-foto-${f.id}', 'foto-${f.id}')">🎤</button>
-      </div>
-      <button class="btn-remover-foto" onclick="removerFoto(${f.id})">🗑️ Remover Foto</button>
-    </div>
-  `).join('');
-}
-
-function setFotoNota(id, val) { const f = fotosInspecao.find(x => x.id === id); if(f) f.nota = val; }
-function removerFoto(id) { fotosInspecao = fotosInspecao.filter(x => x.id !== id); renderFotosForm(); }
-
-// ── RENDER ITENS CHECKLIST ──
-function renderItens(tipo) {
-  const lista = ITENS_MAP[tipo] || ITENS_MAP["Caldeira a Vapor"];
-  itensStatus = {};
-  lista.forEach(it => itensStatus[it] = { status: 'conf', obs: '' });
-
-  document.getElementById('itens-list').innerHTML = lista.map(nome => {
-    const slug = nome.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
-    return `
-    <div class="item-insp" id="item-${slug}">
-      <div class="item-insp-name">${nome}</div>
-      <div class="item-status-row">
-        <button class="item-status-btn s-conf" onclick="setItemStatus('${nome}','conf',this)">✓ Conf.</button>
-        <button class="item-status-btn"        onclick="setItemStatus('${nome}','nconf',this)">✗ N.Conf.</button>
-        <button class="item-status-btn"        onclick="setItemStatus('${nome}','atenc',this)">⚠ Aten.</button>
-      </div>
-      <div class="item-obs">
-        <input id="obs-${slug}" placeholder="Observação..." oninput="itensStatus['${nome}'].obs=this.value" />
-        <button id="btn-mic-${slug}" class="btn-mic" onclick="gravarAudio('obs-${slug}', '${nome}')">🎤</button>
-      </div>
-    </div>`
-  }).join('');
-}
-
-function setItemStatus(nome, status, btn) {
-  itensStatus[nome].status = status;
-  const row = btn.closest('.item-status-row');
-  row.querySelectorAll('.item-status-btn').forEach(b => b.className = 'item-status-btn');
-  const map = { conf: 's-conf', nconf: 's-nconf', atenc: 's-atenc' };
-  btn.classList.add(map[status]);
-  
-  const vals = Object.values(itensStatus).map(v => v.status);
-  if (vals.includes('nconf')) setResultado('reprovado');
-  else if (vals.includes('atenc')) setResultado('ressalva');
-  else setResultado('aprovado');
-}
-
-function setResultado(val) {
-  resultadoAtual = val;
-  document.getElementById('rb-conf').className    = 'resultado-btn' + (val==='aprovado' ? ' sel-conf' : '');
-  document.getElementById('rb-ressalva').className = 'resultado-btn' + (val==='ressalva' ? ' sel-ressalva' : '');
-  document.getElementById('rb-reprov').className  = 'resultado-btn' + (val==='reprovado' ? ' sel-reprov' : '');
-}
-
-function setDataHoje() {
-  const h = new Date().toISOString().split('T')[0];
-  document.getElementById('f-dt').value = h;
-  const p = new Date(); p.setFullYear(p.getFullYear() + 1);
-  document.getElementById('f-dtprox').value = p.toISOString().split('T')[0];
-  document.getElementById('f-numlaudo').value = `LAU-NR13-${String(Math.floor(Math.random()*900)+100).padStart(3,'0')}`;
-}
-
-// ── SALVAR INVESPEÇÃO ──
-function salvarInspecao() {
-  const empresa = document.getElementById('f-empresa').value.trim();
-  if (!empresa) return showToast('Informe a razão social da empresa');
-
-  const insp = {
-    id: editandoId || Date.now(), empresa, cnpj: document.getElementById('f-cnpj').value,
-    resp: document.getElementById('f-resp').value, tipo: document.getElementById('f-tipo').value,
-    tag: document.getElementById('f-tag').value || '—', fab: document.getElementById('f-fab').value,
-    ano: document.getElementById('f-ano').value, pmta: document.getElementById('f-pmta').value,
-    pop: document.getElementById('f-pop').value, temp: document.getElementById('f-temp').value,
-    categoria: document.getElementById('f-cat').value, dtInsp: document.getElementById('f-dt').value,
-    dtProx: document.getElementById('f-dtprox').value, numLaudo: document.getElementById('f-numlaudo').value,
-    eng: document.getElementById('f-eng').value, crea: document.getElementById('f-crea').value,
-    parecer: document.getElementById('f-parecer').value, resultado: resultadoAtual,
-    itens: JSON.parse(JSON.stringify(itensStatus)), fotos: JSON.parse(JSON.stringify(fotosInspecao))
-  };
-
-  if (editandoId) inspecoes = inspecoes.map(i => i.id === editandoId ? insp : i);
-  else inspecoes.unshift(insp);
-  
-  try {
-    localStorage.setItem('inspecoes', JSON.stringify(inspecoes));
-    showToast('Salvo com sucesso!');
-    carregarOpcoesFiltro();
-    editandoId = insp.id; 
-    document.getElementById('btn-pdf').style.display = 'block';
-    setTimeout(() => { goHome(); renderLista(); renderPainel(); }, 1000);
-  } catch(e) { showToast('⚠️ Limite de memória atingido. Apague fotos antigas.'); }
-}
-
-// ── RENDERIZAÇÃO DAS LISTAS E KPIS ──
 function renderLista() {
   const filtro = document.getElementById('filtro-home').value;
   const el = document.getElementById('insp-list');
   let filtrada = filtro === 'Todos' ? inspecoes : inspecoes.filter(i => i.empresa === filtro);
 
-  if (!filtrada.length) { el.innerHTML = '<div class="empty-state">Nenhuma inspeção.</div>'; return; }
+  if (!filtrada.length) { el.innerHTML = '<div class="empty-state">Nenhuma visita registrada.</div>'; return; }
 
   el.innerHTML = filtrada.map(i => {
     const c = i.resultado === 'aprovado' ? '#22c55e' : (i.resultado === 'reprovado' ? '#ef4444' : '#f59e0b');
     const dt = i.dtInsp ? i.dtInsp.split('-').reverse().join('/') : '—';
+    const numEq = i.equipamentos ? i.equipamentos.length : 0;
     return `<div class="insp-card" onclick="editarInspecao(${i.id})">
       <div class="insp-card-dot" style="background:${c}"></div>
       <div class="insp-card-body">
         <div class="insp-card-empresa">${i.empresa}</div>
-        <div class="insp-card-meta">${i.tipo} · ${i.tag} · ${dt}</div>
+        <div class="insp-card-meta">Laudo: ${i.numLaudo} · ${numEq} Equip(s) · ${dt}</div>
       </div>
     </div>`;
   }).join('');
@@ -528,18 +603,28 @@ function renderPainel() {
   const filtro = document.getElementById('filtro-painel').value;
   let filtrada = filtro === 'Todos' ? inspecoes : inspecoes.filter(i => i.empresa === filtro);
   
-  // Lógica Black Belt: Cálculo de Custo Evitado
-  const crit = filtrada.filter(i => i.resultado === 'reprovado').length;
-  const atenc = filtrada.filter(i => i.resultado === 'ressalva').length;
+  // Cálculo de Custo Evitado (Avalia CADA equipamento individualmente na visita)
+  let critTotal = 0; let atencTotal = 0;
+  filtrada.forEach(insp => {
+     (insp.equipamentos || []).forEach(eq => {
+         let reprov = false; let ressalva = false;
+         Object.values(eq.itens).forEach(v => {
+            if(v.status === 'nconf') reprov = true;
+            else if(v.status === 'atenc') ressalva = true;
+         });
+         if(reprov) critTotal++;
+         else if(ressalva) atencTotal++;
+     });
+  });
   
-  // Estimativa de falha catastrófica evitada (Ex: R$ 55k crítico, R$ 12.5k ressalva)
-  const custoEvitado = (crit * 55000) + (atenc * 12500);
+  // Ex: 55k por falha de equipamento crítico prevenida, 12.5k por ressalva prevenida antes de quebrar
+  const custoEvitado = (critTotal * 55000) + (atencTotal * 12500);
   
-  document.getElementById('p-crit').textContent  = crit;
-  document.getElementById('p-atenc').textContent = atenc;
+  document.getElementById('p-crit').textContent  = critTotal;
+  document.getElementById('p-atenc').textContent = atencTotal;
   document.getElementById('p-economia').textContent = custoEvitado.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL', maximumFractionDigits: 0});
   
-  // Próximas Inspeções (Vencimentos)
+  // Próximas Visitas (Vencimentos)
   const hoje = new Date();
   const proximas = [...filtrada]
       .filter(i => i.dtProx)
@@ -559,23 +644,11 @@ function renderPainel() {
           
           return `<div class="insp-card" onclick="editarInspecao(${i.id})">
             <div class="insp-card-dot" style="background:${cor}"></div>
-            <div class="insp-card-body"><div class="insp-card-empresa">${i.tag} - ${i.empresa}</div><div class="insp-card-meta">Vence em: ${i.dtProx.split('-').reverse().join('/')}</div></div>
+            <div class="insp-card-body"><div class="insp-card-empresa">${i.empresa}</div><div class="insp-card-meta">Vence em: ${i.dtProx.split('-').reverse().join('/')}</div></div>
             <span class="insp-card-status status-neutro" style="color:${cor}; border:1px solid ${cor}">${statusTxt}</span>
           </div>`;
       }).join('');
   }
-
-  // Lista Geral Filtrada
-  const el = document.getElementById('painel-list');
-  if(!filtrada.length) { el.innerHTML = '<div class="empty-state">Vazio.</div>'; return; }
-  
-  el.innerHTML = filtrada.map(i => {
-    const c = i.resultado === 'aprovado' ? '#22c55e' : (i.resultado === 'reprovado' ? '#ef4444' : '#f59e0b');
-    return `<div class="insp-card" onclick="editarInspecao(${i.id})">
-      <div class="insp-card-dot" style="background:${c}"></div>
-      <div class="insp-card-body"><div class="insp-card-empresa">${i.empresa} - ${i.tag}</div><div class="insp-card-meta">${i.tipo}</div></div>
-    </div>`;
-  }).join('');
 }
 
 function editarInspecao(id) {
@@ -583,74 +656,129 @@ function editarInspecao(id) {
   if (!insp) return;
   editandoId = id;
   
-  ['empresa','cnpj','resp','tipo','tag','fab','ano','pmta','pop','temp','cat','dt','dtprox','numlaudo','eng','crea','parecer']
-    .forEach(k => document.getElementById(`f-${k}`).value = insp[k === 'dt' ? 'dtInsp' : (k === 'dtprox' ? 'dtProx' : (k === 'cat' ? 'categoria' : k))] || '');
+  ['empresa','cnpj','resp','dt','dtprox','numlaudo','eng','crea','parecer']
+    .forEach(k => {
+        let val = insp[k === 'dt' ? 'dtInsp' : (k === 'dtprox' ? 'dtProx' : k)] || '';
+        const el = document.getElementById(`f-${k}`);
+        if(el) el.value = val;
+    });
   
-  renderItens(insp.tipo);
-  if (insp.itens) Object.entries(insp.itens).forEach(([n, v]) => {
-    itensStatus[n] = v;
-    const s = n.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
-    const el = document.getElementById(`item-${s}`);
-    if (el) {
-      el.querySelectorAll('.item-status-btn').forEach(b => b.className = 'item-status-btn');
-      el.querySelectorAll('.item-status-btn')[v.status==='conf'?0:(v.status==='nconf'?1:2)].classList.add(`s-${v.status}`);
-      if (v.obs) el.querySelector('input').value = v.obs;
-    }
-  });
-
-  fotosInspecao = insp.fotos ? JSON.parse(JSON.stringify(insp.fotos)) : [];
-  renderFotosForm();
+  // Carrega os equipamentos
+  equipamentosAtual = JSON.parse(JSON.stringify(insp.equipamentos || []));
+  renderEquipamentosFormUI();
+  
   setResultado(insp.resultado);
-  document.getElementById('form-title').textContent = 'Editar';
+  document.getElementById('form-title').textContent = 'Editar Visita';
   document.getElementById('btn-pdf').style.display = 'block'; 
   showPage('form');
 }
 
-// ── NOVO DESIGN DE PDF EXECUTIVO ──
-function gerarPDF() {
+// ── QR CODE GENERATOR (PROMISE) ──
+function generateQRCodeBase64(texto) {
+    return new Promise((resolve) => {
+        const div = document.getElementById('qr-code-generator');
+        div.innerHTML = ''; // Limpa anterior
+        new QRCode(div, { text: texto, width: 128, height: 128, correctLevel : QRCode.CorrectLevel.L });
+        // Aguarda renderizar o canvas
+        setTimeout(() => {
+            const canvas = div.querySelector('canvas');
+            if(canvas) resolve(canvas.toDataURL('image/png'));
+            else resolve(''); // Fallback
+        }, 150);
+    });
+}
+
+// ── PDF EXECUTIVO PROFISSIONAL (COM LOOP DE EQUIPAMENTOS) ──
+async function gerarPDF() {
   if (!editandoId) return showToast('Salve antes de gerar o PDF');
   const insp = inspecoes.find(i => i.id === editandoId);
-  showToast('Montando Relatório Oficial...');
+  showToast('Gerando Relatório Master...');
 
-  let itensHtml = '';
-  let rowCount = 0;
-  Object.entries(insp.itens).forEach(([n, v]) => {
-      let st = v.status === 'conf' ? 'CONFORME' : (v.status === 'nconf' ? 'NÃO CONFORME' : 'ATENÇÃO');
-      let color = v.status === 'conf' ? '#166534' : (v.status === 'nconf' ? '#991b1b' : '#9a3412');
-      let bgCor = rowCount % 2 === 0 ? '#f9fafb' : '#ffffff';
-      itensHtml += `<tr style="background-color: ${bgCor};"><td style="border:1px solid #e5e7eb; padding:8px 12px; color:#374151;">${n}</td><td style="border:1px solid #e5e7eb; padding:8px 12px; color:${color}; font-weight:bold; font-size:11px;">${st}</td><td style="border:1px solid #e5e7eb; padding:8px 12px; color:#4b5563;">${v.obs||'-'}</td></tr>`;
-      rowCount++;
+  // Gera QR Code base64
+  const qrTexto = `LAUDO: ${insp.numLaudo}\nEMPRESA: ${insp.empresa}\nDATA: ${insp.dtInsp}\nSTATUS: ${insp.resultado.toUpperCase()}`;
+  const qrBase64 = await generateQRCodeBase64(qrTexto);
+
+  // Loop montando cada equipamento no PDF
+  let equipamentosHtml = '';
+  
+  (insp.equipamentos || []).forEach((eq, index) => {
+      // Monta Checklist do equipamento
+      let itensHtml = ''; let rowCount = 0;
+      Object.entries(eq.itens).forEach(([n, v]) => {
+          let st = v.status === 'conf' ? 'CONFORME' : (v.status === 'nconf' ? 'NÃO CONFORME' : 'ATENÇÃO');
+          let color = v.status === 'conf' ? '#166534' : (v.status === 'nconf' ? '#991b1b' : '#9a3412');
+          let bgCor = rowCount % 2 === 0 ? '#f9fafb' : '#ffffff';
+          itensHtml += `<tr style="background-color: ${bgCor};"><td style="border:1px solid #e5e7eb; padding:8px 12px; color:#374151;">${n}</td><td style="border:1px solid #e5e7eb; padding:8px 12px; color:${color}; font-weight:bold; font-size:11px;">${st}</td><td style="border:1px solid #e5e7eb; padding:8px 12px; color:#4b5563;">${v.obs||'-'}</td></tr>`;
+          rowCount++;
+      });
+
+      // Monta Fotos do equipamento
+      let fotosHtml = '';
+      if(eq.fotos && eq.fotos.length > 0) {
+        fotosHtml = `<h4 style="margin-top:20px; font-size:14px; color:#1e3a8a;">Registro Fotográfico - ${eq.tag}</h4><div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px;">`;
+        eq.fotos.forEach(f => {
+          fotosHtml += `<div style="width: 48%; margin-bottom: 15px; page-break-inside: avoid; border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; background:#f9fafb;">
+            <img src="${f.base64}" style="width: 100%; height: 200px; object-fit: cover; display:block;">
+            <div style="padding: 10px;"><p style="font-size: 11px; margin:0; color: #374151;"><b>Nota:</b> ${f.nota || '-'}</p></div>
+          </div>`;
+        });
+        fotosHtml += `</div>`;
+      }
+
+      equipamentosHtml += `
+      <div style="page-break-before: ${index > 0 ? 'always' : 'auto'}; padding-top: 15px;">
+          <div style="background-color: #1e3a8a; color: white; padding: 10px 15px; border-radius: 6px 6px 0 0; font-weight: bold; font-size: 14px;">
+             EQUIPAMENTO ${index + 1}: ${eq.tipo.toUpperCase()}
+          </div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 20px; border: 1px solid #e5e7eb;">
+            <tr>
+              <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>TAG:</b> ${eq.tag || '-'}</td>
+              <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>Fabricante:</b> ${eq.fab||'-'}</td>
+              <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>Categoria:</b> ${eq.categoria}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>Ano Fab.:</b> ${eq.ano||'-'}</td>
+              <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>PMTA:</b> ${eq.pmta||'-'}</td>
+              <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>P. Operacional:</b> ${eq.pop||'-'}</td>
+            </tr>
+          </table>
+
+          <h4 style="font-size:13px; color:#374151; margin-bottom:10px;">Checklist de Inspeção</h4>
+          <table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 20px;">
+            <thead><tr style="background-color: #f3f4f6; color: #111827;">
+                <th style="padding:8px 12px; text-align:left; width: 35%; border:1px solid #e5e7eb;">Item Verificado</th>
+                <th style="padding:8px 12px; text-align:left; width: 15%; border:1px solid #e5e7eb;">Status</th>
+                <th style="padding:8px 12px; text-align:left; width: 50%; border:1px solid #e5e7eb;">Observações</th>
+            </tr></thead>
+            <tbody>${itensHtml}</tbody>
+          </table>
+          ${fotosHtml}
+      </div>
+      `;
   });
-
-  let fotosHtml = '';
-  if(insp.fotos && insp.fotos.length > 0) {
-    fotosHtml = `<h3 style="margin-top:30px; border-bottom:2px solid #1e3a8a; padding-bottom:5px; color:#1e3a8a; font-size:16px;">Registro Fotográfico</h3><div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px;">`;
-    insp.fotos.forEach(f => {
-      fotosHtml += `<div style="width: 48%; margin-bottom: 15px; page-break-inside: avoid; border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; background:#f9fafb;">
-        <img src="${f.base64}" style="width: 100%; height: 200px; object-fit: cover; display:block;">
-        <div style="padding: 10px;"><p style="font-size: 11px; margin:0; color: #374151;"><b>Observação:</b> ${f.nota || '-'}</p></div>
-      </div>`;
-    });
-    fotosHtml += `</div>`;
-  }
 
   const corStatus = insp.resultado === 'aprovado' ? '#22c55e' : (insp.resultado === 'reprovado' ? '#ef4444' : '#f59e0b');
 
   const htmlParaPdf = `
     <div style="padding: 40px; background: #fff; color: #111827; font-family: 'Segoe UI', Helvetica, Arial, sans-serif; width: 100%; box-sizing: border-box;">
       
-      <div style="border-bottom: 3px solid #1e3a8a; padding-bottom: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end;">
-         <div>
-            <h1 style="margin: 0; color: #1e3a8a; font-size: 24px; text-transform: uppercase; letter-spacing: 1px;">Laudo NR-13</h1>
-            <p style="margin: 4px 0 0 0; color: #4b5563; font-size: 13px; font-weight: bold;">Gestão Estratégica de Ativos</p>
-         </div>
-         <div style="text-align: right;">
-            <p style="margin: 0; font-weight: bold; font-size: 16px; color: #111827;">Nº ${insp.numLaudo}</p>
-            <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 13px;">Data: ${insp.dtInsp?insp.dtInsp.split('-').reverse().join('/'):''}</p>
-         </div>
-      </div>
+      <table style="width: 100%; border-bottom: 3px solid #1e3a8a; padding-bottom: 20px; margin-bottom: 30px;">
+        <tr>
+           <td style="vertical-align: bottom;">
+              <h1 style="margin: 0; color: #1e3a8a; font-size: 24px; text-transform: uppercase; letter-spacing: 1px;">Relatório de Visita Técnica</h1>
+              <p style="margin: 4px 0 0 0; color: #4b5563; font-size: 13px; font-weight: bold;">Gestão Estratégica de Ativos - NR-13</p>
+           </td>
+           <td style="text-align: right; vertical-align: bottom;">
+              <p style="margin: 0; font-weight: bold; font-size: 16px; color: #111827;">Nº ${insp.numLaudo}</p>
+              <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 13px;">Data: ${insp.dtInsp?insp.dtInsp.split('-').reverse().join('/'):''}</p>
+           </td>
+           <td style="width: 80px; text-align: right; padding-left: 15px;">
+              ${qrBase64 ? `<img src="${qrBase64}" style="width: 70px; height: 70px; border: 1px solid #e5e7eb; padding: 2px;">` : ''}
+           </td>
+        </tr>
+      </table>
 
-      <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 25px; border: 1px solid #e5e7eb;">
+      <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 30px; border: 1px solid #e5e7eb;">
         <tr>
           <td style="padding:10px 12px; background:#f3f4f6; width: 15%; color:#374151;"><b>Empresa:</b></td>
           <td style="padding:10px 12px; border-right: 1px solid #e5e7eb; width: 45%;">${insp.empresa}</td>
@@ -659,60 +787,28 @@ function gerarPDF() {
         </tr>
       </table>
 
-      <h3 style="border-bottom: 2px solid #1e3a8a; padding-bottom:5px; font-size:16px; color:#1e3a8a; margin-bottom:15px;">Dados do Equipamento</h3>
-      <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 30px; border: 1px solid #e5e7eb;">
-        <tr>
-          <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>Tipo:</b> ${insp.tipo}</td>
-          <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>TAG:</b> ${insp.tag}</td>
-          <td style="padding:8px 12px; border:1px solid #e5e7eb; background:#f9fafb;"><b>Categoria:</b> ${insp.categoria}</td>
-        </tr>
-        <tr>
-          <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>Fabricante:</b> ${insp.fab||'-'}</td>
-          <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>Ano Fab.:</b> ${insp.ano||'-'}</td>
-          <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>Próx. Insp.:</b> ${insp.dtProx?insp.dtProx.split('-').reverse().join('/'):'-'}</td>
-        </tr>
-        <tr>
-          <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>PMTA:</b> ${insp.pmta||'-'} kgf/cm²</td>
-          <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>Pressão Oper.:</b> ${insp.pop||'-'} kgf/cm²</td>
-          <td style="padding:8px 12px; border:1px solid #e5e7eb;"><b>Temperatura:</b> ${insp.temp||'-'}</td>
-        </tr>
-      </table>
+      ${equipamentosHtml}
 
-      <h3 style="border-bottom: 2px solid #1e3a8a; padding-bottom:5px; font-size:16px; color:#1e3a8a; margin-bottom:15px;">Checklist de Inspeção Física</h3>
-      <table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 30px;">
-        <thead>
-          <tr style="background-color: #1e3a8a; color: white;">
-            <th style="padding:10px 12px; text-align:left; width: 35%;">Item Verificado</th>
-            <th style="padding:10px 12px; text-align:left; width: 15%;">Status</th>
-            <th style="padding:10px 12px; text-align:left; width: 50%;">Observações</th>
-          </tr>
-        </thead>
-        <tbody>${itensHtml}</tbody>
-      </table>
-
-      ${fotosHtml}
-
-      <div style="page-break-inside: avoid;">
-          <h3 style="border-bottom: 2px solid #1e3a8a; padding-bottom:5px; font-size:16px; color:#1e3a8a; margin-top:30px; margin-bottom:15px;">Parecer Técnico Conclusivo</h3>
-          <p style="font-size:14px; margin-bottom:10px;">Situação Final do Equipamento: <span style="text-transform:uppercase; font-weight:bold; color:${corStatus}; padding: 4px 8px; border-radius: 4px; border: 1px solid ${corStatus}; margin-left: 8px;">${insp.resultado}</span></p>
+      <div style="page-break-inside: avoid; margin-top: 40px;">
+          <h3 style="border-bottom: 2px solid #1e3a8a; padding-bottom:5px; font-size:16px; color:#1e3a8a; margin-bottom:15px;">Parecer Técnico Conclusivo da Visita</h3>
+          <p style="font-size:14px; margin-bottom:10px;">Status de Liberação: <span style="text-transform:uppercase; font-weight:bold; color:${corStatus}; padding: 4px 8px; border-radius: 4px; border: 1px solid ${corStatus}; margin-left: 8px;">${insp.resultado}</span></p>
           <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 15px; font-size: 13px; line-height: 1.6; color: #374151; min-height: 80px;">
-             ${insp.parecer || 'O equipamento foi inspecionado de acordo com as normas vigentes e não apresenta ressalvas adicionais que comprometam sua operação segura no momento.'}
+             ${insp.parecer || 'Equipamentos avaliados conforme normativas de segurança vigentes e liberados para operação.'}
           </div>
           
           <div style="margin-top: 60px; text-align: center; font-size: 13px; color: #111827;">
             <div style="width: 300px; border-top: 1px solid #111827; margin: 0 auto; padding-top: 10px;">
                <p style="margin: 0; font-weight: bold;">${insp.eng || 'Engenheiro Responsável'}</p>
-               <p style="margin: 4px 0 0 0; color: #4b5563;">CREA: ${insp.crea || 'Não informado'}</p>
+               <p style="margin: 4px 0 0 0; color: #4b5563;">CREA: ${insp.crea || '-'}</p>
             </div>
           </div>
       </div>
-
     </div>
   `;
 
   const opt = { 
-    margin: 0, // Tiramos a margem nativa para usar a do HTML e ficar perfeito
-    filename: `Laudo_${insp.tag}_${insp.empresa.replace(/\s+/g,'_')}.pdf`, 
+    margin: 0, 
+    filename: `Relatorio_Visita_${insp.numLaudo}_${insp.empresa.replace(/\s+/g,'_')}.pdf`, 
     image: { type: 'jpeg', quality: 1 }, 
     html2canvas: { scale: 2, useCORS: true }, 
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } 
@@ -723,7 +819,7 @@ function gerarPDF() {
 function showPage(name) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById('page-' + name).classList.add('active'); document.getElementById('topbar-action').style.display = name === 'form' ? 'none' : ''; }
 function navTo(name) { document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); document.getElementById('nav-' + name)?.classList.add('active'); showPage(name); }
 function goHome() { editandoId = null; document.getElementById('btn-pdf').style.display = 'none'; navTo('home'); renderLista(); }
-function novaInspecao() { editandoId = null; document.getElementById('btn-pdf').style.display = 'none'; document.querySelectorAll('.field input, .field textarea').forEach(i => i.value = ''); document.getElementById('f-tipo').value = 'Caldeira a Vapor'; fotosInspecao=[]; renderFotosForm(); renderItens('Caldeira a Vapor'); setResultado('ressalva'); setDataHoje(); showPage('form'); }
+function novaInspecao() { editandoId = null; document.getElementById('btn-pdf').style.display = 'none'; document.querySelectorAll('.field input:not([type="date"]), .field textarea').forEach(i => i.value = ''); equipamentosAtual=[]; renderEquipamentosFormUI(); setResultado('ressalva'); setDataHoje(); showPage('form'); }
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200); }
 </script>
 </body>
