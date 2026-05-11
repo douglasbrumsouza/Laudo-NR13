@@ -37,211 +37,102 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--sans); }
 
-    /* ── LAYOUT ── */
     .app { display: flex; flex-direction: column; height: 100dvh; padding-top: var(--safe-top); padding-bottom: var(--safe-bot); }
 
-    /* ── TOPBAR ── */
-    .topbar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 20px 10px;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg);
-      flex-shrink: 0;
-    }
+    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px 10px; border-bottom: 1px solid var(--border); background: var(--bg); flex-shrink: 0; }
     .topbar-logo { font-size: 15px; font-weight: 700; letter-spacing: -.02em; }
     .topbar-logo span { color: var(--accent2); }
-    .topbar-badge {
-      font-family: var(--mono); font-size: 10px; color: var(--text3);
-      border: 1px solid var(--border2); border-radius: 20px; padding: 3px 10px;
-    }
-    .topbar-btn {
-      background: var(--accent); color: #fff; border: none; border-radius: 8px;
-      font-family: var(--sans); font-size: 12px; font-weight: 600;
-      padding: 7px 14px; cursor: pointer; letter-spacing: .02em;
-    }
+    .topbar-badge { font-family: var(--mono); font-size: 10px; color: var(--text3); border: 1px solid var(--border2); border-radius: 20px; padding: 3px 10px; }
+    .topbar-btn { background: var(--accent); color: #fff; border: none; border-radius: 8px; font-family: var(--sans); font-size: 12px; font-weight: 600; padding: 7px 14px; cursor: pointer; }
 
-    /* ── PAGES ── */
     .pages { flex: 1; overflow: hidden; position: relative; }
     .page { position: absolute; inset: 0; overflow-y: auto; padding: 16px 20px 24px; display: none; }
     .page.active { display: block; }
     .page::-webkit-scrollbar { display: none; }
 
-    /* ── HOME ── */
-    .home-hero {
-      background: linear-gradient(135deg, #0f1f3d 0%, #1a2a4a 100%);
-      border: 1px solid var(--border2); border-radius: var(--radius);
-      padding: 20px; margin-bottom: 16px;
-    }
+    .home-hero { background: linear-gradient(135deg, #0f1f3d 0%, #1a2a4a 100%); border: 1px solid var(--border2); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
     .home-hero-label { font-family: var(--mono); font-size: 10px; color: var(--accent2); letter-spacing: .1em; margin-bottom: 8px; }
     .home-hero-title { font-size: 22px; font-weight: 800; line-height: 1.2; margin-bottom: 6px; }
     .home-hero-sub { font-size: 13px; color: var(--text2); line-height: 1.55; }
 
     .section-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
-
-    .btn-new {
-      width: 100%; background: var(--accent); color: #fff; border: none;
-      border-radius: var(--radius); font-family: var(--sans); font-size: 15px;
-      font-weight: 700; padding: 16px; cursor: pointer; margin-bottom: 16px;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      letter-spacing: -.01em;
-    }
-    .btn-new:active { opacity: .85; }
-
-    .filtro-select {
-      width: 100%; background: var(--bg3); border: 1px solid var(--border2);
-      border-radius: 10px; color: var(--text); font-family: var(--sans);
-      font-size: 14px; padding: 11px 14px; margin-bottom: 16px; outline: none;
-    }
+    .btn-new { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-family: var(--sans); font-size: 15px; font-weight: 700; padding: 16px; cursor: pointer; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .filtro-select { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; color: var(--text); font-family: var(--sans); font-size: 14px; padding: 11px 14px; margin-bottom: 16px; outline: none; }
 
     .insp-list { display: flex; flex-direction: column; gap: 8px; }
-    .insp-card {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 14px 16px;
-      display: flex; align-items: center; gap: 12px; cursor: pointer;
-      transition: border-color .15s;
-    }
-    .insp-card:active { border-color: var(--border2); }
+    .insp-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
     .insp-card-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
     .insp-card-body { flex: 1; min-width: 0; }
     .insp-card-empresa { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .insp-card-meta { font-family: var(--mono); font-size: 11px; color: var(--text2); margin-top: 2px; }
     .insp-card-status { font-family: var(--mono); font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 20px; flex-shrink: 0; }
-    .status-conf   { background: rgba(34,197,94,.12);  color: var(--green); }
-    .status-ressalva { background: rgba(245,158,11,.12); color: var(--yellow); }
-    .status-reprov { background: rgba(239,68,68,.12);  color: var(--red); }
     
+    .status-conf { background: rgba(34,197,94,.12); color: var(--green); }
+    .status-ressalva { background: rgba(245,158,11,.12); color: var(--yellow); }
+    .status-reprov { background: rgba(239,68,68,.12); color: var(--red); }
     .empty-state { text-align: center; padding: 40px 20px; color: var(--text3); font-size: 13px; }
-    .empty-icon { font-size: 36px; margin-bottom: 10px; }
 
-    /* ── FORM ── */
     .form-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
-    .form-back {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 13px; color: var(--text2); cursor: pointer; margin-bottom: 14px;
-      background: none; border: none; font-family: var(--sans);
-    }
-    .form-back:active { opacity: .7; }
+    .form-back { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text2); cursor: pointer; margin-bottom: 14px; background: none; border: none; font-family: var(--sans); }
     .form-title { font-size: 20px; font-weight: 800; }
     .form-subtitle { font-size: 13px; color: var(--text2); margin-top: 4px; }
-    .btn-pdf {
-      background: var(--bg2); color: var(--accent2); border: 1px solid var(--border2);
-      border-radius: 8px; padding: 8px 12px; font-size: 12px; font-weight: 600;
-      cursor: pointer; display: none; font-family: var(--sans); margin-top: 25px;
-    }
+    .btn-pdf { background: var(--bg2); color: var(--accent2); border: 1px solid var(--border2); border-radius: 8px; padding: 8px 12px; font-size: 12px; font-weight: 600; cursor: pointer; display: none; margin-top: 25px; }
 
     .form-section { margin-bottom: 20px; }
-    .form-section-title {
-      font-family: var(--mono); font-size: 10px; color: var(--text3);
-      letter-spacing: .1em; text-transform: uppercase;
-      margin-bottom: 10px; padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
-    }
+    .form-section-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
     .field { margin-bottom: 12px; }
-    .field label { display: block; font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 5px; letter-spacing: .03em; }
-    .field input, .field select, .field textarea {
-      width: 100%; background: var(--bg3); border: 1px solid var(--border2);
-      border-radius: 10px; color: var(--text); font-family: var(--sans);
-      font-size: 14px; padding: 11px 14px; outline: none;
-      -webkit-appearance: none; appearance: none;
-    }
-    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); }
+    .field label { display: block; font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 5px; }
+    .field input, .field select, .field textarea { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; color: var(--text); font-family: var(--sans); font-size: 14px; padding: 11px 14px; outline: none; -webkit-appearance: none; }
     .field textarea { min-height: 72px; resize: none; line-height: 1.5; }
-    .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238899bb' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
 
-    /* ── RESULTADO GERAL ── */
     .resultado-row { display: flex; gap: 8px; }
-    .resultado-btn {
-      flex: 1; padding: 10px 6px; font-family: var(--sans); font-size: 12px;
-      font-weight: 600; border-radius: 10px; border: 1.5px solid var(--border2);
-      background: var(--bg3); color: var(--text2); cursor: pointer;
-      transition: all .15s; text-align: center;
-    }
-    .resultado-btn.sel-conf    { background: rgba(34,197,94,.15);  border-color: var(--green);  color: var(--green); }
+    .resultado-btn { flex: 1; padding: 10px 6px; font-family: var(--sans); font-size: 12px; font-weight: 600; border-radius: 10px; border: 1.5px solid var(--border2); background: var(--bg3); color: var(--text2); cursor: pointer; text-align: center; }
+    .resultado-btn.sel-conf { background: rgba(34,197,94,.15); border-color: var(--green); color: var(--green); }
     .resultado-btn.sel-ressalva{ background: rgba(245,158,11,.15); border-color: var(--yellow); color: var(--yellow); }
-    .resultado-btn.sel-reprov  { background: rgba(239,68,68,.15);  border-color: var(--red);    color: var(--red); }
+    .resultado-btn.sel-reprov { background: rgba(239,68,68,.15); border-color: var(--red); color: var(--red); }
 
-    /* ── ITENS NR-13 ── */
-    .item-insp {
-      background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 10px; padding: 12px 14px; margin-bottom: 8px;
-    }
+    .item-insp { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
     .item-insp-name { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
     .item-status-row { display: flex; gap: 6px; }
-    .item-status-btn {
-      flex: 1; padding: 6px 4px; font-size: 11px; font-weight: 600;
-      border-radius: 8px; border: 1px solid var(--border2);
-      background: var(--bg2); color: var(--text3); cursor: pointer;
-      font-family: var(--sans); transition: all .12s;
-    }
-    .item-status-btn.s-conf    { background: rgba(34,197,94,.15);  border-color: var(--green);  color: var(--green); }
-    .item-status-btn.s-nconf   { background: rgba(239,68,68,.15);  border-color: var(--red);    color: var(--red); }
-    .item-status-btn.s-atenc   { background: rgba(245,158,11,.15); border-color: var(--yellow); color: var(--yellow); }
+    .item-status-btn { flex: 1; padding: 6px 4px; font-size: 11px; font-weight: 600; border-radius: 8px; border: 1px solid var(--border2); background: var(--bg2); color: var(--text3); cursor: pointer; }
+    .item-status-btn.s-conf { background: rgba(34,197,94,.15); border-color: var(--green); color: var(--green); }
+    .item-status-btn.s-nconf { background: rgba(239,68,68,.15); border-color: var(--red); color: var(--red); }
+    .item-status-btn.s-atenc { background: rgba(245,158,11,.15); border-color: var(--yellow); color: var(--yellow); }
     
     .item-obs { display: flex; gap: 6px; margin-top: 8px; }
-    .item-obs input {
-      flex: 1; background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 8px; color: var(--text2); font-family: var(--sans);
-      font-size: 12px; padding: 8px 12px; outline: none;
-    }
-    .item-obs input:focus { border-color: var(--accent); }
-    .btn-mic {
-      background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
-      padding: 0 12px; cursor: pointer; color: var(--text); font-size: 14px;
-      display: flex; align-items: center; justify-content: center;
-    }
+    .item-obs input { flex: 1; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; color: var(--text2); font-size: 12px; padding: 8px 12px; outline: none; }
+    
+    .btn-mic { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 0 12px; cursor: pointer; color: var(--text); font-size: 14px; display: flex; align-items: center; justify-content: center; }
     .btn-mic.recording { background: rgba(239,68,68,.2); border-color: var(--red); animation: pulse 1.5s infinite; }
     @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
 
-    /* ── BOTTOM ACTIONS ── */
-    .form-actions {
-      position: sticky; bottom: 0; left: 0; right: 0; padding: 12px 0 0;
-      background: linear-gradient(to top, var(--bg) 80%, transparent);
-      display: flex; gap: 10px; flex-shrink: 0; padding-bottom: calc(var(--safe-bot) + 4px);
-    }
-    .btn-save {
-      flex: 1; background: var(--accent); color: #fff; border: none;
-      border-radius: var(--radius); font-family: var(--sans); font-size: 14px;
-      font-weight: 700; padding: 14px; cursor: pointer;
-    }
-    .btn-ghost {
-      background: var(--bg3); color: var(--text2); border: 1px solid var(--border2);
-      border-radius: var(--radius); font-family: var(--sans); font-size: 14px;
-      font-weight: 600; padding: 14px 18px; cursor: pointer;
-    }
+    /* FOTOS UI */
+    .foto-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 10px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; }
+    .foto-preview { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; background: var(--bg); }
+    .btn-remover-foto { background: rgba(239,68,68,.15); color: var(--red); border: 1px solid var(--red); border-radius: 8px; padding: 6px; font-size: 11px; cursor: pointer; font-weight: bold; text-align: center; }
 
-    /* ── PAINEL ── */
+    .form-actions { position: sticky; bottom: 0; left: 0; right: 0; padding: 12px 0 0; background: linear-gradient(to top, var(--bg) 80%, transparent); display: flex; gap: 10px; flex-shrink: 0; padding-bottom: calc(var(--safe-bot) + 4px); }
+    .btn-save { flex: 1; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-size: 14px; font-weight: 700; padding: 14px; cursor: pointer; }
+    .btn-ghost { background: var(--bg3); color: var(--text2); border: 1px solid var(--border2); border-radius: var(--radius); font-size: 14px; font-weight: 600; padding: 14px 18px; cursor: pointer; }
+
     .painel-kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
     .kpi-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
     .kpi-num { font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
     .kpi-label { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .06em; }
-    .kpi-crit  .kpi-num { color: var(--red); }
+    .kpi-crit .kpi-num { color: var(--red); }
     .kpi-atenc .kpi-num { color: var(--yellow); }
-    .kpi-ok    .kpi-num { color: var(--green); }
+    .kpi-ok .kpi-num { color: var(--green); }
     .kpi-total .kpi-num { color: var(--accent2); }
 
-    /* ── BOTTOM NAV ── */
-    .bottom-nav {
-      display: flex; border-top: 1px solid var(--border);
-      background: var(--bg); flex-shrink: 0; padding-bottom: var(--safe-bot);
-    }
-    .nav-item {
-      flex: 1; display: flex; flex-direction: column; align-items: center;
-      padding: 10px 0 8px; cursor: pointer; gap: 3px;
-      background: none; border: none; color: var(--text3); font-family: var(--sans);
-    }
+    .bottom-nav { display: flex; border-top: 1px solid var(--border); background: var(--bg); flex-shrink: 0; padding-bottom: var(--safe-bot); }
+    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0 8px; cursor: pointer; gap: 3px; background: none; border: none; color: var(--text3); }
     .nav-item.active { color: var(--accent2); }
     .nav-icon { font-size: 20px; line-height: 1; }
-    .nav-label { font-size: 10px; font-weight: 600; letter-spacing: .04em; }
+    .nav-label { font-size: 10px; font-weight: 600; }
 
-    /* ── TOAST ── */
-    .toast {
-      position: fixed; bottom: calc(var(--safe-bot) + 80px); left: 50%; transform: translateX(-50%);
-      background: var(--bg3); border: 1px solid var(--border2); color: var(--text);
-      font-size: 13px; padding: 10px 20px; border-radius: 30px;
-      white-space: nowrap; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 999;
-    }
+    .toast { position: fixed; bottom: calc(var(--safe-bot) + 80px); left: 50%; transform: translateX(-50%); background: var(--bg3); border: 1px solid var(--border2); color: var(--text); font-size: 13px; padding: 10px 20px; border-radius: 30px; white-space: nowrap; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 999; }
     .toast.show { opacity: 1; }
     .scroll-content { padding-bottom: 80px; }
   </style>
@@ -251,7 +142,7 @@
 
   <div class="topbar" id="topbar">
     <div class="topbar-logo">Laudo<span>NR13</span></div>
-    <div class="topbar-badge" id="topbar-badge">v2.1</div>
+    <div class="topbar-badge">v3.0</div>
     <button class="topbar-btn" id="topbar-action" onclick="novaInspecao()">+ Nova</button>
   </div>
 
@@ -261,18 +152,14 @@
       <div class="scroll-content">
         <div class="home-hero">
           <div class="home-hero-label">INSPEÇÕES NR-13</div>
-          <div class="home-hero-title">Laudo inteligente<br/>em campo</div>
-          <div class="home-hero-sub">Registre notas por áudio. Gere laudos profissionais em PDF com filtro por cliente.</div>
+          <div class="home-hero-title">Laudo inteligente</div>
+          <div class="home-hero-sub">Fotos com laudos em PDF e transcrição de áudio.</div>
         </div>
 
-        <button class="btn-new" onclick="novaInspecao()">
-          <span style="font-size:18px">＋</span> Nova Inspeção
-        </button>
+        <button class="btn-new" onclick="novaInspecao()">＋ Nova Inspeção</button>
 
         <div class="section-title">Filtro de Cliente</div>
-        <select id="filtro-home" class="filtro-select" onchange="renderLista()">
-          <option value="Todos">Todos os Clientes</option>
-        </select>
+        <select id="filtro-home" class="filtro-select" onchange="mudarFiltroGlobal(this.value)"></select>
 
         <div class="painel-kpi" id="home-kpis" style="display:none">
           <div class="kpi-card kpi-crit"><div class="kpi-num" id="kpi-crit">0</div><div class="kpi-label">CRÍTICOS</div></div>
@@ -283,10 +170,7 @@
 
         <div class="section-title">Inspeções salvas</div>
         <div class="insp-list" id="insp-list">
-          <div class="empty-state" id="empty-state">
-            <div class="empty-icon">📋</div>
-            Nenhuma inspeção ainda.<br>Toque em "Nova Inspeção" para começar.
-          </div>
+          <div class="empty-state" id="empty-state">Nenhuma inspeção ainda.</div>
         </div>
       </div>
     </div>
@@ -297,9 +181,8 @@
           <div>
             <button class="form-back" onclick="goHome()">← Voltar</button>
             <div class="form-title" id="form-title">Nova inspeção</div>
-            <div class="form-subtitle" id="form-subtitle">Preencha os dados do equipamento</div>
           </div>
-          <button class="btn-pdf" id="btn-pdf" onclick="gerarPDF()">📄 PDF</button>
+          <button class="btn-pdf" id="btn-pdf" onclick="gerarPDF()">📄 Gerar PDF</button>
         </div>
 
         <div class="form-section">
@@ -327,12 +210,12 @@
           </div>
           <div class="grid-2">
             <div class="field"><label>Fabricante</label><input id="f-fab" placeholder="Fabricante" /></div>
-            <div class="field"><label>Ano fabricação</label><input id="f-ano" placeholder="ex: 2015" type="number" /></div>
+            <div class="field"><label>Ano fabricação</label><input id="f-ano" type="number" /></div>
           </div>
           <div class="grid-3">
-            <div class="field"><label>PMTA (kgf/cm²)</label><input id="f-pmta" placeholder="10,5" /></div>
-            <div class="field"><label>P. operação</label><input id="f-pop" placeholder="9,2" /></div>
-            <div class="field"><label>Temperatura</label><input id="f-temp" placeholder="185°C" /></div>
+            <div class="field"><label>PMTA (kgf)</label><input id="f-pmta" /></div>
+            <div class="field"><label>P. op.</label><input id="f-pop" /></div>
+            <div class="field"><label>Temp.</label><input id="f-temp" /></div>
           </div>
           <div class="field">
             <label>Categoria NR-13</label>
@@ -351,12 +234,19 @@
             <div class="field"><label>Data da inspeção</label><input id="f-dt" type="date" /></div>
             <div class="field"><label>Próxima inspeção</label><input id="f-dtprox" type="date" /></div>
           </div>
-          <div class="field"><label>Nº do laudo</label><input id="f-numlaudo" placeholder="LAU-NR13-2026-001" /></div>
+          <div class="field"><label>Nº do laudo</label><input id="f-numlaudo" /></div>
         </div>
 
         <div class="form-section">
           <div class="form-section-title">Itens inspecionados</div>
           <div id="itens-list"></div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Fotos e Evidências</div>
+          <input type="file" id="f-foto" accept="image/*" capture="environment" style="display:none" onchange="processarFoto(event)">
+          <button class="btn-ghost" style="width:100%; margin-bottom:10px;" onclick="document.getElementById('f-foto').click()">📷 Adicionar Foto da Câmera</button>
+          <div id="fotos-list"></div>
         </div>
 
         <div class="form-section">
@@ -369,17 +259,11 @@
         </div>
 
         <div class="form-section">
-          <div class="form-section-title">Parecer técnico</div>
-          <div class="field">
-            <textarea id="f-parecer" rows="5" placeholder="Descreva o parecer técnico geral da inspeção..."></textarea>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <div class="form-section-title">Responsável técnico</div>
+          <div class="form-section-title">Parecer técnico e Responsável</div>
+          <div class="field"><textarea id="f-parecer" rows="4" placeholder="Parecer conclusivo..."></textarea></div>
           <div class="grid-2">
-            <div class="field"><label>Nome do engenheiro</label><input id="f-eng" placeholder="Eng. Carlos Mendes" /></div>
-            <div class="field"><label>CREA</label><input id="f-crea" placeholder="RS-123456-D" /></div>
+            <div class="field"><label>Engenheiro</label><input id="f-eng" placeholder="Nome" /></div>
+            <div class="field"><label>CREA</label><input id="f-crea" placeholder="Registro" /></div>
           </div>
         </div>
 
@@ -393,9 +277,7 @@
     <div class="page" id="page-painel">
       <div class="scroll-content">
         <div class="section-title">Filtro de Cliente</div>
-        <select id="filtro-painel" class="filtro-select" onchange="renderPainel()">
-          <option value="Todos">Todos os Clientes</option>
-        </select>
+        <select id="filtro-painel" class="filtro-select" onchange="mudarFiltroGlobal(this.value)"></select>
 
         <div class="section-title" style="margin-bottom:14px">Painel de gestão</div>
 
@@ -407,100 +289,77 @@
         </div>
 
         <div class="section-title">Todas as inspeções (Filtradas)</div>
-        <div class="insp-list" id="painel-list">
-          <div class="empty-state">Nenhuma inspeção registrada ainda.</div>
-        </div>
+        <div class="insp-list" id="painel-list"></div>
       </div>
     </div>
 
-  </div><nav class="bottom-nav">
-    <button class="nav-item active" id="nav-home" onclick="navTo('home')">
-      <span class="nav-icon">🏠</span>
-      <span class="nav-label">Início</span>
-    </button>
-    <button class="nav-item" id="nav-painel" onclick="navTo('painel')">
-      <span class="nav-icon">📊</span>
-      <span class="nav-label">Painel</span>
-    </button>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-item active" id="nav-home" onclick="navTo('home')"><span class="nav-icon">🏠</span><span class="nav-label">Início</span></button>
+    <button class="nav-item" id="nav-painel" onclick="navTo('painel')"><span class="nav-icon">📊</span><span class="nav-label">Painel</span></button>
   </nav>
 
-</div><div class="toast" id="toast"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<div id="pdf-container" style="position: absolute; top: -10000px; left: -10000px; width: 210mm; background: white; padding: 20px; box-sizing: border-box; z-index: -9999;"></div>
 
 <script>
-// ── ITENS NR-13 ──────────────────────────────────────────────────────────
-const ITENS_NR13_CALDEIRA = [
-  "Corpo e costados", "Bocais e flanges", "Válvula de segurança", "Válvula de alívio", 
-  "Manômetro MA-01", "Manômetro MA-02", "Nível de água — visor", "Purga de fundo", 
-  "Isolamento térmico", "Sistema de alimentação de água", "Prontuário NR-13", "Placa de identificação"
-];
-const ITENS_NR13_VASO = [
-  "Corpo do vaso", "Bocais e flanges", "Válvula de segurança", "Manômetro", 
-  "Drenos e ventilações", "Isolamento / revestimento", "Suportes e fixações", 
-  "Prontuário NR-13", "Placa de identificação"
-];
-const ITENS_NR13_TUB = [
-  "Tubos e conexões", "Flanges e juntas", "Válvulas de bloqueio", "Válvulas de alívio", 
-  "Suportes e ancoragens", "Isolamento térmico", "Identificação das linhas", "Documentação (isométrico)"
-];
-const ITENS_NR13_VALV = [
-  "Corpo da válvula", "Sede e obturador", "Mola e regulagem", "Pressão de abertura", 
-  "Pressão de fechamento", "Certificado de calibração", "Placa de identificação"
-];
+let inspecoes = JSON.parse(localStorage.getItem('inspecoes') || '[]');
+let itensStatus = {};
+let fotosInspecao = [];
+let resultadoAtual = 'ressalva';
+let editandoId = null;
+let filtroGlobal = 'Todos'; // Mantém o filtro único para o app todo
 
 const ITENS_MAP = {
-  "Caldeira a Vapor": ITENS_NR13_CALDEIRA,
-  "Vaso de Pressão":  ITENS_NR13_VASO,
-  "Tubulação":        ITENS_NR13_TUB,
-  "Válvula de Segurança": ITENS_NR13_VALV,
+  "Caldeira a Vapor": ["Corpo e costados", "Bocais e flanges", "Válvula de segurança", "Válvula de alívio", "Manômetro MA-01", "Nível de água — visor", "Purga de fundo", "Prontuário NR-13", "Placa de identificação"],
+  "Vaso de Pressão":  ["Corpo do vaso", "Bocais e flanges", "Válvula de segurança", "Manômetro", "Drenos e ventilações", "Isolamento / revestimento", "Prontuário NR-13", "Placa de identificação"],
+  "Tubulação":        ["Tubos e conexões", "Flanges e juntas", "Válvulas de bloqueio", "Válvulas de alívio", "Suportes e ancoragens", "Identificação das linhas"],
+  "Válvula de Segurança": ["Corpo da válvula", "Sede e obturador", "Mola e regulagem", "Pressão de abertura", "Pressão de fechamento", "Certificado de calibração", "Placa de identificação"],
 };
 
-let itensStatus = {};
-let resultadoAtual = 'ressalva';
-let inspecoes = JSON.parse(localStorage.getItem('inspecoes') || '[]');
-let editandoId = null;
-
-// ── INIT ─────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  const sel = document.getElementById('f-tipo');
-  sel.addEventListener('change', () => renderItens(sel.value));
-  renderItens(sel.value);
+  document.getElementById('f-tipo').addEventListener('change', (e) => renderItens(e.target.value));
+  renderItens('Caldeira a Vapor');
   setDataHoje();
-  atualizarFiltros();
+  atualizarFiltrosUI();
   renderLista();
   renderPainel();
 });
 
-// ── FILTROS DE CLIENTES ──────────────────────────────────────────────────
-function atualizarFiltros() {
-  // Limpa possíveis valores vazios e ordena os clientes em ordem alfabética
+// ── FILTROS GLOBAL ──
+function atualizarFiltrosUI() {
   const clientes = [...new Set(inspecoes.map(i => i.empresa))].filter(e => e && e.trim() !== '').sort();
-  
   const options = '<option value="Todos">Todos os Clientes</option>' + 
                   clientes.map(c => `<option value="${c.replace(/"/g, '&quot;')}">${c}</option>`).join('');
   
-  const elHome = document.getElementById('filtro-home');
-  const elPainel = document.getElementById('filtro-painel');
+  document.getElementById('filtro-home').innerHTML = options;
+  document.getElementById('filtro-painel').innerHTML = options;
   
-  const homeVal = elHome.value;
-  const painelVal = elPainel.value;
+  if (!clientes.includes(filtroGlobal) && filtroGlobal !== 'Todos') filtroGlobal = 'Todos';
   
-  elHome.innerHTML = options;
-  elPainel.innerHTML = options;
-  
-  // Mantém a seleção anterior se ela ainda existir no array
-  if (clientes.includes(homeVal)) elHome.value = homeVal;
-  if (clientes.includes(painelVal)) elPainel.value = painelVal;
+  document.getElementById('filtro-home').value = filtroGlobal;
+  document.getElementById('filtro-painel').value = filtroGlobal;
 }
 
-// ── RENDER ITENS ─────────────────────────────────────────────────────────
+function mudarFiltroGlobal(val) {
+  filtroGlobal = val;
+  document.getElementById('filtro-home').value = filtroGlobal;
+  document.getElementById('filtro-painel').value = filtroGlobal;
+  renderLista();
+  renderPainel();
+}
+
+// ── ITENS CHECKLIST ──
 function renderItens(tipo) {
-  const lista = ITENS_MAP[tipo] || ITENS_NR13_CALDEIRA;
+  const lista = ITENS_MAP[tipo] || ITENS_MAP["Caldeira a Vapor"];
   itensStatus = {};
   lista.forEach(it => itensStatus[it] = { status: 'conf', obs: '' });
 
-  const el = document.getElementById('itens-list');
-  el.innerHTML = lista.map(nome => {
-    const slug = slugify(nome);
+  document.getElementById('itens-list').innerHTML = lista.map(nome => {
+    const slug = nome.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
     return `
     <div class="item-insp" id="item-${slug}">
       <div class="item-insp-name">${nome}</div>
@@ -510,11 +369,11 @@ function renderItens(tipo) {
         <button class="item-status-btn"        onclick="setItemStatus('${nome}','atenc',this)">⚠ Aten.</button>
       </div>
       <div class="item-obs">
-        <input id="obs-${slug}" placeholder="Observação..." oninput="setItemObs('${nome}',this.value)" />
-        <button id="btn-mic-${slug}" class="btn-mic" onclick="gravarAudio('${nome}', '${slug}')" title="Gravar Áudio">🎤</button>
+        <input id="obs-${slug}" placeholder="Observação..." oninput="itensStatus['${nome}'].obs=this.value" />
+        <button id="btn-mic-${slug}" class="btn-mic" onclick="gravarAudio('obs-${slug}', () => itensStatus['${nome}'].obs = document.getElementById('obs-${slug}').value)">🎤</button>
       </div>
-    </div>
-  `}).join('');
+    </div>`
+  }).join('');
 }
 
 function setItemStatus(nome, status, btn) {
@@ -523,65 +382,82 @@ function setItemStatus(nome, status, btn) {
   row.querySelectorAll('.item-status-btn').forEach(b => b.className = 'item-status-btn');
   const map = { conf: 's-conf', nconf: 's-nconf', atenc: 's-atenc' };
   btn.classList.add(map[status]);
-  calcAutoResultado();
-}
-
-function setItemObs(nome, val) { itensStatus[nome].obs = val; }
-
-function calcAutoResultado() {
+  
   const vals = Object.values(itensStatus).map(v => v.status);
   if (vals.includes('nconf')) setResultado('reprovado');
   else if (vals.includes('atenc')) setResultado('ressalva');
   else setResultado('aprovado');
 }
 
-function slugify(s) { return s.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,''); }
-
-// ── SPEECH TO TEXT (ÁUDIO) ───────────────────────────────────────────────
-function gravarAudio(nomeItem, slug) {
-  const btnMic = document.getElementById(`btn-mic-${slug}`);
-  const inputField = document.getElementById(`obs-${slug}`);
+// ── FOTOS E COMPRESSÃO ──
+function processarFoto(event) {
+  const file = event.target.files[0];
+  if(!file) return;
   
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) {
-    showToast('Navegador não suporta gravação de voz.');
-    return;
+  showToast('Processando foto...');
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      // Comprime a foto para não travar o celular e não estourar o banco de dados
+      const canvas = document.createElement('canvas');
+      const MAX_WIDTH = 800;
+      let width = img.width;
+      let height = img.height;
+      if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.6); // 60% quality
+      fotosInspecao.push({ id: Date.now(), base64: dataUrl, nota: '' });
+      renderFotosForm();
+    }
+    img.src = e.target.result;
   }
-
-  const recognition = new SpeechRecognition();
-  recognition.lang = 'pt-BR';
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
-
-  recognition.onstart = function() {
-    btnMic.classList.add('recording');
-    showToast(`Ouvindo: ${nomeItem}...`);
-  };
-
-  recognition.onspeechend = function() {
-    recognition.stop();
-    btnMic.classList.remove('recording');
-  };
-
-  recognition.onresult = function(event) {
-    const transcript = event.results[0][0].transcript;
-    const txtAtual = inputField.value;
-    const novoTxt = txtAtual ? `${txtAtual} ${transcript}` : transcript;
-    
-    inputField.value = novoTxt;
-    setItemObs(nomeItem, novoTxt);
-    showToast('Áudio transcrito!');
-  };
-
-  recognition.onerror = function(event) {
-    btnMic.classList.remove('recording');
-    showToast('Erro no áudio: ' + event.error);
-  };
-
-  recognition.start();
+  reader.readAsDataURL(file);
 }
 
-// ── RESULTADO ────────────────────────────────────────────────────────────
+function renderFotosForm() {
+  document.getElementById('fotos-list').innerHTML = fotosInspecao.map(f => `
+    <div class="foto-card">
+      <img src="${f.base64}" class="foto-preview" />
+      <div class="item-obs">
+        <input id="nota-foto-${f.id}" value="${f.nota}" placeholder="Legenda da foto..." oninput="setFotoNota(${f.id}, this.value)" />
+        <button id="btn-mic-foto-${f.id}" class="btn-mic" onclick="gravarAudio('nota-foto-${f.id}', () => setFotoNota(${f.id}, document.getElementById('nota-foto-${f.id}').value))">🎤</button>
+      </div>
+      <button class="btn-remover-foto" onclick="removerFoto(${f.id})">Remover Foto</button>
+    </div>
+  `).join('');
+}
+
+function setFotoNota(id, val) { const f = fotosInspecao.find(x => x.id === id); if(f) f.nota = val; }
+function removerFoto(id) { fotosInspecao = fotosInspecao.filter(x => x.id !== id); renderFotosForm(); }
+
+// ── ÁUDIO GENÉRICO ──
+function gravarAudio(inputId, callbackAtualizarObjeto) {
+  const inputField = document.getElementById(inputId);
+  const btnMic = document.getElementById(inputId.replace('obs-', 'btn-mic-').replace('nota-foto-', 'btn-mic-foto-'));
+  
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) return showToast('Navegador não suporta áudio.');
+
+  const rec = new SpeechRecognition();
+  rec.lang = 'pt-BR';
+  
+  rec.onstart = () => { btnMic.classList.add('recording'); showToast('Gravando... Fale agora.'); };
+  rec.onspeechend = () => { rec.stop(); btnMic.classList.remove('recording'); };
+  rec.onresult = (e) => {
+    const transcript = e.results[0][0].transcript;
+    inputField.value = inputField.value ? `${inputField.value} ${transcript}` : transcript;
+    callbackAtualizarObjeto(); // Atualiza o objeto no background
+    showToast('Áudio transcrito!');
+  };
+  rec.onerror = (e) => { btnMic.classList.remove('recording'); showToast('Erro no microfone.'); };
+  rec.start();
+}
+
 function setResultado(val) {
   resultadoAtual = val;
   document.getElementById('rb-conf').className    = 'resultado-btn' + (val==='aprovado' ? ' sel-conf' : '');
@@ -590,362 +466,176 @@ function setResultado(val) {
 }
 
 function setDataHoje() {
-  const hoje = new Date().toISOString().split('T')[0];
-  document.getElementById('f-dt').value = hoje;
-  const prox = new Date();
-  prox.setFullYear(prox.getFullYear() + 2);
-  document.getElementById('f-dtprox').value = prox.toISOString().split('T')[0];
-  const n = Math.floor(Math.random()*900)+100;
-  document.getElementById('f-numlaudo').value = `LAU-NR13-${String(n).padStart(3,'0')}`;
+  const h = new Date().toISOString().split('T')[0];
+  document.getElementById('f-dt').value = h;
+  const p = new Date(); p.setFullYear(p.getFullYear() + 1);
+  document.getElementById('f-dtprox').value = p.toISOString().split('T')[0];
+  document.getElementById('f-numlaudo').value = `LAU-NR13-${String(Math.floor(Math.random()*900)+100).padStart(3,'0')}`;
 }
 
-// ── SALVAR ────────────────────────────────────────────────────────────────
+// ── SALVAR E LISTAR ──
 function salvarInspecao() {
   const empresa = document.getElementById('f-empresa').value.trim();
-  if (!empresa) { showToast('Informe a razão social da empresa'); return; }
-  const tag = document.getElementById('f-tag').value.trim() || '—';
+  if (!empresa) return showToast('Informe a razão social da empresa');
 
   const insp = {
-    id: editandoId || Date.now(),
-    empresa,
-    cnpj:      document.getElementById('f-cnpj').value,
-    resp:      document.getElementById('f-resp').value,
-    tipo:      document.getElementById('f-tipo').value,
-    tag,
-    fab:       document.getElementById('f-fab').value,
-    ano:       document.getElementById('f-ano').value,
-    pmta:      document.getElementById('f-pmta').value,
-    pop:       document.getElementById('f-pop').value,
-    temp:      document.getElementById('f-temp').value,
-    categoria: document.getElementById('f-cat').value,
-    dtInsp:    document.getElementById('f-dt').value,
-    dtProx:    document.getElementById('f-dtprox').value,
-    numLaudo:  document.getElementById('f-numlaudo').value,
-    eng:       document.getElementById('f-eng').value,
-    crea:      document.getElementById('f-crea').value,
-    parecer:   document.getElementById('f-parecer').value,
-    resultado: resultadoAtual,
-    itens:     JSON.parse(JSON.stringify(itensStatus)),
-    criadoEm:  new Date().toISOString(),
+    id: editandoId || Date.now(), empresa, cnpj: document.getElementById('f-cnpj').value,
+    resp: document.getElementById('f-resp').value, tipo: document.getElementById('f-tipo').value,
+    tag: document.getElementById('f-tag').value || '—', fab: document.getElementById('f-fab').value,
+    ano: document.getElementById('f-ano').value, pmta: document.getElementById('f-pmta').value,
+    pop: document.getElementById('f-pop').value, temp: document.getElementById('f-temp').value,
+    categoria: document.getElementById('f-cat').value, dtInsp: document.getElementById('f-dt').value,
+    dtProx: document.getElementById('f-dtprox').value, numLaudo: document.getElementById('f-numlaudo').value,
+    eng: document.getElementById('f-eng').value, crea: document.getElementById('f-crea').value,
+    parecer: document.getElementById('f-parecer').value, resultado: resultadoAtual,
+    itens: JSON.parse(JSON.stringify(itensStatus)), fotos: JSON.parse(JSON.stringify(fotosInspecao))
   };
 
-  if (editandoId) {
-    inspecoes = inspecoes.map(i => i.id === editandoId ? insp : i);
-  } else {
-    inspecoes.unshift(insp);
+  if (editandoId) inspecoes = inspecoes.map(i => i.id === editandoId ? insp : i);
+  else inspecoes.unshift(insp);
+  
+  try {
+    localStorage.setItem('inspecoes', JSON.stringify(inspecoes));
+    showToast('Salvo com sucesso!');
+    atualizarFiltrosUI();
+    editandoId = insp.id; 
+    document.getElementById('btn-pdf').style.display = 'block';
+    setTimeout(() => { goHome(); renderLista(); renderPainel(); }, 1000);
+  } catch(e) {
+    showToast('Erro: Memória cheia. Apague fotos de laudos antigos.');
   }
-  
-  localStorage.setItem('inspecoes', JSON.stringify(inspecoes));
-  showToast('Inspeção salva com sucesso!');
-  
-  atualizarFiltros();
-  
-  editandoId = insp.id; 
-  document.getElementById('btn-pdf').style.display = 'block';
-  
-  setTimeout(() => { goHome(); renderLista(); renderPainel(); }, 1000);
 }
 
-// ── GERAÇÃO DE PDF FORMATADO ──────────────────────────────────────────────
-function gerarPDF() {
-  if (!editandoId) { showToast('Salve a inspeção antes de gerar o PDF'); return; }
-  const insp = inspecoes.find(i => i.id === editandoId);
-  if (!insp) return;
-
-  showToast('Gerando relatório PDF...');
-
-  let itensHtml = '';
-  Object.entries(insp.itens).forEach(([nome, val]) => {
-      let st = val.status === 'conf' ? 'CONFORME' : (val.status === 'nconf' ? 'NÃO CONFORME' : 'ATENÇÃO');
-      let color = val.status === 'conf' ? 'green' : (val.status === 'nconf' ? 'red' : 'orange');
-      itensHtml += `<tr>
-        <td style="border:1px solid #ccc; padding:8px; font-size:12px;">${nome}</td>
-        <td style="border:1px solid #ccc; padding:8px; font-size:12px; font-weight:bold; color:${color};">${st}</td>
-        <td style="border:1px solid #ccc; padding:8px; font-size:12px;">${val.obs || '-'}</td>
-      </tr>`;
-  });
-
-  // Criando o elemento na memória para não depender de exibição na tela
-  const elementoPdf = document.createElement('div');
-  elementoPdf.style.padding = '20px';
-  elementoPdf.style.background = '#ffffff';
-  elementoPdf.style.color = '#000000';
-  elementoPdf.style.fontFamily = 'Arial, sans-serif';
-  elementoPdf.style.width = '210mm'; // Define o tamanho A4 correto
-  
-  elementoPdf.innerHTML = `
-    <h2 style="text-align:center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom:20px;">LAUDO TÉCNICO DE INSPEÇÃO NR-13</h2>
-    
-    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px;">
-      <tr>
-        <td style="border:1px solid #000; padding:6px; background:#f0f0f0;"><strong>Número do Laudo:</strong></td>
-        <td style="border:1px solid #000; padding:6px;">${insp.numLaudo}</td>
-        <td style="border:1px solid #000; padding:6px; background:#f0f0f0;"><strong>Data da Inspeção:</strong></td>
-        <td style="border:1px solid #000; padding:6px;">${fmtDate(insp.dtInsp)}</td>
-      </tr>
-      <tr>
-        <td style="border:1px solid #000; padding:6px; background:#f0f0f0;"><strong>Empresa:</strong></td>
-        <td style="border:1px solid #000; padding:6px;">${insp.empresa}</td>
-        <td style="border:1px solid #000; padding:6px; background:#f0f0f0;"><strong>CNPJ:</strong></td>
-        <td style="border:1px solid #000; padding:6px;">${insp.cnpj || '-'}</td>
-      </tr>
-    </table>
-
-    <h3 style="border-bottom: 1px solid #000; font-size:16px; margin-top:15px; margin-bottom:10px;">Dados do Equipamento</h3>
-    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-      <tr>
-        <td style="border:1px solid #ccc; padding:6px;"><strong>Equipamento:</strong> ${insp.tipo}</td>
-        <td style="border:1px solid #ccc; padding:6px;"><strong>TAG:</strong> ${insp.tag}</td>
-        <td style="border:1px solid #ccc; padding:6px;"><strong>Categoria:</strong> ${insp.categoria}</td>
-      </tr>
-      <tr>
-        <td style="border:1px solid #ccc; padding:6px;"><strong>Fabricante:</strong> ${insp.fab || '-'}</td>
-        <td style="border:1px solid #ccc; padding:6px;"><strong>Ano:</strong> ${insp.ano || '-'}</td>
-        <td style="border:1px solid #ccc; padding:6px;"><strong>PMTA:</strong> ${insp.pmta || '-'} kgf/cm²</td>
-      </tr>
-      <tr>
-        <td colspan="3" style="border:1px solid #ccc; padding:6px;"><strong>Pressão Oper.:</strong> ${insp.pop || '-'} kgf/cm² | <strong>Temperatura:</strong> ${insp.temp || '-'}</td>
-      </tr>
-    </table>
-
-    <h3 style="border-bottom: 1px solid #000; font-size:16px; margin-top:25px; margin-bottom:10px;">Checklist de Inspeção Física</h3>
-    <table style="width: 100%; border-collapse: collapse;">
-      <thead>
-        <tr style="background-color: #f3f4f6;">
-            <th style="border:1px solid #ccc; padding:8px; text-align:left; width: 35%;">Item Verificado</th>
-            <th style="border:1px solid #ccc; padding:8px; text-align:left; width: 15%;">Status</th>
-            <th style="border:1px solid #ccc; padding:8px; text-align:left; width: 50%;">Observação de Campo</th>
-        </tr>
-      </thead>
-      <tbody>${itensHtml}</tbody>
-    </table>
-
-    <h3 style="border-bottom: 1px solid #000; font-size:16px; margin-top:25px; margin-bottom:10px;">Parecer Técnico Conclusivo</h3>
-    <p style="font-size:14px;"><strong>Situação Final:</strong> <span style="text-transform:uppercase; font-weight:bold;">${insp.resultado}</span></p>
-    <div style="border: 1px solid #ccc; padding: 10px; min-height: 80px; font-size: 13px; white-space: pre-wrap; margin-top:10px;">${insp.parecer || 'Nenhuma ressalva técnica inserida.'}</div>
-    
-    <p style="font-size:13px; margin-top:10px;"><strong>Próxima inspeção recomendada:</strong> ${fmtDate(insp.dtProx)}</p>
-
-    <div style="margin-top: 60px; text-align: center; font-size: 14px;">
-        <p>___________________________________________________</p>
-        <p style="margin-top:5px;"><strong>${insp.eng || 'Engenheiro Responsável'}</strong></p>
-        <p>CREA: ${insp.crea || 'Não informado'}</p>
-    </div>
-  `;
-
-  const opt = {
-    margin:       [15, 10, 15, 10], 
-    filename:     `Laudo_${insp.tag}_${insp.empresa}.pdf`,
-    image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, logging: false },
-    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  };
-
-  html2pdf().set(opt).from(elementoPdf).save().then(() => {
-    showToast('PDF baixado com sucesso!');
-  }).catch(err => {
-    showToast('Erro ao gerar o PDF.');
-    console.error(err);
-  });
-}
-
-// ── RENDER LISTA E FILTRO ─────────────────────────────────────────────────
 function renderLista() {
   const el = document.getElementById('insp-list');
-  const empty = document.getElementById('empty-state');
-  const kpiSection = document.getElementById('home-kpis');
+  const kpis = document.getElementById('home-kpis');
   
-  const filtroEl = document.getElementById('filtro-home');
-  const filtro = filtroEl ? filtroEl.value : 'Todos';
+  let filtrada = filtroGlobal === 'Todos' ? inspecoes : inspecoes.filter(i => i.empresa === filtroGlobal);
 
-  let listaFiltrada = filtro === 'Todos' ? inspecoes : inspecoes.filter(i => i.empresa === filtro);
+  if (!filtrada.length) { el.innerHTML = '<div class="empty-state">Nenhuma inspeção.</div>'; kpis.style.display = 'none'; return; }
+  kpis.style.display = 'grid';
 
-  if (!listaFiltrada.length) {
-    el.innerHTML = '';
-    el.appendChild(empty);
-    kpiSection.style.display = 'none';
-    return;
-  }
-  
-  kpiSection.style.display = 'grid';
-  empty.remove && el.querySelector('.empty-state') && el.querySelector('.empty-state').remove();
+  document.getElementById('kpi-crit').textContent  = filtrada.filter(i => i.resultado === 'reprovado').length;
+  document.getElementById('kpi-atenc').textContent = filtrada.filter(i => i.resultado === 'ressalva').length;
+  document.getElementById('kpi-ok').textContent    = filtrada.filter(i => i.resultado === 'aprovado').length;
+  document.getElementById('kpi-total').textContent = filtrada.length;
 
-  const crit = listaFiltrada.filter(i => i.resultado === 'reprovado').length;
-  const atenc = listaFiltrada.filter(i => i.resultado === 'ressalva').length;
-  const ok = listaFiltrada.filter(i => i.resultado === 'aprovado').length;
-  
-  document.getElementById('kpi-crit').textContent  = crit;
-  document.getElementById('kpi-atenc').textContent = atenc;
-  document.getElementById('kpi-ok').textContent    = ok;
-  document.getElementById('kpi-total').textContent = listaFiltrada.length;
-
-  el.innerHTML = listaFiltrada.map(i => {
-    const { cor, label, cls } = statusInfo(i.resultado);
-    const dt = i.dtInsp ? fmtDate(i.dtInsp) : '—';
+  el.innerHTML = filtrada.map(i => {
+    const c = i.resultado === 'aprovado' ? '#22c55e' : (i.resultado === 'reprovado' ? '#ef4444' : '#f59e0b');
+    const dt = i.dtInsp ? i.dtInsp.split('-').reverse().join('/') : '—';
     return `<div class="insp-card" onclick="editarInspecao(${i.id})">
-      <div class="insp-card-dot" style="background:${cor}"></div>
+      <div class="insp-card-dot" style="background:${c}"></div>
       <div class="insp-card-body">
         <div class="insp-card-empresa">${i.empresa}</div>
         <div class="insp-card-meta">${i.tipo} · ${i.tag} · ${dt}</div>
       </div>
-      <span class="insp-card-status ${cls}">${label}</span>
     </div>`;
   }).join('');
 }
 
 function renderPainel() {
-  const filtroEl = document.getElementById('filtro-painel');
-  const filtro = filtroEl ? filtroEl.value : 'Todos';
+  let filtrada = filtroGlobal === 'Todos' ? inspecoes : inspecoes.filter(i => i.empresa === filtroGlobal);
+  document.getElementById('p-crit').textContent  = filtrada.filter(i => i.resultado === 'reprovado').length;
+  document.getElementById('p-atenc').textContent = filtrada.filter(i => i.resultado === 'ressalva').length;
+  document.getElementById('p-ok').textContent    = filtrada.filter(i => i.resultado === 'aprovado').length;
+  document.getElementById('p-total').textContent = filtrada.length;
   
-  let listaFiltrada = filtro === 'Todos' ? inspecoes : inspecoes.filter(i => i.empresa === filtro);
-
-  const crit  = listaFiltrada.filter(i => i.resultado === 'reprovado').length;
-  const atenc = listaFiltrada.filter(i => i.resultado === 'ressalva').length;
-  const ok    = listaFiltrada.filter(i => i.resultado === 'aprovado').length;
-  
-  document.getElementById('p-crit').textContent  = crit;
-  document.getElementById('p-atenc').textContent = atenc;
-  document.getElementById('p-ok').textContent    = ok;
-  document.getElementById('p-total').textContent = listaFiltrada.length;
-
   const el = document.getElementById('painel-list');
-  if (!listaFiltrada.length) { 
-    el.innerHTML = '<div class="empty-state">Nenhuma inspeção encontrada para este filtro.</div>'; 
-    return; 
-  }
+  if(!filtrada.length) { el.innerHTML = '<div class="empty-state">Vazio.</div>'; return; }
   
-  el.innerHTML = listaFiltrada.map(i => {
-    const { cor, label, cls } = statusInfo(i.resultado);
-    const dt = i.dtInsp ? fmtDate(i.dtInsp) : '—';
-    const prox = i.dtProx ? fmtDate(i.dtProx) : '—';
+  el.innerHTML = filtrada.map(i => {
+    const c = i.resultado === 'aprovado' ? '#22c55e' : (i.resultado === 'reprovado' ? '#ef4444' : '#f59e0b');
     return `<div class="insp-card" onclick="editarInspecao(${i.id})">
-      <div class="insp-card-dot" style="background:${cor}"></div>
-      <div class="insp-card-body">
-        <div class="insp-card-empresa">${i.empresa} — ${i.tag}</div>
-        <div class="insp-card-meta">Insp: ${dt} · Próx: ${prox}</div>
-      </div>
-      <span class="insp-card-status ${cls}">${label}</span>
+      <div class="insp-card-dot" style="background:${c}"></div>
+      <div class="insp-card-body"><div class="insp-card-empresa">${i.empresa} - ${i.tag}</div><div class="insp-card-meta">${i.tipo}</div></div>
     </div>`;
   }).join('');
 }
 
-function statusInfo(r) {
-  if (r === 'aprovado')  return { cor: '#22c55e', label: 'Aprovado',   cls: 'status-conf' };
-  if (r === 'reprovado') return { cor: '#ef4444', label: 'Reprovado',  cls: 'status-reprov' };
-  return                        { cor: '#f59e0b', label: 'Ressalvas',  cls: 'status-ressalva' };
-}
-
-function fmtDate(s) {
-  if(!s) return '—';
-  const [y,m,d] = s.split('-');
-  return `${d}/${m}/${y}`;
-}
-
-// ── EDITAR ────────────────────────────────────────────────────────────────
 function editarInspecao(id) {
   const insp = inspecoes.find(i => i.id === id);
   if (!insp) return;
   editandoId = id;
+  ['empresa','cnpj','resp','tipo','tag','fab','ano','pmta','pop','temp','cat','dt','dtprox','numlaudo','eng','crea','parecer']
+    .forEach(k => document.getElementById(`f-${k}`).value = insp[k === 'dt' ? 'dtInsp' : (k === 'dtprox' ? 'dtProx' : (k === 'cat' ? 'categoria' : k))] || '');
+  
+  renderItens(insp.tipo);
+  if (insp.itens) Object.entries(insp.itens).forEach(([n, v]) => {
+    itensStatus[n] = v;
+    const s = n.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
+    const el = document.getElementById(`item-${s}`);
+    if (el) {
+      el.querySelectorAll('.item-status-btn').forEach(b => b.className = 'item-status-btn');
+      el.querySelectorAll('.item-status-btn')[v.status==='conf'?0:(v.status==='nconf'?1:2)].classList.add(`s-${v.status}`);
+      if (v.obs) el.querySelector('input').value = v.obs;
+    }
+  });
 
-  document.getElementById('f-empresa').value  = insp.empresa || '';
-  document.getElementById('f-cnpj').value     = insp.cnpj || '';
-  document.getElementById('f-resp').value     = insp.resp || '';
-  document.getElementById('f-tipo').value     = insp.tipo || 'Caldeira a Vapor';
-  document.getElementById('f-tag').value      = insp.tag || '';
-  document.getElementById('f-fab').value      = insp.fab || '';
-  document.getElementById('f-ano').value      = insp.ano || '';
-  document.getElementById('f-pmta').value     = insp.pmta || '';
-  document.getElementById('f-pop').value      = insp.pop || '';
-  document.getElementById('f-temp').value     = insp.temp || '';
-  document.getElementById('f-cat').value      = insp.categoria || '';
-  document.getElementById('f-dt').value       = insp.dtInsp || '';
-  document.getElementById('f-dtprox').value   = insp.dtProx || '';
-  document.getElementById('f-numlaudo').value = insp.numLaudo || '';
-  document.getElementById('f-eng').value      = insp.eng || '';
-  document.getElementById('f-crea').value     = insp.crea || '';
-  document.getElementById('f-parecer').value  = insp.parecer || '';
-
-  renderItens(insp.tipo || 'Caldeira a Vapor');
-
-  if (insp.itens) {
-    Object.entries(insp.itens).forEach(([nome, val]) => {
-      itensStatus[nome] = val;
-      const slug = slugify(nome);
-      const itemEl = document.getElementById(`item-${slug}`);
-      if (itemEl) {
-        const btns = itemEl.querySelectorAll('.item-status-btn');
-        btns.forEach(b => b.className = 'item-status-btn');
-        const map = { conf: 0, nconf: 1, atenc: 2 };
-        const idx = map[val.status] ?? 0;
-        const cls = { conf: 's-conf', nconf: 's-nconf', atenc: 's-atenc' };
-        btns[idx].classList.add(cls[val.status]);
-        if (val.obs) itemEl.querySelector('input').value = val.obs;
-      }
-    });
-  }
-
-  setResultado(insp.resultado || 'ressalva');
-  document.getElementById('form-title').textContent = 'Editar inspeção';
+  fotosInspecao = insp.fotos ? JSON.parse(JSON.stringify(insp.fotos)) : [];
+  renderFotosForm();
+  setResultado(insp.resultado);
+  document.getElementById('form-title').textContent = 'Editar';
   document.getElementById('btn-pdf').style.display = 'block'; 
   showPage('form');
 }
 
-// ── NAV ───────────────────────────────────────────────────────────────────
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  const isForm = name === 'form';
-  document.getElementById('topbar-action').style.display = isForm ? 'none' : '';
-  document.getElementById('topbar-badge').style.display  = isForm ? 'none' : '';
-}
+// ── GERAÇÃO DE PDF GARANTIDA ──
+function gerarPDF() {
+  if (!editandoId) return showToast('Salve antes de gerar o PDF');
+  const insp = inspecoes.find(i => i.id === editandoId);
+  showToast('Montando PDF...');
 
-function navTo(name) {
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('nav-' + name)?.classList.add('active');
-  showPage(name);
-  if (name === 'painel') {
-    atualizarFiltros();
-    renderPainel();
+  let itensHtml = '';
+  Object.entries(insp.itens).forEach(([n, v]) => {
+      let st = v.status === 'conf' ? 'CONFORME' : (v.status === 'nconf' ? 'NÃO CONFORME' : 'ATENÇÃO');
+      let color = v.status === 'conf' ? 'green' : (v.status === 'nconf' ? 'red' : 'orange');
+      itensHtml += `<tr><td style="border:1px solid #000; padding:4px;">${n}</td><td style="border:1px solid #000; padding:4px; color:${color}"><b>${st}</b></td><td style="border:1px solid #000; padding:4px;">${v.obs||'-'}</td></tr>`;
+  });
+
+  let fotosHtml = '';
+  if(insp.fotos && insp.fotos.length > 0) {
+    fotosHtml = `<h3 style="margin-top:20px; border-bottom:1px solid #000;">Registro Fotográfico</h3>`;
+    insp.fotos.forEach(f => {
+      fotosHtml += `<div style="margin-bottom: 15px; page-break-inside: avoid;">
+        <img src="${f.base64}" style="max-height: 250px; border:1px solid #ccc; display:block; margin-bottom:5px;">
+        <p style="font-size: 12px; margin:0;"><b>Nota:</b> ${f.nota || '-'}</p>
+      </div>`;
+    });
   }
+
+  // Preenche a div escondida que já está fisicamente na página
+  const container = document.getElementById('pdf-container');
+  container.innerHTML = `
+    <h2 style="text-align:center; border-bottom: 2px solid #000;">LAUDO DE INSPEÇÃO NR-13</h2>
+    <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 15px;">
+      <tr><td style="border:1px solid #000; padding:4px;"><b>Nº Laudo:</b> ${insp.numLaudo}</td><td style="border:1px solid #000; padding:4px;"><b>Data:</b> ${insp.dtInsp?insp.dtInsp.split('-').reverse().join('/'):''}</td></tr>
+      <tr><td style="border:1px solid #000; padding:4px;"><b>Empresa:</b> ${insp.empresa}</td><td style="border:1px solid #000; padding:4px;"><b>CNPJ:</b> ${insp.cnpj||'-'}</td></tr>
+    </table>
+    <h3 style="border-bottom: 1px solid #000; font-size:14px; margin-bottom:5px;">Equipamento: ${insp.tipo} - ${insp.tag}</h3>
+    <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 15px;">
+      <tr><td style="border:1px solid #000; padding:4px;"><b>Fab:</b> ${insp.fab||'-'}</td><td style="border:1px solid #000; padding:4px;"><b>Ano:</b> ${insp.ano||'-'}</td><td style="border:1px solid #000; padding:4px;"><b>Cat:</b> ${insp.categoria}</td></tr>
+      <tr><td style="border:1px solid #000; padding:4px;"><b>PMTA:</b> ${insp.pmta||'-'}</td><td style="border:1px solid #000; padding:4px;"><b>Op:</b> ${insp.pop||'-'}</td><td style="border:1px solid #000; padding:4px;"><b>Temp:</b> ${insp.temp||'-'}</td></tr>
+    </table>
+    <h3 style="border-bottom: 1px solid #000; font-size:14px; margin-bottom:5px;">Checklist</h3>
+    <table style="width: 100%; border-collapse: collapse; font-size: 11px;">${itensHtml}</table>
+    ${fotosHtml}
+    <h3 style="border-bottom: 1px solid #000; font-size:14px; margin-top:20px;">Parecer Final: ${insp.resultado.toUpperCase()}</h3>
+    <p style="font-size:12px;">${insp.parecer || 'Sem ressalvas extras.'}</p>
+    <div style="margin-top: 40px; text-align: center; font-size: 12px;">
+      <p>_____________________________________</p>
+      <p><b>${insp.eng || 'Engenheiro'}</b> | CREA: ${insp.crea || '-'}</p>
+    </div>
+  `;
+
+  const opt = { margin: [10, 10, 10, 10], filename: `Laudo_${insp.tag}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+  html2pdf().set(opt).from(container).save().then(() => showToast('Baixado!'));
 }
 
-function goHome() {
-  editandoId = null;
-  document.getElementById('btn-pdf').style.display = 'none';
-  navTo('home');
-  atualizarFiltros();
-  renderLista();
-}
-
-function novaInspecao() {
-  editandoId = null;
-  document.getElementById('form-title').textContent = 'Nova inspeção';
-  document.getElementById('btn-pdf').style.display = 'none'; 
-  
-  document.getElementById('f-empresa').value = '';
-  document.getElementById('f-cnpj').value = '';
-  document.getElementById('f-resp').value = '';
-  document.getElementById('f-tipo').value = 'Caldeira a Vapor';
-  document.getElementById('f-tag').value = '';
-  document.getElementById('f-fab').value = '';
-  document.getElementById('f-ano').value = '';
-  document.getElementById('f-pmta').value = '';
-  document.getElementById('f-pop').value = '';
-  document.getElementById('f-temp').value = '';
-  document.getElementById('f-parecer').value = '';
-  renderItens('Caldeira a Vapor');
-  setResultado('ressalva');
-  setDataHoje();
-  showPage('form');
-}
-
-// ── TOAST ─────────────────────────────────────────────────────────────────
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2200);
-}
+function showPage(name) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById('page-' + name).classList.add('active'); document.getElementById('topbar-action').style.display = name === 'form' ? 'none' : ''; }
+function navTo(name) { document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); document.getElementById('nav-' + name)?.classList.add('active'); showPage(name); }
+function goHome() { editandoId = null; document.getElementById('btn-pdf').style.display = 'none'; navTo('home'); atualizarFiltrosUI(); renderLista(); }
+function novaInspecao() { editandoId = null; document.getElementById('btn-pdf').style.display = 'none'; document.querySelectorAll('.field input, .field textarea').forEach(i => i.value = ''); document.getElementById('f-tipo').value = 'Caldeira a Vapor'; fotosInspecao=[]; renderFotosForm(); renderItens('Caldeira a Vapor'); setResultado('ressalva'); setDataHoje(); showPage('form'); }
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200); }
 </script>
 </body>
 </html>
