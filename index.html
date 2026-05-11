@@ -251,8 +251,8 @@
 
   <div class="topbar" id="topbar">
     <div class="topbar-logo">Laudo<span>NR13</span></div>
-    <div class="topbar-badge" id="topbar-badge">v2.0</div>
-    <button class="topbar-btn" id="topbar-action" onclick="novaInspecao()">+ Nova inspeção</button>
+    <div class="topbar-badge" id="topbar-badge">v2.1</div>
+    <button class="topbar-btn" id="topbar-action" onclick="novaInspecao()">+ Nova</button>
   </div>
 
   <div class="pages">
@@ -299,7 +299,7 @@
             <div class="form-title" id="form-title">Nova inspeção</div>
             <div class="form-subtitle" id="form-subtitle">Preencha os dados do equipamento</div>
           </div>
-          <button class="btn-pdf" id="btn-pdf" onclick="gerarPDF()">📄 Exportar PDF</button>
+          <button class="btn-pdf" id="btn-pdf" onclick="gerarPDF()">📄 PDF</button>
         </div>
 
         <div class="form-section">
@@ -422,10 +422,6 @@
       <span class="nav-icon">📊</span>
       <span class="nav-label">Painel</span>
     </button>
-    <button class="nav-item" id="nav-config" onclick="navTo('config')">
-      <span class="nav-icon">⚙️</span>
-      <span class="nav-label">Config</span>
-    </button>
   </nav>
 
 </div><div class="toast" id="toast"></div>
@@ -476,19 +472,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ── FILTROS DE CLIENTES ──────────────────────────────────────────────────
 function atualizarFiltros() {
-  const clientes = [...new Set(inspecoes.map(i => i.empresa))].filter(Boolean).sort();
+  // Limpa possíveis valores vazios e ordena os clientes em ordem alfabética
+  const clientes = [...new Set(inspecoes.map(i => i.empresa))].filter(e => e && e.trim() !== '').sort();
+  
   const options = '<option value="Todos">Todos os Clientes</option>' + 
-                  clientes.map(c => `<option value="${c}">${c}</option>`).join('');
+                  clientes.map(c => `<option value="${c.replace(/"/g, '&quot;')}">${c}</option>`).join('');
   
-  const homeVal = document.getElementById('filtro-home').value;
-  const painelVal = document.getElementById('filtro-painel').value;
+  const elHome = document.getElementById('filtro-home');
+  const elPainel = document.getElementById('filtro-painel');
   
-  document.getElementById('filtro-home').innerHTML = options;
-  document.getElementById('filtro-painel').innerHTML = options;
+  const homeVal = elHome.value;
+  const painelVal = elPainel.value;
   
-  // Mantém a seleção anterior se ainda existir
-  if (clientes.includes(homeVal)) document.getElementById('filtro-home').value = homeVal;
-  if (clientes.includes(painelVal)) document.getElementById('filtro-painel').value = painelVal;
+  elHome.innerHTML = options;
+  elPainel.innerHTML = options;
+  
+  // Mantém a seleção anterior se ela ainda existir no array
+  if (clientes.includes(homeVal)) elHome.value = homeVal;
+  if (clientes.includes(painelVal)) elPainel.value = painelVal;
 }
 
 // ── RENDER ITENS ─────────────────────────────────────────────────────────
@@ -543,7 +544,7 @@ function gravarAudio(nomeItem, slug) {
   
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
-    showToast('Navegador não suporta gravação de voz (use o Chrome).');
+    showToast('Navegador não suporta gravação de voz.');
     return;
   }
 
@@ -639,7 +640,6 @@ function salvarInspecao() {
   
   atualizarFiltros();
   
-  // Exibir botão de gerar PDF após salvar
   editandoId = insp.id; 
   document.getElementById('btn-pdf').style.display = 'block';
   
@@ -654,17 +654,6 @@ function gerarPDF() {
 
   showToast('Gerando relatório PDF...');
 
-  // Cria um contêiner invisível para desenhar o PDF estilo documento oficial
-  const pdfContainer = document.createElement('div');
-  pdfContainer.style.padding = '30px';
-  pdfContainer.style.background = '#fff';
-  pdfContainer.style.color = '#000';
-  pdfContainer.style.fontFamily = 'Arial, sans-serif';
-  pdfContainer.style.width = '210mm'; 
-  pdfContainer.style.position = 'absolute';
-  pdfContainer.style.left = '-9999px';
-  document.body.appendChild(pdfContainer);
-
   let itensHtml = '';
   Object.entries(insp.itens).forEach(([nome, val]) => {
       let st = val.status === 'conf' ? 'CONFORME' : (val.status === 'nconf' ? 'NÃO CONFORME' : 'ATENÇÃO');
@@ -676,7 +665,15 @@ function gerarPDF() {
       </tr>`;
   });
 
-  pdfContainer.innerHTML = `
+  // Criando o elemento na memória para não depender de exibição na tela
+  const elementoPdf = document.createElement('div');
+  elementoPdf.style.padding = '20px';
+  elementoPdf.style.background = '#ffffff';
+  elementoPdf.style.color = '#000000';
+  elementoPdf.style.fontFamily = 'Arial, sans-serif';
+  elementoPdf.style.width = '210mm'; // Define o tamanho A4 correto
+  
+  elementoPdf.innerHTML = `
     <h2 style="text-align:center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom:20px;">LAUDO TÉCNICO DE INSPEÇÃO NR-13</h2>
     
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px;">
@@ -737,25 +734,29 @@ function gerarPDF() {
   `;
 
   const opt = {
-    margin:       [15, 10, 15, 10], // Margens: Top, Left, Bottom, Right
+    margin:       [15, 10, 15, 10], 
     filename:     `Laudo_${insp.tag}_${insp.empresa}.pdf`,
     image:        { type: 'jpeg', quality: 0.98 },
     html2canvas:  { scale: 2, logging: false },
     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
 
-  html2pdf().set(opt).from(pdfContainer).save().then(() => {
+  html2pdf().set(opt).from(elementoPdf).save().then(() => {
     showToast('PDF baixado com sucesso!');
-    document.body.removeChild(pdfContainer); // Limpa o DOM
+  }).catch(err => {
+    showToast('Erro ao gerar o PDF.');
+    console.error(err);
   });
 }
 
-// ── RENDER LISTA ──────────────────────────────────────────────────────────
+// ── RENDER LISTA E FILTRO ─────────────────────────────────────────────────
 function renderLista() {
   const el = document.getElementById('insp-list');
   const empty = document.getElementById('empty-state');
   const kpiSection = document.getElementById('home-kpis');
-  const filtro = document.getElementById('filtro-home').value;
+  
+  const filtroEl = document.getElementById('filtro-home');
+  const filtro = filtroEl ? filtroEl.value : 'Todos';
 
   let listaFiltrada = filtro === 'Todos' ? inspecoes : inspecoes.filter(i => i.empresa === filtro);
 
@@ -772,6 +773,7 @@ function renderLista() {
   const crit = listaFiltrada.filter(i => i.resultado === 'reprovado').length;
   const atenc = listaFiltrada.filter(i => i.resultado === 'ressalva').length;
   const ok = listaFiltrada.filter(i => i.resultado === 'aprovado').length;
+  
   document.getElementById('kpi-crit').textContent  = crit;
   document.getElementById('kpi-atenc').textContent = atenc;
   document.getElementById('kpi-ok').textContent    = ok;
@@ -792,19 +794,25 @@ function renderLista() {
 }
 
 function renderPainel() {
-  const filtro = document.getElementById('filtro-painel').value;
+  const filtroEl = document.getElementById('filtro-painel');
+  const filtro = filtroEl ? filtroEl.value : 'Todos';
+  
   let listaFiltrada = filtro === 'Todos' ? inspecoes : inspecoes.filter(i => i.empresa === filtro);
 
   const crit  = listaFiltrada.filter(i => i.resultado === 'reprovado').length;
   const atenc = listaFiltrada.filter(i => i.resultado === 'ressalva').length;
   const ok    = listaFiltrada.filter(i => i.resultado === 'aprovado').length;
+  
   document.getElementById('p-crit').textContent  = crit;
   document.getElementById('p-atenc').textContent = atenc;
   document.getElementById('p-ok').textContent    = ok;
   document.getElementById('p-total').textContent = listaFiltrada.length;
 
   const el = document.getElementById('painel-list');
-  if (!listaFiltrada.length) { el.innerHTML = '<div class="empty-state">Nenhuma inspeção registrada ainda.</div>'; return; }
+  if (!listaFiltrada.length) { 
+    el.innerHTML = '<div class="empty-state">Nenhuma inspeção encontrada para este filtro.</div>'; 
+    return; 
+  }
   
   el.innerHTML = listaFiltrada.map(i => {
     const { cor, label, cls } = statusInfo(i.resultado);
@@ -878,7 +886,7 @@ function editarInspecao(id) {
 
   setResultado(insp.resultado || 'ressalva');
   document.getElementById('form-title').textContent = 'Editar inspeção';
-  document.getElementById('btn-pdf').style.display = 'block'; // Mostra botão de PDF
+  document.getElementById('btn-pdf').style.display = 'block'; 
   showPage('form');
 }
 
@@ -912,7 +920,7 @@ function goHome() {
 function novaInspecao() {
   editandoId = null;
   document.getElementById('form-title').textContent = 'Nova inspeção';
-  document.getElementById('btn-pdf').style.display = 'none'; // Esconde na nova
+  document.getElementById('btn-pdf').style.display = 'none'; 
   
   document.getElementById('f-empresa').value = '';
   document.getElementById('f-cnpj').value = '';
@@ -925,8 +933,6 @@ function novaInspecao() {
   document.getElementById('f-pop').value = '';
   document.getElementById('f-temp').value = '';
   document.getElementById('f-parecer').value = '';
-  document.getElementById('f-eng').value = '';
-  document.getElementById('f-crea').value = '';
   renderItens('Caldeira a Vapor');
   setResultado('ressalva');
   setDataHoje();
